@@ -13,7 +13,7 @@
 	let totalWeight = 100;
 </script>
 
-<div class="px-24">
+<div class="px-24 py-16">
 	<div class="flex flex-row gap-x-16">
 		<Chat />
 		<div class="flex-1">

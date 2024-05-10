@@ -25,7 +25,7 @@
 					<p class="text-sm text-center text-gray-400">Volume(1h)</p>
 				</div>
 				<div class="px-6">
-					<span class="text-sm">19,696,478 BTC</span>
+					<span class="text-sm">19,696,478</span>
 					<p class="text-sm text-center text-gray-400">Supply</p>
 				</div>
 			</li>
