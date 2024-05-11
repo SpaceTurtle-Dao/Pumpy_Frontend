@@ -1,11 +1,18 @@
 import type { ChartData } from "chart.js";
 var sun = new Image(65,65);
 sun.src = './sunny.jpeg';
+let imageText = ['./sunny.jpeg','./luna.png'];
+let images: HTMLImageElement[] = [];
+imageText.forEach(image => {
+  let img = new Image(65,65);
+  img.src = image;
+  images.push(img)
+})
 export const data:ChartData = {
     labels: [10,9,8,7,6,5,4,3,2,1],
     datasets: [
       {
-        pointStyle : sun,
+        pointStyle : images,
         label: '',
         fill: true,
         backgroundColor: 'rgb(255, 99, 132)',
