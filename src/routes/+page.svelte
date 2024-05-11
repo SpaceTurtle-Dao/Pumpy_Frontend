@@ -16,7 +16,7 @@
 <div class="px-24 py-16">
 	<div class="flex flex-row gap-x-16">
 		<Chat />
-		<div class="flex-1">
+		<div class="flex-1 ">
 			<Chart />
 			<div class="p-4">
 				<Tokens />

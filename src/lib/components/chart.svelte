@@ -12,7 +12,7 @@
 		LineElement,
 		LinearScale,
 		PointElement,
-		CategoryScale
+		CategoryScale,
 	} from 'chart.js';
 
 	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
@@ -21,6 +21,14 @@
 <Line
 	{data}
 	options={{
+        /*layout:{
+            padding:{
+              left: -8,
+              right: -8,
+              top: -20,
+              bottom: -8,
+            }
+        },*/
 		responsive: true,
 		plugins: {
 			legend: {
@@ -29,12 +37,22 @@
 		},
 		scales: {
             y: {
-                min: 0,
-                max: 6
+                grid:{
+                    display:false
+                },
+                ticks:{
+                    display:false
+                },
+                //beginZero:true,
             },
             x: {
-                min: 0,
-                max: 20
+                grid:{
+                    display:false
+                },
+                ticks:{
+                    display:false
+                },
+                //beginZero:true,
             },
         }
 	}}
