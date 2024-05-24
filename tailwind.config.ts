@@ -1,7 +1,6 @@
-
 import { join } from 'path';
 import type { Config } from 'tailwindcss';
-import {myCustomTheme} from './theme'
+import { myCustomTheme } from './theme'
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';
 
@@ -32,4 +31,3 @@ const config = {
 } satisfies Config;
 
 export default config;
-						
