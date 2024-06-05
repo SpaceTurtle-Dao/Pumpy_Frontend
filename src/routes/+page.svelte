@@ -4,27 +4,8 @@
 	// import Chart from '$lib/components/chart.svelte';
 	import Landing from '$lib/components/landing.svelte';
 	import Swap from '$lib/components/swap.svelte';
-
-	let item = {
-		position: 1,
-		name: 'Bitcoin',
-		symbol: 'BTC',
-		weight: 6
-	};
-	let tableArr = [item];
-	let totalWeight = 100;
 </script>
 
-<div class="px-24 py-16">
+<div class="px-24 py-16 bg-tertiary">
 	<Swap />
-
-	<!-- <div class="flex flex-row gap-x-16"> -->
-	<!-- <Chat />
-		<div class="flex-1">
-			<Chart />
-			<div class="p-4">
-				<Tokens />
-			</div>
-		</div> -->
-	<!-- </div> -->
 </div>
