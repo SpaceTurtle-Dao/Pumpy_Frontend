@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Artemis } from 'artemis-web3-adapter';
 	type Token = {
 		symbol: string;
 		balance: number;
@@ -40,7 +41,16 @@
 		}
 	}
 
-	function connectWallet(): void {}
+	function connectWallet(): void {
+		try {
+			const connectObj = { whitelist: ['ryjl3-tyaaa-aaaaa-aaaba-cai'], host: 'https://icp0.io/' };
+			const artemisWalletAdapter = new Artemis();
+			var res = artemisWalletAdapter.connect('plug', connectObj);
+			console.log(res);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 </script>
 
 <div class="min-h-screen bg-primary flex flex-col justify-center items-center">
