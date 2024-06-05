@@ -4,8 +4,6 @@
 	import '../app.css';
 	import { env } from '$env/dynamic/public'
 	let satelliteId = env.PUBLIC_SATELLITE;
-
-	
 	onMount(
 		async () =>
 			await initJuno({
