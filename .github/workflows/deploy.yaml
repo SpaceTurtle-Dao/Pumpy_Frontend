@@ -1,12 +1,17 @@
-name: Deploy to Juno
+name: CD
 
 on:
-  push:
-    branches: [main]
+  pull_request:
+      types: [closed]
+      branches:
+          - main
+          - staging
+          - development
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -19,12 +24,41 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build development
+        if: github.base_ref == 'development'
+        run: npm run build -- --mode development
+      
+      - name: Build staging
+        if: github.base_ref == 'staging'
+        run: npm run build -- --mode staging
 
-      - name: Deploy to Juno
+      - name: Build production
+        if: github.base_ref == 'main'
+        run: npm run build -- --mode production
+
+      - name: Deploy to development
+        if: github.base_ref == 'development'
         uses: junobuild/juno-action@main
         with:
-          args: deploy
+          args: deploy --mode development
         env:
-          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN }}
+          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_DEVELOPMENT }}
+      
+      - name: Deploy to staging
+        if: github.base_ref == 'staging'
+        uses: junobuild/juno-action@main
+        with:
+          args: deploy --mode staging
+        env:
+          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_STAGING }}
+
+        
+      - name: Deploy to production
+        if: github.base_ref == 'main'
+        uses: junobuild/juno-action@main
+        with:
+          args: deploy --mode production
+        env:
+          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_PRODUCTION }}
+
+      
