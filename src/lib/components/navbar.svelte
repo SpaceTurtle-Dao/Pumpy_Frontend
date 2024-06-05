@@ -1,5 +1,4 @@
 <script>
-	import { Log } from "ethers";
     import Logo from "../../assets/logo.png"
   // You can add your Svelte component logic here if needed
 </script>
@@ -21,7 +20,7 @@
     <a href="#" class="hover:text-gray-400">PATHFINDER</a>
     <a href="#" class="hover:text-gray-400">VANGUARD</a>
     <a href="#" class="hover:text-gray-400">DEBUG</a>
-    <a href="#" class="hover:text-gray-400">WHITE-PAPER</a>
+    <a href="https://usdstack.gitbook.io/stack-whitepaper" class="hover:text-gray-400">WHITE-PAPER</a>
     <button class="bg-[#A9E3AF] text-black py-2 px-4 rounded hover:bg-opacity-90">CONNECT WALLET</button>
   </div>
 </nav>
