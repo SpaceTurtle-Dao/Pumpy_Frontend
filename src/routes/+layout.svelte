@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Navbar from '$lib/components/navbar.svelte';
+	import Footer from '$lib/components/footer.svelte';
 	import { onMount } from 'svelte';
 	import { initJuno } from '@junobuild/core-peer';
 	import '../app.css';
@@ -15,6 +17,10 @@
 				}
 			})
 	);
+
 </script>
 
-<slot />
+<Navbar />
+<Footer />
+
+
