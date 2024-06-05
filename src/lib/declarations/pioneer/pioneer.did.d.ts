@@ -46,7 +46,7 @@ export interface Swap {
   'sell' : Amount,
 }
 export type Time = bigint;
-export interface TokenCanister {
+export interface Pioneer {
   'add' : ActorMethod<[PoolId, [bigint, bigint]], TokenResult>,
   'allowance' : ActorMethod<[AllowanceRequest], bigint>,
   'approve' : ActorMethod<[ApproveRequest], TokenResult>,
@@ -151,6 +151,6 @@ export interface TransferRequest {
   'to' : string,
   'amount' : bigint,
 }
-export interface _SERVICE extends TokenCanister {}
+export interface _SERVICE extends Pioneer {}
 export declare const pioneer_idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

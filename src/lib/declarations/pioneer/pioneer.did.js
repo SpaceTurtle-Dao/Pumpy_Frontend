@@ -112,7 +112,7 @@ export const pioneer_idlFactory = ({ IDL }) => {
     'from' : IDL.Text,
     'amount' : IDL.Nat,
   });
-  const TokenCanister = IDL.Service({
+  const Pioneer = IDL.Service({
     'add' : IDL.Func([PoolId, IDL.Tuple(IDL.Nat, IDL.Nat)], [TokenResult], []),
     'allowance' : IDL.Func([AllowanceRequest], [IDL.Nat], ['query']),
     'approve' : IDL.Func([ApproveRequest], [TokenResult], []),
@@ -187,7 +187,7 @@ export const pioneer_idlFactory = ({ IDL }) => {
         [],
       ),
   });
-  return TokenCanister;
+  return Pioneer;
 };
 export const init = ({ IDL }) => {
   const ENV = IDL.Variant({
