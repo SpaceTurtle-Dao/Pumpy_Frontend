@@ -53,7 +53,7 @@
 	}
 </script>
 
-<div class="min-h-screen bg-secondary-400 flex flex-col justify-center items-center">
+<div class="min-h-screen flex flex-col justify-center items-center">
 	<div class="w-96 rounded-lg p-6 shadow-lg">
 		<div class="flex justify-between items-center mb-4">
 			<button class="text-gray-400 hover:text-blue-600" on:click={connectWallet}>
@@ -73,7 +73,7 @@
 			<label class="block mb-2 text-sm">You're paying</label>
 			<div class="bg-primary flex items-center bg- rounded p-2">
 				<select
-					class="bg-transparent flex-1 outline-none"
+					class="bg-primary flex-1 outline-none"
 					on:change={(e) => selectFromToken(tokens[0])}
 				>
 					<option disabled selected>Select Token</option>
