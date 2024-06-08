@@ -87,7 +87,6 @@
         <div class="progress-track w-full h-4 mb-4 relative">
           <div class="progress-bar absolute top-0 left-0 w-4/5"></div>
         </div>
-        <div class="text-sm">BONDING ENDS : 00:18:36:28</div>
       </div>
     {/each}
   </div>
