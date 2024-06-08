@@ -1,6 +1,8 @@
 import { stackedTheme } from './theme'
 const { skeleton } = require('@skeletonlabs/tw-plugin');
 /** @type {import('tailwindcss').Config} */
+import forms from '@tailwindcss/forms';
+
 
 
 export default {
@@ -12,9 +14,9 @@ export default {
 		extend: {}
 	},
 	plugins: [
-		// 4. Append the Skeleton plugin (after other plugins)
+		forms,
 		skeleton({
 			themes: { custom: [stackedTheme] }
-		})
+		}),
 	]
 };
