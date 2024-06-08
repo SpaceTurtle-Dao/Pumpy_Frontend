@@ -20,4 +20,5 @@ vite.config.ts.timestamp-*
 static/workers
 
 !.lockb
-bun.lockb
+*.lockb
+*.lockb.*
