@@ -130,10 +130,9 @@
 					</select>
 				</div>
 				<input
-					type="number"
-					class="bg-transparent text-white text-right flex-1 outline-none"
-					bind:value={amountToSwap}
-					min="0"
+					class="input bg-secondary-800 text-secondary text-right flex-1"
+					type="text"
+					placeholder="0.00"
 				/>
 			</div>
 		</div>
@@ -145,7 +144,7 @@
 		<div class="mb-4">
 			<label class="block mb-2 text-sm">To receive</label>
 			<div class="flex items-center bg-dark-gray rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div class="relative flex items-center bg-tertiary-900 text-white rounded-full px-4 py-1">
+				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-1">
 					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
 					<span>{selectedToToken?.symbol}</span>
 					<span class="material-icons ml-2 text-custom-green-light">expand_more</span>
@@ -158,7 +157,11 @@
 						{/each}
 					</select>
 				</div>
-				<input class="input" type="number" placeholder="Input" />
+				<input
+					class="input bg-secondary-800 text-secondary text-right flex-1"
+					type="text"
+					placeholder="0.00"
+				/>
 				<!-- <input
 					type="number"
 					class="bg-transparent text-white text-right flex-1 outline-none"
