@@ -95,10 +95,14 @@
 			console.error(error);
 		}
 	}
+
+	function initateSwap(): void {}
+
+	function swap(): void {}
 </script>
 
 <div class="min-h-screen flex flex-col justify-center items-center">
-	<div class="w-120 bg-surface-500 rounded-lg p-9 shadow-lg">
+	<div class="w-120 bg-surface-700 rounded-lg p-9 shadow-lg">
 		<div class="flex justify-between items-center mb-4">
 			<button class="text-primary-700 hover:text-primary-500" on:click={() => {}}>
 				<span class="material-icons">refresh</span>
@@ -115,11 +119,11 @@
 
 		<div class="mb-4">
 			<label class="block mb-2 text-sm">You're paying</label>
-			<div class="flex items-center bg-dark-gray rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div class="relative flex items-center bg-custom-green text-white rounded-full px-4 py-2">
+			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
+				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-2">
 					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
 					<span>{selectedToToken?.symbol}</span>
-					<span class="material-icons ml-2 text-custom-green-light">expand_more</span>
+					<span class="material-icons ml-2 text-primary-600">expand_more</span>
 					<select
 						class="absolute inset-0 opacity-0 w-full cursor-pointer"
 						on:change={(e) => console.log(e)}
@@ -130,7 +134,7 @@
 					</select>
 				</div>
 				<input
-					class="input bg-secondary-800 text-secondary text-right flex-1"
+					class="input bg-secondary-600 text-primary-100 text-right flex-1"
 					type="text"
 					placeholder="0.00"
 				/>
@@ -143,11 +147,11 @@
 
 		<div class="mb-4">
 			<label class="block mb-2 text-sm">To receive</label>
-			<div class="flex items-center bg-dark-gray rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-1">
+			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
+				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-2">
 					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
 					<span>{selectedToToken?.symbol}</span>
-					<span class="material-icons ml-2 text-custom-green-light">expand_more</span>
+					<span class="material-icons ml-2 text-primary-600">expand_more</span>
 					<select
 						class="absolute inset-0 opacity-0 w-full cursor-pointer"
 						on:change={(e) => console.log(e)}
@@ -158,7 +162,7 @@
 					</select>
 				</div>
 				<input
-					class="input bg-secondary-800 text-secondary text-right flex-1"
+					class="input bg-secondary-600 text-primary-100 text-right flex-1"
 					type="text"
 					placeholder="0.00"
 				/>
@@ -171,8 +175,9 @@
 			</div>
 		</div>
 
-		<button class="w-full py-2 bg-green-600 rounded hover:bg-green-700" on:click={connectWallet}
-			>Connect Wallet</button
+		<button
+			class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600"
+			on:click={connectWallet}>Connect Wallet</button
 		>
 	</div>
 
