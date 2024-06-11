@@ -22,10 +22,14 @@
 </script>
 
 <Navbar />
-<!-- <main class="container mx-auto p-6">
-  <FeaturedDAOs />
-</main> -->
-<Card />
+
+<div class="bg-black min-h-screen p-10">
+  <div class="flex space-x-6">
+    <Card />
+    <Card />
+    <Card />
+  </div>
+</div>
 <Footer />
 
 
