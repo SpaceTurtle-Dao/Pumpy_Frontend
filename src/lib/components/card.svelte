@@ -10,7 +10,7 @@
     </div>
     <Card.Title>
       <h2 class="text-2xl font-bold mb-2">PROJECT NAME HERE 
-        <button class="ml-2 bg-blue-500 text-white p-1 rounded-full">+</button>
+        <button class="ml-2 bg-gray-500 text-black p-1 rounded-full">+</button>
       </h2>
     </Card.Title>
     <Card.Description>
