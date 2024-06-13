@@ -8,6 +8,7 @@
 	import { env } from '$env/dynamic/public'
 	import Card from '$lib/components/card.svelte';
 	let satelliteId = env.PUBLIC_SATELLITE;
+	
 	onMount(
 		async () =>
 			await initJuno({
