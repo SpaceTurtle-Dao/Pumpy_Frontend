@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { Artemis } from 'artemis-web3-adapter';
 	import { onMount } from 'svelte';
+	// import { PIONEER_DEV } from '../common/constants';
+	// import { idlFactory as pioneerIdl } from '$lib/services/pioneer.did';
+
+	const artemisWalletAdapter = new Artemis();
 
 	onMount(() => {
 		selectedToToken = tokens[0];
@@ -85,15 +89,23 @@
 		}
 	}
 
-	function connectWallet(): void {
+	async function connectWallet() {
 		try {
 			const connectObj = { whitelist: ['ryjl3-tyaaa-aaaaa-aaaba-cai'], host: 'https://icp0.io/' };
-			const artemisWalletAdapter = new Artemis();
 			var res = artemisWalletAdapter.connect('plug', connectObj);
 			console.log(res);
+			// const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneerIdl, false);
+			// console.log(swap);
 		} catch (error) {
 			console.error(error);
 		}
+	}
+
+	function initIdl(): void {
+		// let swap = artemisWalletAdapter.getCanisterActor(PIONEER_DEV, swapIdl, false);
+		// swap.getEthBalance().then((res) => {
+		// ethBalance = res;
+		// });
 	}
 
 	function initateSwap(): void {}
@@ -119,6 +131,24 @@
 
 		<div class="mb-4">
 			<label class="block mb-2 text-sm">You're paying</label>
+			<div class="flex justify-between items-center mb-2">
+				<div class="flex items-center text-gray-400">
+					<span class="material-icons text-sm">account_balance_wallet</span>
+					<span class="ml-1">{100.0} {'ICP'}</span>
+				</div>
+				<div class="flex space-x-2">
+					<button
+						class="px-2 py-1 rounded-full bg-gray-600 hover:bg-gray-700"
+						on:click={() => console.log('Half')}>HALF</button
+					>
+					<button
+						class="px-2 py-1 rounded-full bg-custom-green-light text-dark-gray hover:bg-green-400"
+						on:click={() => {
+							console.log('Max');
+						}}>MAX</button
+					>
+				</div>
+			</div>
 			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
 				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-2">
 					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />

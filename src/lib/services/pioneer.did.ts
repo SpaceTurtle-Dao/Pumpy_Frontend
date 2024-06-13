@@ -24,6 +24,56 @@ export interface Liquidity {
        'share': bigint,
 }
 export interface MintRequest { 'id': bigint, 'to': string, 'amount': bigint }
+export interface Pioneer {
+       'add': ActorMethod<[PoolId, [bigint, bigint]], TokenResult>,
+       'allowance': ActorMethod<[AllowanceRequest], bigint>,
+       'approve': ActorMethod<[ApproveRequest], TokenResult>,
+       'balance': ActorMethod<[BalanceRequest], bigint>,
+       'createPools': ActorMethod<[Array<PoolRequest>], Array<TokenResult>>,
+       'createTokens': ActorMethod<
+              [TokenRequest, Array<MintRequest>],
+              Array<TokenResult>
+       >,
+       'fetchBalances': ActorMethod<[], Array<[TokenInfo, bigint]>>,
+       'fetchHolders': ActorMethod<
+              [bigint, bigint, bigint],
+              Array<[string, bigint]>
+       >,
+       'fetchPools': ActorMethod<[], Array<PoolInfo>>,
+       'fetchTokens': ActorMethod<[], Array<TokenInfo>>,
+       'fetchTransactions': ActorMethod<
+              [bigint, bigint, bigint],
+              Array<TransactionType>
+       >,
+       'getCycles': ActorMethod<[], bigint>,
+       'getEquivalentTokenAEstimate': ActorMethod<[bigint, bigint], bigint>,
+       'getEquivalentTokenBEstimate': ActorMethod<[bigint, bigint], bigint>,
+       'getHeapSize': ActorMethod<[], bigint>,
+       'getMemorySize': ActorMethod<[], bigint>,
+       'getShares': ActorMethod<[bigint, string], bigint>,
+       'getSwapTokenAEstimate': ActorMethod<[bigint, bigint], bigint>,
+       'getSwapTokenAEstimateGivenTokenB': ActorMethod<[bigint, bigint], bigint>,
+       'getSwapTokenBEstimate': ActorMethod<[bigint, bigint], bigint>,
+       'getSwapTokenBEstimateGivenTokenA': ActorMethod<[bigint, bigint], bigint>,
+       'getTransaction': ActorMethod<[bigint, bigint], [] | [TransactionType]>,
+       'getWithdrawEstimate': ActorMethod<
+              [bigint, bigint],
+              { 'shareA': bigint, 'shareB': bigint }
+       >,
+       'lock': ActorMethod<[bigint], TokenResult>,
+       'mint': ActorMethod<[Array<MintRequest>], Array<TokenResult>>,
+       'poolInfo': ActorMethod<[bigint], [] | [PoolInfo]>,
+       'price': ActorMethod<[bigint], bigint>,
+       'remove': ActorMethod<[PoolId, bigint], TokenResult>,
+       'swapTokenA': ActorMethod<[PoolId, bigint, bigint], TokenResult>,
+       'swapTokenB': ActorMethod<[PoolId, bigint, bigint], TokenResult>,
+       'tokenInfo': ActorMethod<[bigint], [] | [TokenInfo]>,
+       'transfer': ActorMethod<[TransferRequest], TokenResult>,
+       'transferFrom': ActorMethod<
+              [Array<TransferFromRequest>],
+              Array<TokenResult>
+       >,
+}
 export type PoolId = { 'RUG': bigint } |
 { 'POOL': bigint } |
 { 'PUMP': bigint };
@@ -101,55 +151,6 @@ export interface TransferRequest {
        'to': string,
        'amount': bigint,
 }
-export interface _SERVICE {
-       'add': ActorMethod<[PoolId, [bigint, bigint]], TokenResult>,
-       'allowance': ActorMethod<[AllowanceRequest], bigint>,
-       'approve': ActorMethod<[ApproveRequest], TokenResult>,
-       'balance': ActorMethod<[BalanceRequest], bigint>,
-       'createPools': ActorMethod<[Array<PoolRequest>], Array<TokenResult>>,
-       'createTokens': ActorMethod<
-              [TokenRequest, Array<MintRequest>],
-              Array<TokenResult>
-       >,
-       'fetchBalances': ActorMethod<[], Array<[TokenInfo, bigint]>>,
-       'fetchHolders': ActorMethod<
-              [bigint, bigint, bigint],
-              Array<[string, bigint]>
-       >,
-       'fetchPools': ActorMethod<[], Array<PoolInfo>>,
-       'fetchTokens': ActorMethod<[], Array<TokenInfo>>,
-       'fetchTransactions': ActorMethod<
-              [bigint, bigint, bigint],
-              Array<TransactionType>
-       >,
-       'getCycles': ActorMethod<[], bigint>,
-       'getEquivalentTokenAEstimate': ActorMethod<[bigint, bigint], bigint>,
-       'getEquivalentTokenBEstimate': ActorMethod<[bigint, bigint], bigint>,
-       'getHeapSize': ActorMethod<[], bigint>,
-       'getMemorySize': ActorMethod<[], bigint>,
-       'getShares': ActorMethod<[bigint, string], bigint>,
-       'getSwapTokenAEstimate': ActorMethod<[bigint, bigint], bigint>,
-       'getSwapTokenAEstimateGivenTokenB': ActorMethod<[bigint, bigint], bigint>,
-       'getSwapTokenBEstimate': ActorMethod<[bigint, bigint], bigint>,
-       'getSwapTokenBEstimateGivenTokenA': ActorMethod<[bigint, bigint], bigint>,
-       'getTransaction': ActorMethod<[bigint, bigint], [] | [TransactionType]>,
-       'getWithdrawEstimate': ActorMethod<
-              [bigint, bigint],
-              { 'shareA': bigint, 'shareB': bigint }
-       >,
-       'lock': ActorMethod<[bigint], TokenResult>,
-       'mint': ActorMethod<[Array<MintRequest>], Array<TokenResult>>,
-       'poolInfo': ActorMethod<[bigint], [] | [PoolInfo]>,
-       'price': ActorMethod<[bigint], bigint>,
-       'remove': ActorMethod<[PoolId, bigint], TokenResult>,
-       'swapTokenA': ActorMethod<[PoolId, bigint, bigint], TokenResult>,
-       'swapTokenB': ActorMethod<[PoolId, bigint, bigint], TokenResult>,
-       'tokenInfo': ActorMethod<[bigint], [] | [TokenInfo]>,
-       'transfer': ActorMethod<[TransferRequest], TokenResult>,
-       'transferFrom': ActorMethod<
-              [Array<TransferFromRequest>],
-              Array<TokenResult>
-       >,
-}
+export interface _SERVICE extends Pioneer { }
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];
