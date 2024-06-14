@@ -1,6 +1,6 @@
 <script lang='ts'>
   import Logo from "../../assets/logo.png"
-  import { Button } from "$lib/components/ui/button";
+  import Plug from "$lib/components/plug.svelte";
 </script>
 
 <style global>
@@ -21,6 +21,6 @@
     <a href="#" class="hover:text-gray-400">VANGUARD</a>
     <a href="#" class="hover:text-gray-400">DEBUG</a>
     <a href="https://usdstack.gitbook.io/stack-whitepaper" class="hover:text-gray-400">WHITE-PAPER</a>
-    <Button class="bg-[#A9E3AF] text-black py-2 px-4 rounded hover:bg-opacity-90">CONNECT WALLET</Button>
+    <Plug/>
   </div>
 </nav>
