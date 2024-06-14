@@ -2,7 +2,7 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	// @ts-ignore
-	import { pioneerActor,principalStore,loadingStore,poolsStore,tokensStore,balancesStore } from '$lib/store';
+	import { pioneerActor,principalStore,loadingStore,poolsStore,tokensStore,balancesStore } from '$lib/store/store';
 	import { pioneer_idlFactory } from '$lib/declarations/pioneer/pioneer.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';

@@ -3,7 +3,15 @@
 	import { onMount } from 'svelte';
 	import { PIONEER_DEV } from '../common/constants';
 	import { fromAmount, toAmount } from '../store/swap.store';
-	// import { createAgent } from '../api/agent.api';
+	import {
+		pioneerActor,
+		principalStore,
+		loadingStore,
+		poolsStore,
+		tokensStore,
+		balancesStore
+	} from '$lib/store/store';
+	import SmallSpinner from './smallSpinner.svelte';
 
 	const artemisWalletAdapter = new Artemis();
 
@@ -107,19 +115,19 @@
 		</div>
 
 		<div class="mb-4">
-			<label class="block mb-2 text-sm">You're paying</label>
 			<div class="flex justify-between items-center mb-2">
-				<div class="flex items-center text-gray-400">
-					<span class="material-icons text-sm">account_balance_wallet</span>
-					<span class="ml-1">{100.0} {'ICP'}</span>
-				</div>
+				<label class="block mb-2 text-sm">You're paying</label>
 				<div class="flex space-x-2">
+					<div class="flex items-center text-primary-400">
+						<span class="material-icons text-sm">account_balance_wallet</span>
+						<span class="ml-1 text-sm">{100.0} {'ICP'}</span>
+					</div>
 					<button
-						class="px-2 py-1 rounded-full bg-gray-600 hover:bg-gray-700"
+						class="px-2 py-1 rounded-full hover:bg-gray-600 text-sm"
 						on:click={() => console.log('Half')}>HALF</button
 					>
 					<button
-						class="px-2 py-1 rounded-full bg-custom-green-light text-dark-gray hover:bg-green-400"
+						class="px-2 py-1 rounded-full hover:bg-gray-600 text-sm"
 						on:click={() => {
 							console.log('Max');
 						}}>MAX</button
@@ -183,8 +191,14 @@
 		</div>
 
 		<button
-			class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600"
-			on:click={connectWallet}>Connect Wallet</button
+			class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600 text-surface-700"
+			on:click={connectWallet}
+		>
+			{#if loadingStore}
+				<div class="flex flex-row pt-0.5 items-center"><SmallSpinner /></div>
+			{:else}
+				Connect Wallet
+			{/if}</button
 		>
 	</div>
 

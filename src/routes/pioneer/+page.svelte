@@ -6,6 +6,4 @@
 	import Swap from '$lib/components/swap.svelte';
 </script>
 
-<div class="px-24 py-16" data-theme="skeleton">
-	<Swap />
-</div>
+<Swap />

@@ -1,14 +1,9 @@
 import { writable } from 'svelte/store';
 
-export const toAmount = writable(0);
-export const toCurrency = writable('ETH');
-
-export const fromAmount = writable(0);
-export const fromCurrency = writable('BTC');
-
-
-export const slippage = writable(0.5);
-
-export const deadline = writable(20);
-
-export const isExactIn = writable(true);
+export let toAmount = writable(0);
+export let toCurrency = writable('ETH');
+export let fromAmount = writable(0);
+export let fromCurrency = writable('BTC');
+export let slippage = writable(0.5);
+export let deadline = writable(20);
+export let isExactIn = writable(true);
