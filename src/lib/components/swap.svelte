@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Artemis } from 'artemis-web3-adapter';
 	import { onMount } from 'svelte';
-	// import { PIONEER_DEV } from '../common/constants';
-	// import { idlFactory as pioneerIdl } from '$lib/services/pioneer.did';
+	import { PIONEER_DEV } from '../common/constants';
+	// import { pioneer, createActor as pioneerActor } from '$lib/services/pioneer/index.d';
 
 	const artemisWalletAdapter = new Artemis();
 
@@ -94,6 +94,12 @@
 			const connectObj = { whitelist: ['ryjl3-tyaaa-aaaaa-aaaba-cai'], host: 'https://icp0.io/' };
 			var res = artemisWalletAdapter.connect('plug', connectObj);
 			console.log(res);
+			if (res === 'connected') {
+				const swap1 = pioneerActor(PIONEER_DEV);
+				console.log(swap1);
+				const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneer, false);
+				console.log(swap);
+			}
 			// const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneerIdl, false);
 			// console.log(swap);
 		} catch (error) {
