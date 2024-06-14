@@ -1,13 +1,29 @@
-name: Deploy to Juno
+name: CD
 
 on:
-  push:
-    branches: [main]
+  pull_request:
+      types: [closed]
+      branches:
+          - main
+          - staging
+          - development
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
+      - name: Discord Notifications
+        uses: marvv90/discord-notify@master
+        with:
+          github-token: ${{ secrets.github_token}}
+          discord-webhook: ${{ secrets.webhook }}
+          discord-username: GitHub
+          discord-avatar: https://avatars.githubusercontent.com/u/171693943?s=400&u=c32933a450507f88a4bc295ba8e9100713fe3f70&v=4
+          discord-title: ${{ github.workflow }}
+          discord-clr-success: 17cf48
+          discord-clr-failure: e72727
+          discord-clr-cancelled: d3d3d3
       - name: Check out the repo
         uses: actions/checkout@v3
 
@@ -19,12 +35,41 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build development
+        if: github.base_ref == 'development'
+        run: npm run build -- --mode development
+      
+      - name: Build staging
+        if: github.base_ref == 'staging'
+        run: npm run build -- --mode staging
 
-      - name: Deploy to Juno
+      - name: Build production
+        if: github.base_ref == 'main'
+        run: npm run build -- --mode production
+
+      - name: Deploy to development
+        if: github.base_ref == 'development'
         uses: junobuild/juno-action@main
         with:
-          args: deploy
+          args: deploy --mode development
         env:
-          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN }}
+          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_DEVELOPMENT }}
+      
+      - name: Deploy to staging
+        if: github.base_ref == 'staging'
+        uses: junobuild/juno-action@main
+        with:
+          args: deploy --mode staging
+        env:
+          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_STAGING }}
+
+        
+      - name: Deploy to production
+        if: github.base_ref == 'main'
+        uses: junobuild/juno-action@main
+        with:
+          args: deploy --mode production
+        env:
+          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_PRODUCTION }}
+
+      
