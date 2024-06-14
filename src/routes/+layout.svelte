@@ -24,11 +24,9 @@
 
 <Navbar />
 
-<div class="bg-black min-h-screen p-10">
+<div class="min-h-screen p-10">
   <div class="flex space-x-6">
-    <Card />
-    <Card />
-    <Card />
+    <slot />
   </div>
 </div>
 <Footer />
