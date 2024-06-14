@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { PIONEER_DEV } from '../common/constants';
 	import { fromAmount, toAmount } from '../store/swap.store';
-	import { createAgent } from '../api/agent.api';
+	// import { createAgent } from '../api/agent.api';
 
 	const artemisWalletAdapter = new Artemis();
 
