@@ -111,9 +111,6 @@
 			false;
 		}
 	}
-
-	// @ts-ignore
-	// @ts-ignore
 	// @ts-ignore
 	function logout() {
 		try {
