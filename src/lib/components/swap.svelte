@@ -2,7 +2,8 @@
 	import { Artemis } from 'artemis-web3-adapter';
 	import { onMount } from 'svelte';
 	import { PIONEER_DEV } from '../common/constants';
-	// import { pioneer, createActor as pioneerActor } from '$lib/services/pioneer/index.d';
+	import { fromAmount, toAmount } from '../store/swap.store';
+	import { createAgent } from '../api/agent.api';
 
 	const artemisWalletAdapter = new Artemis();
 
@@ -27,36 +28,6 @@
 	let selectedToToken: Token | null = null;
 
 	const tokens: Token[] = [
-		{
-			symbol: 'ICP',
-			balance: 23709837498.249898696,
-			logo: 'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'
-		},
-		{
-			symbol: 'ckUSDC',
-			balance: 2344120230.347923907,
-			logo: 'https://cdn.sonic.ooo/icons/xevnm-gaaaa-aaaar-qafnq-cai'
-		},
-		{
-			symbol: 'ICP',
-			balance: 23709837498.249898696,
-			logo: 'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'
-		},
-		{
-			symbol: 'ckUSDC',
-			balance: 2344120230.347923907,
-			logo: 'https://cdn.sonic.ooo/icons/xevnm-gaaaa-aaaar-qafnq-cai'
-		},
-		{
-			symbol: 'ICP',
-			balance: 23709837498.249898696,
-			logo: 'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'
-		},
-		{
-			symbol: 'ckUSDC',
-			balance: 2344120230.347923907,
-			logo: 'https://cdn.sonic.ooo/icons/xevnm-gaaaa-aaaar-qafnq-cai'
-		},
 		{
 			symbol: 'ICP',
 			balance: 23709837498.249898696,
@@ -94,12 +65,12 @@
 			const connectObj = { whitelist: ['ryjl3-tyaaa-aaaaa-aaaba-cai'], host: 'https://icp0.io/' };
 			var res = artemisWalletAdapter.connect('plug', connectObj);
 			console.log(res);
-			if (res === 'connected') {
-				const swap1 = pioneerActor(PIONEER_DEV);
-				console.log(swap1);
-				const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneer, false);
-				console.log(swap);
-			}
+			// if (res === 'connected') {
+			// 	const swap1 = pioneerActor(PIONEER_DEV);
+			// 	console.log(swap1);
+			// 	const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneer, false);
+			// 	console.log(swap);
+			// }
 			// const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneerIdl, false);
 			// console.log(swap);
 		} catch (error) {
