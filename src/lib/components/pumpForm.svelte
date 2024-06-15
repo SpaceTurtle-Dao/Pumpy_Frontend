@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
 	import { z } from 'zod';
+	import MediumSpinner from './mediumSpinner.svelte';
 	import {
 		pumpyActor,
 		principalStore,
@@ -17,7 +18,7 @@
 	} from '$lib/declarations/pumpy/pumpy.did';
 
 	let pumpy: Pumpy;
-	let isLoading = true;
+	let isLoading = false;
 	let principal: Principal;
 
 	pumpyActor.subscribe((value) => {
@@ -33,19 +34,19 @@
 	});
 
 	export const formSchema = z.object({
-		name: z.string().min(2).max(50),
-		ticker: z.string().min(2).max(50),
-		description: z.string().min(100).max(500),
+		name: z.string().max(50),
+		ticker: z.string().max(50),
+		description: z.string().max(500),
 		icon: z.string(),
-		twitter: z.string().url(),
-		telegram: z.string().url(),
-		discord: z.string().url(),
-		website: z.string().url(),
-		supply: z.number().min(10000000000000000000),
-		decimals: z.number().max(8),
-		allocation: z.number().min(0),
-		amount: z.number().min(0),
-		token: z.number().min(0),
+		twitter: z.string(),
+		telegram: z.string(),
+		discord: z.string(),
+		website: z.string(),
+		supply: z.string().max(8),
+		decimals: z.string().max(8),
+		allocation: z.string().min(0),
+		amount: z.string().min(0),
+		token: z.string().min(0)
 	});
 	export type FormSchema = typeof formSchema;
 </script>
@@ -65,29 +66,31 @@
 		validators: zodClient(formSchema),
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
+				loadingStore.set(true);
 				let mintRequest: MintRequest = {
 					id: BigInt(0),
 					to: principal.toString(),
 					amount: BigInt(f.data.amount)
 				};
 				let tokenRequest: TokenRequest = {
-					decimals:BigInt(f.data.decimals),
-					icon:f.data.name,
-					name:f.data.name,
-					minter:principal.toString(),
-					supply:BigInt(f.data.supply),
-					symbol:f.data.ticker,
-					telegram:[f.data.telegram],
-					twitter:[f.data.twitter],
-					discord:[f.data.discord],
-					website:[f.data.website],
+					decimals: BigInt(f.data.decimals),
+					icon: f.data.name,
+					name: f.data.name,
+					minter: principal.toString(),
+					supply: BigInt(f.data.supply),
+					symbol: f.data.ticker,
+					telegram: [f.data.telegram],
+					twitter: [f.data.twitter],
+					discord: [f.data.discord],
+					website: [f.data.website]
 				};
 				let request: PumpRequest = {
 					token: BigInt(f.data.token),
 					holder: mintRequest,
 					tokenRequest: tokenRequest
 				};
-				pumpy.createPools([{ 'PUMP' : request }]);
+				pumpy.createPools([{ PUMP: request }]);
+				loadingStore.set(false);
 				toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
 				toast.error('Please fix the errors in the form.');
@@ -99,93 +102,111 @@
 </script>
 
 <div class="w-full flex justify-center">
-	<form method="POST" class="space-y-6" use:enhance>
-		<Form.Field {form} name="name" class="space-y-3 w-96">
-			<Form.Control let:attrs>
-				<div>
-					<Form.Label>name</Form.Label>
-					<Input {...attrs} bind:value={$formData.name} />
-					{#if $errors.name}
-						<small>{$errors.name}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>ticker</Form.Label>
-					<Input {...attrs} bind:value={$formData.ticker} />
-					{#if $errors.ticker}
-						<small>{$errors.ticker}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>description</Form.Label>
-					<Textarea {...attrs} bind:value={$formData.description} />
-					{#if $errors.description}
-						<small>{$errors.description}</small>
-					{/if}
-				</div>
-				<div class="grid w-full max-w-sm items-center gap-1.5">
-					<Form.Label for="icon">Icon</Form.Label>
-					<Input id="icon" type="file" bind:value={$formData.icon} />
-					{#if $errors.icon}
-						<small>{$errors.icon}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>twitter</Form.Label>
-					<Input {...attrs} bind:value={$formData.twitter} />
-					{#if $errors.twitter}
-						<small>{$errors.twitter}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>supply</Form.Label>
-					<Input {...attrs} bind:value={$formData.supply} />
-					{#if $errors.supply}
-						<small>{$errors.supply}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>allocation</Form.Label>
-					<Input {...attrs} bind:value={$formData.allocation} />
-					{#if $errors.allocation}
-						<small>{$errors.allocation}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>amount</Form.Label>
-					<Input {...attrs} bind:value={$formData.amount} />
-					{#if $errors.amount}
-						<small>{$errors.amount}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>token</Form.Label>
-					<Input {...attrs} bind:value={$formData.token} />
-					{#if $errors.token}
-						<small>{$errors.token}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>telegram</Form.Label>
-					<Input {...attrs} bind:value={$formData.telegram} />
-					{#if $errors.telegram}
-						<small>{$errors.telegram}</small>
-					{/if}
-				</div>
-				<div>
-					<Form.Label>website</Form.Label>
-					<Input {...attrs} bind:value={$formData.website} />
-					{#if $errors.website}
-						<small>{$errors.website}</small>
-					{/if}
-				</div>
-			</Form.Control>
-			<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
-			<Form.FieldErrors />
-			<Form.Button class="w-full">Submit</Form.Button>
-			{#if browser}
-				<SuperDebug data={$formData} />
-			{/if}
-		</Form.Field>
-	</form>
+	{#if isLoading}
+	<MediumSpinner/>
+	{:else}
+		<form method="POST" class="space-y-6" use:enhance>
+			<Form.Field {form} name="name" class="space-y-3 w-96">
+				<Form.Control let:attrs>
+					<div>
+						<Form.Label>name</Form.Label>
+						<Input {...attrs} bind:value={$formData.name} />
+						{#if $errors.name}
+							<small>{$errors.name}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>ticker</Form.Label>
+						<Input {...attrs} bind:value={$formData.ticker} />
+						{#if $errors.ticker}
+							<small>{$errors.ticker}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>description</Form.Label>
+						<Textarea {...attrs} bind:value={$formData.description} />
+						{#if $errors.description}
+							<small>{$errors.description}</small>
+						{/if}
+					</div>
+					<div class="grid w-full max-w-sm items-center gap-1.5">
+						<Form.Label for="icon">Icon</Form.Label>
+						<Input id="icon" type="file" bind:value={$formData.icon} />
+						{#if $errors.icon}
+							<small>{$errors.icon}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>supply</Form.Label>
+						<Input {...attrs} type="number" bind:value={$formData.supply} />
+						{#if $errors.supply}
+							<small>{$errors.supply}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>decimals</Form.Label>
+						<Input {...attrs} type="number" bind:value={$formData.decimals} />
+						{#if $errors.decimals}
+							<small>{$errors.decimals}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>allocation</Form.Label>
+						<Input {...attrs} type="number" bind:value={$formData.allocation} />
+						{#if $errors.allocation}
+							<small>{$errors.allocation}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>amount</Form.Label>
+						<Input {...attrs} type="number" bind:value={$formData.amount} />
+						{#if $errors.amount}
+							<small>{$errors.amount}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>token</Form.Label>
+						<Input {...attrs} type="number" bind:value={$formData.token} />
+						{#if $errors.token}
+							<small>{$errors.token}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>twitter</Form.Label>
+						<Input {...attrs} bind:value={$formData.twitter} />
+						{#if $errors.twitter}
+							<small>{$errors.twitter}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>telegram</Form.Label>
+						<Input {...attrs} bind:value={$formData.telegram} />
+						{#if $errors.telegram}
+							<small>{$errors.telegram}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>discord</Form.Label>
+						<Input {...attrs} bind:value={$formData.discord} />
+						{#if $errors.discord}
+							<small>{$errors.discord}</small>
+						{/if}
+					</div>
+					<div>
+						<Form.Label>website</Form.Label>
+						<Input {...attrs} bind:value={$formData.website} />
+						{#if $errors.website}
+							<small>{$errors.website}</small>
+						{/if}
+					</div>
+				</Form.Control>
+				<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
+				<Form.FieldErrors />
+				<Form.Button class="w-full">Submit</Form.Button>
+				{#if browser}
+					<SuperDebug data={$formData} />
+				{/if}
+			</Form.Field>
+		</form>
+	{/if}
 </div>
