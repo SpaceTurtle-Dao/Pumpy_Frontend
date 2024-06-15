@@ -64,9 +64,9 @@
 	export { data as form };
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
-		onUpdated: ({ form: f }) => {
+		onUpdated: async ({ form: f }) => {
+			loadingStore.set(true);
 			if (f.valid) {
-				loadingStore.set(true);
 				let mintRequest: MintRequest = {
 					id: BigInt(0),
 					to: principal.toString(),
@@ -89,7 +89,8 @@
 					holder: mintRequest,
 					tokenRequest: tokenRequest
 				};
-				pumpy.createPools([{ PUMP: request }]);
+				let result = await pumpy.createPools([{ PUMP: request }]);
+				console.log(result)
 				loadingStore.set(false);
 				toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
