@@ -1,63 +1,55 @@
 <script>
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
+
 	// @ts-ignore
-	import { pioneerActor,principalStore,loadingStore,poolsStore,tokensStore,balancesStore } from '$lib/store/store';
+	import {
+		pioneerActor,
+		principalStore,
+		loadingStore,
+		poolsStore,
+		tokensStore,
+		balancesStore
+	} from '$lib/store/store';
 	import { pioneer_idlFactory } from '$lib/declarations/pioneer/pioneer.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';
 	// @ts-ignore
-	import icblast from "@infu/icblast";
+	import icblast from '@infu/icblast';
 	import SmallSpinner from '$lib/components/smallSpinner.svelte';
+	import { PIONEER_ID } from '$lib/common/constants';
 
-	let pioneerCanisterId = '';
-
-	switch (import.meta.env.MODE) {
-		case 'development': {
-			pioneerCanisterId = 'x2ble-2aaaa-aaaak-qiknq-cai';
-			break;
-		}
-		case 'staging': {
-			pioneerCanisterId = 'ucgwg-baaaa-aaaak-qibva-cai';
-			break;
-		}
-		case 'production': {
-			pioneerCanisterId = 'yxccl-myaaa-aaaak-qihga-cai';
-			break;
-		}
-	};
 	console.log(import.meta.env.MODE);
-	console.log(pioneerCanisterId);
 
-	const whitelist = [pioneerCanisterId];
+	const whitelist = [PIONEER_ID];
 
 	let isConnected = false;
 	let title = 'Connect Wallet';
 	let isLoading = false;
 	const setup = async () => {
 		let ic = icblast();
-		let pioneerQuery = await ic(pioneerCanisterId);
-		
+		let pioneerQuery = await ic(PIONEER_ID);
+
 		// @ts-ignore
 		let pioneer = await window.ic.plug.createActor({
-			canisterId: pioneerCanisterId,
+			canisterId: PIONEER_ID,
 			interfaceFactory: pioneer_idlFactory
 		});
-		
+
 		// @ts-ignore
+		// console.log(pioneer.createCoin());
 		let tokens = await pioneerQuery.fetchTokens();
 		let pools = await pioneerQuery.fetchPools();
-		let balances = await pioneer.fetchBalances()
+		let balances = await pioneer.fetchBalances();
 		pioneerActor.set(pioneer);
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		balancesStore.set(balances);
-		
 	};
 
 	async function requestConnect() {
 		isLoading = true;
-		title = "Connecting";
+		title = 'Connecting';
 		try {
 			// @ts-ignore
 			await window.ic.plug.requestConnect([whitelist]);
@@ -68,10 +60,10 @@
 			await setup();
 			isConnected = true;
 			// @ts-ignore
-			title = principal.toString().substring(0, 13) + '...';
+			title = principal.toString().substring(0, 5) + '...' + principal.toString().substring(37, 42);
 		} catch (e) {
 			console.log(e);
-		};
+		}
 		isLoading = false;
 	}
 	// @ts-ignore
@@ -102,7 +94,7 @@
 						_principal.toString()
 					);
 				} else {
-					await requestConnect()
+					await requestConnect();
 				}
 			} catch (e) {
 				await requestConnect();
@@ -120,14 +112,14 @@
 	}
 	onMount(async () => {
 		let ic = icblast();
-		let pioneerQuery = await ic(pioneerCanisterId);
+		let pioneerQuery = await ic(PIONEER_ID);
 		// @ts-ignore
 		let tokens = await pioneerQuery.fetchTokens();
 		let pools = await pioneerQuery.fetchPools();
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
-		console.log(tokens)
-		console.log(pools)
+		console.log(tokens);
+		console.log(pools);
 	});
 </script>
 
@@ -136,11 +128,14 @@
 	on:click={requestConnect}
 	type="button"
 	class="btn justify-center self-stretch px-4 py-2 text-sm text-black bg-emerald-200 rounded"
-	tabindex="0">
-	{#if isLoading}
-	<div class="flex flex-row">{title } <div class="pl-2"><div class="pt-0.5"><SmallSpinner/></div></div></div>
-	{:else}
-	{title}
-	{/if}
-	</button
+	tabindex="0"
 >
+	{#if isLoading}
+		<div class="flex flex-row">
+			{title}
+			<div class="pl-2"><div class="pt-0.5"><SmallSpinner /></div></div>
+		</div>
+	{:else}
+		{title}
+	{/if}
+</button>

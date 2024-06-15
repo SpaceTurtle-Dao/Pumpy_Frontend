@@ -1,8 +1,27 @@
 <script lang="ts">
-	import { Artemis } from 'artemis-web3-adapter';
 	import { onMount } from 'svelte';
-	import { PIONEER_DEV } from '../common/constants';
-	import { fromAmount, toAmount } from '../store/swap.store';
+	import { Input } from '$lib/components/ui/input/index';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import {
+		ArrowUpDown,
+		WalletMinimal,
+		Settings2,
+		Cog,
+		Percent,
+		RefreshCw
+	} from 'lucide-svelte/icons';
+	import SmallSpinner from './smallSpinner.svelte';
+	import { PIONEER_ID } from '../common/constants';
+	import type { TokenRequest, MintRequest } from '../declarations/pioneer/pioneer.did';
+	import {
+		fromAmount,
+		toAmount,
+		deadline,
+		fromCurrency,
+		isExactIn,
+		slippage,
+		toCurrency
+	} from '../store/swap.store';
 	import {
 		pioneerActor,
 		principalStore,
@@ -11,9 +30,6 @@
 		tokensStore,
 		balancesStore
 	} from '$lib/store/store';
-	import SmallSpinner from './smallSpinner.svelte';
-
-	const artemisWalletAdapter = new Artemis();
 
 	onMount(() => {
 		selectedToToken = tokens[0];
@@ -68,79 +84,88 @@
 		}
 	}
 
-	async function connectWallet() {
-		try {
-			const connectObj = { whitelist: ['ryjl3-tyaaa-aaaaa-aaaba-cai'], host: 'https://icp0.io/' };
-			var res = artemisWalletAdapter.connect('plug', connectObj);
+	function createCoin(): void {
+		let tokenReq = {
+			decimals: BigInt(8),
+			tribute: 'sid',
+			icon: '',
+			name: 'Mango Coin',
+			minter: '',
+			symbol: 'MNGO'
+		};
+		let mintReq = {
+			id: BigInt(0),
+			to: '',
+			amount: BigInt(1000000000000000000)
+		};
+		pioneerActor.subscribe((p) => {
+			var res = p.createTokens(tokenReq, [mintReq]);
 			console.log(res);
-			// if (res === 'connected') {
-			// 	const swap1 = pioneerActor(PIONEER_DEV);
-			// 	console.log(swap1);
-			// 	const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneer, false);
-			// 	console.log(swap);
-			// }
-			// const swap = await artemisWalletAdapter.getCanisterActor(PIONEER_DEV, pioneerIdl, false);
-			// console.log(swap);
-		} catch (error) {
-			console.error(error);
-		}
+			return res;
+		});
 	}
 
-	function initIdl(): void {
-		// let swap = artemisWalletAdapter.getCanisterActor(PIONEER_DEV, swapIdl, false);
-		// swap.getEthBalance().then((res) => {
-		// ethBalance = res;
-		// });
+	function swap(): void {
+		pioneerActor.subscribe((p) => {});
 	}
-
-	function initateSwap(): void {}
-
-	function swap(): void {}
 </script>
 
 <div class="min-h-screen flex flex-col justify-center items-center">
 	<div class="w-120 bg-surface-700 rounded-lg p-9 shadow-lg">
-		<div class="flex justify-between items-center mb-4">
-			<button class="text-primary-700 hover:text-primary-500" on:click={() => {}}>
-				<span class="material-icons">refresh</span>
-			</button>
-			<div class="flex items-center space-x-2">
-				<button class="text-primary-700 hover:text-primary-500">
-					<span class="material-icons">percent</span>
-				</button>
-				<button class="text-primary-700 hover:text-primary-500">
-					<span class="material-icons">settings</span>
-				</button>
-			</div>
+		<div class="flex justify-end mb-4">
+			<Button
+				variant="outline"
+				class="h-7 w-9 border-none hover:border-input text-primary-700 bg-transparent hover:text-primary-50 0 text-xs"
+				size="icon"
+			>
+				<RefreshCw class="h-5 w-5" />
+			</Button>
+			<Button
+				variant="outline"
+				class="h-7 w-9 border-none hover:border-input text-primary-700 bg-transparent hover:text-primary-50 0 text-xs"
+				size="icon"
+			>
+				<Percent class="h-5 w-5" />
+			</Button>
+			<Button
+				variant="outline"
+				class="h-7 w-9 border-none hover:border-input text-primary-700 bg-transparent hover:text-primary-50 0 text-xs"
+				size="icon"
+			>
+				<Settings2 class="h-5 w-5" />
+			</Button>
 		</div>
 
 		<div class="mb-4">
 			<div class="flex justify-between items-center mb-2">
 				<label class="block mb-2 text-sm">You're paying</label>
 				<div class="flex space-x-2">
-					<div class="flex items-center text-primary-400">
-						<span class="material-icons text-sm">account_balance_wallet</span>
-						<span class="ml-1 text-sm">{100.0} {'ICP'}</span>
-					</div>
-					<button
-						class="px-2 py-1 rounded-full hover:bg-gray-600 text-sm"
-						on:click={() => console.log('Half')}>HALF</button
+					<WalletMinimal class="my-1 h-4 w-4" />
+					<span class="text-sm my-1 h-6 text-xs">{100.0} {'ICP'}</span>
+					<Button
+						variant="outline"
+						class="h-6 w-10 border-none hover:border-input bg-transparent hover:bg-secondary-600 text-xs"
+						size="icon"
 					>
-					<button
-						class="px-2 py-1 rounded-full hover:bg-gray-600 text-sm"
-						on:click={() => {
-							console.log('Max');
-						}}>MAX</button
+						HALF
+					</Button>
+					<Button
+						variant="outline"
+						class="mx-5 my-0 h-6 w-9 border-none hover:border-input bg-transparent hover:bg-secondary-600 text-xs"
+						size="icon"
 					>
+						MAX
+					</Button>
 				</div>
 			</div>
 			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-2">
+				<div
+					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
+				>
 					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
-					<span>{selectedToToken?.symbol}</span>
-					<span class="material-icons ml-2 text-primary-600">expand_more</span>
+					<span class="text-lg">{selectedToToken?.symbol}</span>
 					<select
-						class="absolute inset-0 opacity-0 w-full cursor-pointer"
+						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 						on:change={(e) => console.log(e)}
 					>
 						{#each tokens as token}
@@ -148,27 +173,34 @@
 						{/each}
 					</select>
 				</div>
-				<input
-					class="input bg-secondary-600 text-primary-100 text-right flex-1"
+				<Input
+					class="input text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 					type="text"
 					placeholder="0.00"
 				/>
 			</div>
 		</div>
 
-		<div class="flex justify-center mb-4 text-primary-400 hover:text-primary-500">
-			<span class="material-icons">swap_vert</span>
+		<div class="flex justify-center mb-2 text-primary-700 hover:text-primary-300">
+			<Button
+				variant="outline"
+				class="h-6 w-8 border-none hover:border bg-transparent hover:bg-secondary-600 text-primary-300"
+				size="icon"
+			>
+				<ArrowUpDown class="h-4 w-4" />
+			</Button>
 		</div>
 
 		<div class="mb-4">
 			<label class="block mb-2 text-sm">To receive</label>
 			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div class="relative flex items-center bg-secondary-600 text-white rounded-full px-4 py-2">
+				<div
+					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
+				>
 					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
-					<span>{selectedToToken?.symbol}</span>
-					<span class="material-icons ml-2 text-primary-600">expand_more</span>
+					<span class="text-lg">{selectedToToken?.symbol}</span>
 					<select
-						class="absolute inset-0 opacity-0 w-full cursor-pointer"
+						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 						on:change={(e) => console.log(e)}
 					>
 						{#each tokens as token}
@@ -176,33 +208,30 @@
 						{/each}
 					</select>
 				</div>
-				<input
-					class="input bg-secondary-600 text-primary-100 text-right flex-1"
+				<Input
+					class="input text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 					type="text"
 					placeholder="0.00"
 				/>
-				<!-- <input
-					type="number"
-					class="bg-transparent text-white text-right flex-1 outline-none"
-					bind:value={amountToSwap}
-					min="0"
-				/> -->
 			</div>
 		</div>
 
-		<button
-			class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600 text-surface-700"
-			on:click={connectWallet}
-		>
-			{#if loadingStore}
-				<div class="flex flex-row pt-0.5 items-center"><SmallSpinner /></div>
-			{:else}
-				Connect Wallet
-			{/if}</button
-		>
+		<div class="py-2">
+			<Button
+				class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600 text-surface-700"
+				on:click={() => {}}
+			>
+				SWAP
+				<!-- {#if loadingStore}
+					<div class="mb-4 flex flex-row pt-0.5 items-center"><SmallSpinner /></div>
+				{:else}
+					Connect Wallet
+				{/if} -->
+			</Button>
+		</div>
 	</div>
 
-	<div class="mt-6 w-96 text-textSecondary">
+	<!-- <div class="mt-6 w-96 text-textSecondary">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center space-x-2">
 				<img src={tokens[0].logo} alt="USDC" class="w-6 h-6" />
@@ -229,25 +258,27 @@
 				<p class="text-red-500">-7.17%</p>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </div>
 
 <style>
 	@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
-	.bg-dark-gray {
-		background-color: #13151b; /* Dark Gray */
-	}
-	.bg-custom-green {
-		background-color: #243c29; /* Custom Green */
-	}
-	.text-custom-green-light {
-		color: #8cd98c; /* Light Green */
-	}
 	.rounded-xl {
 		border-radius: 12px;
 	}
 	.rounded-full {
 		border-radius: 9999px;
+	}
+
+	.currency-input {
+		width: 6rem;
+		flex: 1 1 0%;
+		border-radius: 0.75rem;
+		background-color: transparent;
+		font-size: 1.5rem;
+		line-height: 2rem;
+		outline: 2px solid transparent;
+		outline-offset: 2px;
 	}
 </style>
