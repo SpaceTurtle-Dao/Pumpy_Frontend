@@ -65,7 +65,6 @@
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
 		onUpdated: async ({ form: f }) => {
-			loadingStore.set(true);
 			if (f.valid) {
 				let mintRequest: MintRequest = {
 					id: BigInt(0),
@@ -73,11 +72,11 @@
 					amount: BigInt(f.data.amount)
 				};
 				let tokenRequest: TokenRequest = {
-					decimals: BigInt(f.data.decimals),
-					icon: f.data.name,
+					decimals: BigInt(0),
+					icon: f.data.icon,
 					name: f.data.name,
 					minter: principal.toString(),
-					supply: BigInt(f.data.supply),
+					supply: BigInt(0),
 					symbol: f.data.ticker,
 					telegram: [f.data.telegram],
 					twitter: [f.data.twitter],
@@ -89,8 +88,9 @@
 					holder: mintRequest,
 					tokenRequest: tokenRequest
 				};
+				loadingStore.set(true);
 				let result = await pumpy.createPools([{ PUMP: request }]);
-				console.log(result)
+				console.log(result);
 				loadingStore.set(false);
 				toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
@@ -104,7 +104,7 @@
 
 <div class="w-full flex justify-center">
 	{#if isLoading}
-	<MediumSpinner/>
+		<MediumSpinner />
 	{:else}
 		<form method="POST" class="space-y-6" use:enhance>
 			<Form.Field {form} name="name" class="space-y-3 w-96">
@@ -135,41 +135,6 @@
 						<Input id="icon" type="file" bind:value={$formData.icon} />
 						{#if $errors.icon}
 							<small>{$errors.icon}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>supply</Form.Label>
-						<Input {...attrs} type="number" bind:value={$formData.supply} />
-						{#if $errors.supply}
-							<small>{$errors.supply}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>decimals</Form.Label>
-						<Input {...attrs} type="number" bind:value={$formData.decimals} />
-						{#if $errors.decimals}
-							<small>{$errors.decimals}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>allocation</Form.Label>
-						<Input {...attrs} type="number" bind:value={$formData.allocation} />
-						{#if $errors.allocation}
-							<small>{$errors.allocation}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>amount</Form.Label>
-						<Input {...attrs} type="number" bind:value={$formData.amount} />
-						{#if $errors.amount}
-							<small>{$errors.amount}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>token</Form.Label>
-						<Input {...attrs} type="number" bind:value={$formData.token} />
-						{#if $errors.token}
-							<small>{$errors.token}</small>
 						{/if}
 					</div>
 					<div>
