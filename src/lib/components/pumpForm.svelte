@@ -1,38 +1,5 @@
 <script lang="ts" context="module">
 	import { z } from 'zod';
-	import MediumSpinner from './mediumSpinner.svelte';
-	import {
-		pumpyActor,
-		principalStore,
-		loadingStore,
-		poolsStore,
-		tokensStore,
-		balancesStore
-	} from '$lib/store';
-	import type {
-		MintRequest,
-		Pumpy,
-		PoolRequest,
-		PumpRequest,
-		TokenRequest
-	} from '$lib/declarations/pumpy/pumpy.did';
-
-	let pumpy: Pumpy;
-	let isLoading = false;
-	let principal: Principal;
-
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-	});
-
-	loadingStore.subscribe((value) => {
-		isLoading = value;
-	});
-
-	principalStore.subscribe((value) => {
-		principal = value;
-	});
-
 	export const formSchema = z.object({
 		name: z.string().max(50),
 		ticker: z.string().max(50),
@@ -60,6 +27,54 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import type { Principal } from '@dfinity/principal';
+	import { useIsFocusVisible } from '@material-ui/core';
+	import MediumSpinner from './mediumSpinner.svelte';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Accordion from '$lib/components/ui/accordion';
+	import {
+		pumpyActor,
+		principalStore,
+		loadingStore,
+		poolsStore,
+		tokensStore,
+		balancesStore
+	} from '$lib/store';
+	import type {
+		MintRequest,
+		Pumpy,
+		PoolRequest,
+		PumpRequest,
+		TokenRequest
+	} from '$lib/declarations/pumpy/pumpy.did';
+
+	let pumpy: Pumpy;
+	let isLoading = false;
+	let isVisible = false;
+	let principal: Principal;
+	let buttonText = 'Show more options';
+
+	pumpyActor.subscribe((value) => {
+		pumpy = value;
+	});
+
+	loadingStore.subscribe((value) => {
+		isLoading = value;
+	});
+
+	principalStore.subscribe((value) => {
+		principal = value;
+	});
+
+	const toggleVissible = () => {
+		console.log('Boom');
+		isVisible = !isVisible;
+		if (isVisible) {
+			buttonText = 'Hide more options';
+		} else {
+			buttonText = 'Show more options';
+		}
+	};
+
 	let data: SuperValidated<Infer<FormSchema>>;
 	export { data as form };
 	const form = superForm(data, {
@@ -137,34 +152,40 @@
 							<small>{$errors.icon}</small>
 						{/if}
 					</div>
-					<div>
-						<Form.Label>twitter</Form.Label>
-						<Input {...attrs} bind:value={$formData.twitter} />
-						{#if $errors.twitter}
-							<small>{$errors.twitter}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>telegram</Form.Label>
-						<Input {...attrs} bind:value={$formData.telegram} />
-						{#if $errors.telegram}
-							<small>{$errors.telegram}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>discord</Form.Label>
-						<Input {...attrs} bind:value={$formData.discord} />
-						{#if $errors.discord}
-							<small>{$errors.discord}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>website</Form.Label>
-						<Input {...attrs} bind:value={$formData.website} />
-						{#if $errors.website}
-							<small>{$errors.website}</small>
-						{/if}
-					</div>
+
+					<Button variant="ghost" on:click={toggleVissible}>{buttonText}</Button>
+					{#if isVisible}
+						<div>
+							{#if isVisible}
+								<Form.Label>twitter</Form.Label>
+								<Input {...attrs} placeholder="(optional)" bind:value={$formData.twitter} />
+							{/if}
+							{#if $errors.twitter}
+								<small>{$errors.twitter}</small>
+							{/if}
+						</div>
+						<div>
+							<Form.Label>telegram</Form.Label>
+							<Input {...attrs} placeholder="(optional)" bind:value={$formData.telegram} />
+							{#if $errors.telegram}
+								<small>{$errors.telegram}</small>
+							{/if}
+						</div>
+						<div>
+							<Form.Label>discord</Form.Label>
+							<Input {...attrs} placeholder="(optional)" bind:value={$formData.discord} />
+							{#if $errors.discord}
+								<small>{$errors.discord}</small>
+							{/if}
+						</div>
+						<div>
+							<Form.Label>website</Form.Label>
+							<Input {...attrs} placeholder="(optional)" bind:value={$formData.website} />
+							{#if $errors.website}
+								<small>{$errors.website}</small>
+							{/if}
+						</div>
+					{/if}
 				</Form.Control>
 				<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
 				<Form.FieldErrors />
