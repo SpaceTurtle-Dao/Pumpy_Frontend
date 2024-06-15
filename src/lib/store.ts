@@ -1,8 +1,8 @@
 import { writable, type Writable } from 'svelte/store';
-import {type Pioneer, type PoolInfo, type TokenInfo} from '$lib/declarations/pioneer/pioneer.did';
+import {type Pumpy, type PoolInfo, type TokenInfo} from '$lib/declarations/pumpy/pumpy.did';
 import type { Principal } from '@dfinity/principal';
 
-export let pioneerActor: Writable<Pioneer> = writable();
+export let pumpyActor: Writable<Pumpy> = writable();
 export let principalStore: Writable<Principal> = writable();
 export let loadingStore: Writable<boolean> = writable();
 export let poolsStore: Writable<Array<PoolInfo>> = writable();

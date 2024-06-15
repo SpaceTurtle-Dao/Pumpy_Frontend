@@ -1,14 +1,51 @@
 <script lang="ts" context="module">
 	import { z } from 'zod';
+	import {
+		pumpyActor,
+		principalStore,
+		loadingStore,
+		poolsStore,
+		tokensStore,
+		balancesStore
+	} from '$lib/store';
+	import type {
+		MintRequest,
+		Pumpy,
+		PoolRequest,
+		PumpRequest,
+		TokenRequest
+	} from '$lib/declarations/pumpy/pumpy.did';
+
+	let pumpy: Pumpy;
+	let isLoading = true;
+	let principal: Principal;
+
+	pumpyActor.subscribe((value) => {
+		pumpy = value;
+	});
+
+	loadingStore.subscribe((value) => {
+		isLoading = value;
+	});
+
+	principalStore.subscribe((value) => {
+		principal = value;
+	});
 
 	export const formSchema = z.object({
 		name: z.string().min(2).max(50),
 		ticker: z.string().min(2).max(50),
 		description: z.string().min(100).max(500),
-		image: z.string(),
+		icon: z.string(),
 		twitter: z.string().url(),
 		telegram: z.string().url(),
-		website: z.string().url()
+		discord: z.string().url(),
+		website: z.string().url(),
+		supply: z.number().min(10000000000000000000),
+		decimals: z.number().max(8),
+		allocation: z.number().min(0),
+		amount: z.number().min(0),
+		token: z.number().min(0),
 	});
 	export type FormSchema = typeof formSchema;
 </script>
@@ -21,12 +58,36 @@
 	import * as Form from '$lib/components/ui/form/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Textarea } from '$lib/components/ui/textarea';
+	import type { Principal } from '@dfinity/principal';
 	let data: SuperValidated<Infer<FormSchema>>;
 	export { data as form };
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
+				let mintRequest: MintRequest = {
+					id: BigInt(0),
+					to: principal.toString(),
+					amount: BigInt(f.data.amount)
+				};
+				let tokenRequest: TokenRequest = {
+					decimals:BigInt(f.data.decimals),
+					icon:f.data.name,
+					name:f.data.name,
+					minter:principal.toString(),
+					supply:BigInt(f.data.supply),
+					symbol:f.data.ticker,
+					telegram:[f.data.telegram],
+					twitter:[f.data.twitter],
+					discord:[f.data.discord],
+					website:[f.data.website],
+				};
+				let request: PumpRequest = {
+					token: BigInt(f.data.token),
+					holder: mintRequest,
+					tokenRequest: tokenRequest
+				};
+				pumpy.createPools([{ 'PUMP' : request }]);
 				toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
 				toast.error('Please fix the errors in the form.');
@@ -63,10 +124,10 @@
 					{/if}
 				</div>
 				<div class="grid w-full max-w-sm items-center gap-1.5">
-					<Form.Label for="picture">Picture</Form.Label>
-					<Input id="picture" type="file" bind:value={$formData.image} />
-					{#if $errors.image}
-						<small>{$errors.image}</small>
+					<Form.Label for="icon">Icon</Form.Label>
+					<Input id="icon" type="file" bind:value={$formData.icon} />
+					{#if $errors.icon}
+						<small>{$errors.icon}</small>
 					{/if}
 				</div>
 				<div>
@@ -74,6 +135,34 @@
 					<Input {...attrs} bind:value={$formData.twitter} />
 					{#if $errors.twitter}
 						<small>{$errors.twitter}</small>
+					{/if}
+				</div>
+				<div>
+					<Form.Label>supply</Form.Label>
+					<Input {...attrs} bind:value={$formData.supply} />
+					{#if $errors.supply}
+						<small>{$errors.supply}</small>
+					{/if}
+				</div>
+				<div>
+					<Form.Label>allocation</Form.Label>
+					<Input {...attrs} bind:value={$formData.allocation} />
+					{#if $errors.allocation}
+						<small>{$errors.allocation}</small>
+					{/if}
+				</div>
+				<div>
+					<Form.Label>amount</Form.Label>
+					<Input {...attrs} bind:value={$formData.amount} />
+					{#if $errors.amount}
+						<small>{$errors.amount}</small>
+					{/if}
+				</div>
+				<div>
+					<Form.Label>token</Form.Label>
+					<Input {...attrs} bind:value={$formData.token} />
+					{#if $errors.token}
+						<small>{$errors.token}</small>
 					{/if}
 				</div>
 				<div>

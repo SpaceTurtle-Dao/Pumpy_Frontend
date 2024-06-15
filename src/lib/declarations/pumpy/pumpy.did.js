@@ -1,4 +1,4 @@
-export const pioneer_idlFactory = ({ IDL }) => {
+export const pumpy_idlFactory = ({ IDL }) => {
   const ENV = IDL.Variant({
     'PRODUCTION' : IDL.Null,
     'DEVELOPMENT' : IDL.Null,
@@ -31,17 +31,43 @@ export const pioneer_idlFactory = ({ IDL }) => {
     'amount' : IDL.Nat,
   });
   const BalanceRequest = IDL.Record({ 'id' : IDL.Nat, 'owner' : IDL.Text });
-  const PoolRequest = IDL.Variant({
-    'RUG' : IDL.Tuple(IDL.Nat, IDL.Nat),
-    'POOL' : IDL.Tuple(IDL.Nat, IDL.Nat),
-    'PUMP' : IDL.Tuple(IDL.Nat, IDL.Nat),
-  });
-  const TokenRequest = IDL.Record({
+  const TokenRequest__1 = IDL.Record({
     'decimals' : IDL.Nat,
-    'tribute' : IDL.Text,
+    'twitter' : IDL.Opt(IDL.Text),
     'icon' : IDL.Text,
     'name' : IDL.Text,
     'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
+    'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
+    'telegram' : IDL.Opt(IDL.Text),
+    'symbol' : IDL.Text,
+  });
+  const MintRequest__1 = IDL.Record({
+    'id' : IDL.Nat,
+    'to' : IDL.Text,
+    'amount' : IDL.Nat,
+  });
+  const PumpRequest = IDL.Record({
+    'token' : IDL.Nat,
+    'holder' : MintRequest__1,
+    'tokenRequest' : TokenRequest__1,
+  });
+  const PoolRequest = IDL.Variant({
+    'RUG' : TokenRequest__1,
+    'POOL' : IDL.Tuple(IDL.Nat, IDL.Nat),
+    'PUMP' : PumpRequest,
+  });
+  const TokenRequest = IDL.Record({
+    'decimals' : IDL.Nat,
+    'twitter' : IDL.Opt(IDL.Text),
+    'icon' : IDL.Text,
+    'name' : IDL.Text,
+    'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
+    'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
+    'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
   const MintRequest = IDL.Record({
@@ -52,13 +78,17 @@ export const pioneer_idlFactory = ({ IDL }) => {
   const Time = IDL.Int;
   const TokenInfo = IDL.Record({
     'decimals' : IDL.Nat,
+    'twitter' : IDL.Opt(IDL.Text),
     'icon' : IDL.Text,
     'name' : IDL.Text,
     'createdAt' : Time,
     'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
     'holders' : IDL.Nat,
     'transactions' : IDL.Nat,
+    'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
   const PoolInfo = IDL.Record({
@@ -112,7 +142,7 @@ export const pioneer_idlFactory = ({ IDL }) => {
     'from' : IDL.Text,
     'amount' : IDL.Nat,
   });
-  const Pioneer = IDL.Service({
+  const Pumpy = IDL.Service({
     'add' : IDL.Func([PoolId, IDL.Tuple(IDL.Nat, IDL.Nat)], [TokenResult], []),
     'allowance' : IDL.Func([AllowanceRequest], [IDL.Nat], ['query']),
     'approve' : IDL.Func([ApproveRequest], [TokenResult], []),
@@ -187,7 +217,7 @@ export const pioneer_idlFactory = ({ IDL }) => {
         [],
       ),
   });
-  return Pioneer;
+  return Pumpy;
 };
 export const init = ({ IDL }) => {
   const ENV = IDL.Variant({

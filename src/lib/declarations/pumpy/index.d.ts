@@ -7,9 +7,9 @@ import type {
 import type { Principal } from "@dfinity/principal";
 import type { IDL } from "@dfinity/candid";
 
-import { _SERVICE } from './pioneer.did';
+import { _SERVICE } from './pumpy.did';
 
-export declare const idlFactory: IDL.InterfaceFactory;
+export declare const pumpy_idlFactory: IDL.InterfaceFactory;
 export declare const canisterId: string;
 
 export declare interface CreateActorOptions {
@@ -47,4 +47,4 @@ export declare const createActor: (
  * Intialized Actor using default settings, ready to talk to a canister using its candid interface
  * @constructs {@link ActorSubClass}
  */
-export declare const pioneer: ActorSubclass<_SERVICE>;
+export declare const pumpy: ActorSubclass<_SERVICE>;
