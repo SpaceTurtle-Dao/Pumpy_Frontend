@@ -3,7 +3,7 @@ import { fail } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { formSchema } from "$lib/components/pumpForm.svelte";
-
+import { withFiles } from 'sveltekit-superforms';
 export const load: PageServerLoad = async () => {
   return {
     form: await superValidate(zod(formSchema)),
@@ -19,8 +19,6 @@ export const actions: Actions = {
         form,
       });
     }
-    return {
-      form,
-    };
+    return withFiles({ form })
   },
 };

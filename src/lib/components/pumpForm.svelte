@@ -4,7 +4,9 @@
 		name: z.string().max(50),
 		ticker: z.string().max(50),
 		description: z.string().max(500),
-		icon: z.string(),
+		icon: z
+			.instanceof(File, { message: 'Please upload a file.' })
+			.refine((f) => f.size < 100_000, 'Max 100 kB upload size.'),
 		twitter: z.string(),
 		telegram: z.string(),
 		discord: z.string(),
@@ -19,7 +21,12 @@
 </script>
 
 <script lang="ts">
-	import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+	import SuperDebug, {
+		type Infer,
+		type SuperValidated,
+		superForm,
+		fileProxy
+	} from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-sonner';
 	import { browser } from '$app/environment';
@@ -115,6 +122,7 @@
 	});
 
 	const { form: formData, errors, enhance } = form;
+	const file = fileProxy(form, 'icon');
 </script>
 
 <div class="w-full flex justify-center">
@@ -147,7 +155,7 @@
 					</div>
 					<div class="grid w-full max-w-sm items-center gap-1.5">
 						<Form.Label for="icon">Icon</Form.Label>
-						<Input id="icon" type="file" bind:value={$formData.icon} />
+						<Input bind:value={$file} type="file" name="image" accept="image/png, image/jpeg"/>
 						{#if $errors.icon}
 							<small>{$errors.icon}</small>
 						{/if}
