@@ -76,10 +76,10 @@
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
 		clearOnSubmit: 'errors-and-message',
-  		multipleSubmits: 'prevent',
-		onSubmit:async () => {
-			console.log("boom")
-			await createToken()
+		multipleSubmits: 'prevent',
+		onSubmit: async () => {
+			console.log('boom');
+			await createToken();
 		},
 		onUpdated: async ({ form: f }) => {
 			if (f.valid) {
@@ -246,9 +246,10 @@
 					<Form.FieldErrors />
 				</Form.Field>
 			{/if}
-			{#if browser}
+
+			<!--{#if browser}
 				<SuperDebug data={$formData} />
-			{/if}
+				{/if}-->
 		</form>
 	{/if}
 </div>
