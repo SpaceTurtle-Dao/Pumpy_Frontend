@@ -31,15 +31,19 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'amount' : IDL.Nat,
   });
   const BalanceRequest = IDL.Record({ 'id' : IDL.Nat, 'owner' : IDL.Text });
+  const Image = IDL.Record({
+    'blob' : IDL.Vec(IDL.Nat8),
+    'mimetype' : IDL.Text,
+  });
   const TokenRequest__1 = IDL.Record({
     'decimals' : IDL.Nat,
     'twitter' : IDL.Opt(IDL.Text),
-    'icon' : IDL.Text,
     'name' : IDL.Text,
     'minter' : IDL.Text,
     'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
     'discord' : IDL.Opt(IDL.Text),
+    'image' : Image,
     'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
@@ -61,12 +65,12 @@ export const pumpy_idlFactory = ({ IDL }) => {
   const TokenRequest = IDL.Record({
     'decimals' : IDL.Nat,
     'twitter' : IDL.Opt(IDL.Text),
-    'icon' : IDL.Text,
     'name' : IDL.Text,
     'minter' : IDL.Text,
     'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
     'discord' : IDL.Opt(IDL.Text),
+    'image' : Image,
     'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });

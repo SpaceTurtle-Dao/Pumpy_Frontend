@@ -17,6 +17,7 @@ export interface BalanceRequest { 'id' : bigint, 'owner' : string }
 export type ENV = { 'PRODUCTION' : null } |
   { 'DEVELOPMENT' : null } |
   { 'STAGING' : null };
+export interface Image { 'blob' : Uint8Array | number[], 'mimetype' : string }
 export interface Liquidity {
   'id' : bigint,
   'owner' : string,
@@ -131,24 +132,24 @@ export interface TokenInfo {
 export interface TokenRequest {
   'decimals' : bigint,
   'twitter' : [] | [string],
-  'icon' : string,
   'name' : string,
   'minter' : string,
   'website' : [] | [string],
   'supply' : bigint,
   'discord' : [] | [string],
+  'image' : Image,
   'telegram' : [] | [string],
   'symbol' : string,
 }
 export interface TokenRequest__1 {
   'decimals' : bigint,
   'twitter' : [] | [string],
-  'icon' : string,
   'name' : string,
   'minter' : string,
   'website' : [] | [string],
   'supply' : bigint,
   'discord' : [] | [string],
+  'image' : Image,
   'telegram' : [] | [string],
   'symbol' : string,
 }

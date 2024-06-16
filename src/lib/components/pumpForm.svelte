@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	import { z } from 'zod';
 	export const formSchema = z.object({
+		minter: z.string(),
 		name: z.string().max(50),
 		ticker: z.string().max(50),
 		description: z.string().max(500),
@@ -31,7 +32,7 @@
 	import { toast } from 'svelte-sonner';
 	import { browser } from '$app/environment';
 	import * as Form from '$lib/components/ui/form/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
+	import { Input, type FormInputEvent } from '$lib/components/ui/input/index.js';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import type { Principal } from '@dfinity/principal';
 	import { useIsFocusVisible } from '@material-ui/core';
@@ -59,19 +60,7 @@
 	let isVisible = false;
 	let principal: Principal;
 	let buttonText = 'Show more options';
-
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-	});
-
-	loadingStore.subscribe((value) => {
-		isLoading = value;
-	});
-
-	principalStore.subscribe((value) => {
-		principal = value;
-	});
-
+	let icon: File;
 	const toggleVissible = () => {
 		console.log('Boom');
 		isVisible = !isVisible;
@@ -86,34 +75,14 @@
 	export { data as form };
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
+		clearOnSubmit: 'errors-and-message',
+  		multipleSubmits: 'prevent',
+		onSubmit:async () => {
+			console.log("boom")
+			await createToken()
+		},
 		onUpdated: async ({ form: f }) => {
 			if (f.valid) {
-				let mintRequest: MintRequest = {
-					id: BigInt(0),
-					to: principal.toString(),
-					amount: BigInt(f.data.amount)
-				};
-				let tokenRequest: TokenRequest = {
-					decimals: BigInt(0),
-					icon: f.data.icon,
-					name: f.data.name,
-					minter: principal.toString(),
-					supply: BigInt(0),
-					symbol: f.data.ticker,
-					telegram: [f.data.telegram],
-					twitter: [f.data.twitter],
-					discord: [f.data.discord],
-					website: [f.data.website]
-				};
-				let request: PumpRequest = {
-					token: BigInt(f.data.token),
-					holder: mintRequest,
-					tokenRequest: tokenRequest
-				};
-				loadingStore.set(true);
-				let result = await pumpy.createPools([{ PUMP: request }]);
-				console.log(result);
-				loadingStore.set(false);
 				toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
 				toast.error('Please fix the errors in the form.');
@@ -121,87 +90,165 @@
 		}
 	});
 
+	const createToken = async () => {
+		console.log($formData);
+		let blob = Array.from(new Uint8Array(await $formData.icon.arrayBuffer()));
+		let mimetype = $formData.icon.type;
+		let mintRequest: MintRequest = {
+			id: BigInt(0),
+			to: $formData.minter,
+			amount: BigInt($formData.amount)
+		};
+
+		let tokenRequest: TokenRequest = {
+			decimals: BigInt(0),
+			image: { blob: blob, mimetype: mimetype },
+			name: $formData.name,
+			minter: $formData.minter,
+			supply: BigInt(0),
+			symbol: $formData.ticker,
+			telegram: [$formData.telegram],
+			twitter: [$formData.twitter],
+			discord: [$formData.discord],
+			website: [$formData.website]
+		};
+		let request: PumpRequest = {
+			token: BigInt($formData.token),
+			holder: mintRequest,
+			tokenRequest: tokenRequest
+		};
+		console.log(request);
+		loadingStore.set(true);
+		let result = await pumpy.createPools([{ PUMP: request }]);
+		console.log(result);
+		loadingStore.set(false);
+	};
+
 	const { form: formData, errors, enhance } = form;
 	const file = fileProxy(form, 'icon');
+	pumpyActor.subscribe((value) => {
+		pumpy = value;
+	});
+
+	loadingStore.subscribe((value) => {
+		isLoading = value;
+	});
+
+	principalStore.subscribe((value) => {
+		if (value) {
+			principal = value;
+			$formData.minter = principal.toString();
+		}
+	});
+
+	file.subscribe((value) => {
+		//icon = value[0];
+		//console.log(icon);
+	});
 </script>
 
 <div class="w-full flex justify-center">
 	{#if isLoading}
 		<MediumSpinner />
 	{:else}
-		<form method="POST" class="space-y-6" use:enhance>
+		<form method="POST" enctype="multipart/form-data" class="space-y-6" use:enhance>
 			<Form.Field {form} name="name" class="space-y-3 w-96">
 				<Form.Control let:attrs>
-					<div>
-						<Form.Label>name</Form.Label>
-						<Input {...attrs} bind:value={$formData.name} />
-						{#if $errors.name}
-							<small>{$errors.name}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>ticker</Form.Label>
-						<Input {...attrs} bind:value={$formData.ticker} />
-						{#if $errors.ticker}
-							<small>{$errors.ticker}</small>
-						{/if}
-					</div>
-					<div>
-						<Form.Label>description</Form.Label>
-						<Textarea {...attrs} bind:value={$formData.description} />
-						{#if $errors.description}
-							<small>{$errors.description}</small>
-						{/if}
-					</div>
+					<Form.Label>name</Form.Label>
+					<Input {...attrs} bind:value={$formData.name} />
+					{#if $errors.name}
+						<small>{$errors.name}</small>
+					{/if}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="ticker" class="space-y-3 w-96">
+				<Form.Control let:attrs>
+					<Form.Label>ticker</Form.Label>
+					<Input {...attrs} bind:value={$formData.ticker} />
+					{#if $errors.ticker}
+						<small>{$errors.ticker}</small>
+					{/if}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="description" class="space-y-3 w-96">
+				<Form.Control let:attrs>
+					<Form.Label>description</Form.Label>
+					<Textarea {...attrs} bind:value={$formData.description} />
+					{#if $errors.description}
+						<small>{$errors.description}</small>
+					{/if}
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="icon" class="space-y-3 w-96">
+				<Form.Control let:attrs>
 					<div class="grid w-full max-w-sm items-center gap-1.5">
 						<Form.Label for="icon">Icon</Form.Label>
-						<Input bind:value={$file} type="file" name="image" accept="image/png, image/jpeg"/>
+						<input
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+							type="file"
+							name="icon"
+							accept="image/png, image/jpeg"
+							bind:files={$file}
+						/>
 						{#if $errors.icon}
 							<small>{$errors.icon}</small>
 						{/if}
 					</div>
-
-					<Button variant="ghost" on:click={toggleVissible}>{buttonText}</Button>
-					{#if isVisible}
-						<div>
-							{#if isVisible}
-								<Form.Label>twitter</Form.Label>
-								<Input {...attrs} placeholder="(optional)" bind:value={$formData.twitter} />
-							{/if}
-							{#if $errors.twitter}
-								<small>{$errors.twitter}</small>
-							{/if}
-						</div>
-						<div>
-							<Form.Label>telegram</Form.Label>
-							<Input {...attrs} placeholder="(optional)" bind:value={$formData.telegram} />
-							{#if $errors.telegram}
-								<small>{$errors.telegram}</small>
-							{/if}
-						</div>
-						<div>
-							<Form.Label>discord</Form.Label>
-							<Input {...attrs} placeholder="(optional)" bind:value={$formData.discord} />
-							{#if $errors.discord}
-								<small>{$errors.discord}</small>
-							{/if}
-						</div>
-						<div>
-							<Form.Label>website</Form.Label>
-							<Input {...attrs} placeholder="(optional)" bind:value={$formData.website} />
-							{#if $errors.website}
-								<small>{$errors.website}</small>
-							{/if}
-						</div>
-					{/if}
 				</Form.Control>
-				<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
 				<Form.FieldErrors />
-				<Form.Button class="w-full">Submit</Form.Button>
-				{#if browser}
-					<SuperDebug data={$formData} />
-				{/if}
+				<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
 			</Form.Field>
+			<div class="flex flex-col space-y-6">
+				<Form.Button>Submit</Form.Button>
+				<Button class="w-36" variant="ghost" on:click={toggleVissible}>{buttonText}</Button>
+			</div>
+			{#if isVisible}
+				<Form.Field {form} name="twitter" class="space-y-3 w-96">
+					<Form.Control let:attrs>
+						<Form.Label>twitter</Form.Label>
+						<Input {...attrs} placeholder="(optional)" bind:value={$formData.twitter} />
+						{#if $errors.twitter}
+							<small>{$errors.twitter}</small>
+						{/if}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="telegram" class="space-y-3 w-96">
+					<Form.Control let:attrs>
+						<Form.Label>telegram</Form.Label>
+						<Input {...attrs} placeholder="(optional)" bind:value={$formData.telegram} />
+						{#if $errors.telegram}
+							<small>{$errors.telegram}</small>
+						{/if}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="discord" class="space-y-3 w-96">
+					<Form.Control let:attrs>
+						<Form.Label>discord</Form.Label>
+						<Input {...attrs} placeholder="(optional)" bind:value={$formData.discord} />
+						{#if $errors.discord}
+							<small>{$errors.discord}</small>
+						{/if}
+					</Form.Control>
+				</Form.Field>
+				<Form.Field {form} name="website" class="space-y-3 w-96">
+					<Form.Control let:attrs>
+						<Form.Label>website</Form.Label>
+						<Input {...attrs} placeholder="(optional)" bind:value={$formData.website} />
+						{#if $errors.website}
+							<small>{$errors.website}</small>
+						{/if}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+			{/if}
+			{#if browser}
+				<SuperDebug data={$formData} />
+			{/if}
 		</form>
 	{/if}
 </div>
