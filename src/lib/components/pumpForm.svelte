@@ -62,14 +62,15 @@
 	let principal: Principal;
 	let buttonText = 'Show more options';
 	let token = 0;
-	let amountA:string;
-	let amountB:string;
-
+	let amountA: string;
+	let amountB: string;
+	let dialogOpen = false;
+	let icon:File;
 	const tokens = [
 		{ value: 0, label: 'ICP' },
 		{ value: 1, label: 'ckBTC' },
 		{ value: 2, label: 'ckETH' },
-		{ value: 3, label: 'ckUSDC' },
+		{ value: 3, label: 'ckUSDC' }
 	];
 
 	const toggleVissible = () => {
@@ -88,12 +89,15 @@
 		validators: zodClient(formSchema),
 		clearOnSubmit: 'errors-and-message',
 		multipleSubmits: 'prevent',
-		onSubmit: async () => {
-			console.log('boom');
-			await createToken();
+		onSubmit: async (formData) => {
+			icon = $formData.icon;
+			console.log(icon);
 		},
 		onUpdated: async ({ form: f }) => {
 			if (f.valid) {
+				console.log('boom');
+				dialogOpen = true;
+				//await createToken();
 				toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
 				toast.error('Please fix the errors in the form.');
@@ -103,8 +107,8 @@
 
 	const createToken = async () => {
 		console.log($formData);
-		let blob = Array.from(new Uint8Array(await $formData.icon.arrayBuffer()));
-		let mimetype = $formData.icon.type;
+		let blob = Array.from(new Uint8Array(await icon.arrayBuffer()));
+		let mimetype = icon.type;
 		let mintRequest: MintRequest = {
 			id: BigInt(0),
 			to: $formData.minter,
@@ -125,7 +129,7 @@
 		};
 		let request: PumpRequest = {
 			token: BigInt(token),
-			amount:[BigInt(amountA),BigInt(amountB)],
+			amount: [[BigInt(amountA), BigInt(amountB)]],
 			holder: mintRequest,
 			tokenRequest: tokenRequest
 		};
@@ -134,6 +138,7 @@
 		let result = await pumpy.createPools([{ PUMP: request }]);
 		console.log(result);
 		loadingStore.set(false);
+		dialogOpen = false;
 	};
 
 	const { form: formData, errors, enhance } = form;
@@ -214,50 +219,6 @@
 				<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
 			</Form.Field>
 			<div class="flex flex-col space-y-6">
-				<Dialog.Root>
-					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
-						>Create Token</Dialog.Trigger
-					>
-					<Dialog.Content >
-						<Dialog.Header>
-							<Dialog.Title
-								>Choose how many {$formData.ticker} you want to buy (optional)</Dialog.Title
-							>
-							<Dialog.Description>
-								tip: its optional but buying a small amount of tokens helps protect your tokens from
-								snipers
-							</Dialog.Description>
-						</Dialog.Header>
-						<div class="grid gap-4 py-4">
-							<div class="grid grid-cols-4 items-center gap-4">
-								<Input type="number"  min="0" bind:value={amountA} id="token" placeholder="{$formData.ticker} 0.0 (optional)" class="col-span-3" />
-								<Input type="number"  min="0" bind:value={amountB} id="token" placeholder="0.0 (optional)" class="col-span-3" />
-								<Select.Root onSelectedChange={(v) => {
-									if(v){
-										if(typeof v.value === "number"){ token = v.value}
-									};
-								  }} portal={null}>
-									<Select.Trigger>
-									  <Select.Value placeholder="token" />
-									</Select.Trigger>
-									<Select.Content>
-									  <Select.Group>
-										{#each tokens as token}
-										  <Select.Item value={token.value} label={token.label}
-											>{token.label}</Select.Item
-										  >
-										{/each}
-									  </Select.Group>
-									</Select.Content>
-									<Select.Input name="token" />
-								  </Select.Root>
-							</div>
-						</div>
-						<Dialog.Footer>
-							<Form.Button class="w-full">Submit</Form.Button>
-						</Dialog.Footer>
-					</Dialog.Content>
-				</Dialog.Root>
 				<Button class="w-36" variant="ghost" on:click={toggleVissible}>{buttonText}</Button>
 			</div>
 			{#if isVisible}
@@ -301,7 +262,69 @@
 					<Form.FieldErrors />
 				</Form.Field>
 			{/if}
-
+			<div>
+				<Dialog.Root bind:open={dialogOpen}>
+					<Dialog.Content>
+						<Dialog.Header>
+							<Dialog.Title
+								>Choose how many {$formData.ticker} you want to buy (optional)</Dialog.Title
+							>
+							<Dialog.Description>
+								tip: its optional but buying a small amount of tokens helps protect your tokens from
+								snipers
+							</Dialog.Description>
+						</Dialog.Header>
+						<div class="grid gap-4 py-4">
+							<div class="grid grid-cols-4 items-center gap-4">
+								<Input
+									type="number"
+									min="0"
+									bind:value={amountA}
+									id="token"
+									placeholder="{$formData.ticker} 0.0 (optional)"
+									class="col-span-3"
+								/>
+								<Input
+									type="number"
+									min="0"
+									bind:value={amountB}
+									id="token"
+									placeholder="0.0 (optional)"
+									class="col-span-3"
+								/>
+								<Select.Root
+									onSelectedChange={(v) => {
+										if (v) {
+											if (typeof v.value === 'number') {
+												token = v.value;
+											}
+										}
+									}}
+									portal={null}
+								>
+									<Select.Trigger>
+										<Select.Value placeholder="token" />
+									</Select.Trigger>
+									<Select.Content>
+										<Select.Group>
+											{#each tokens as token}
+												<Select.Item value={token.value} label={token.label}
+													>{token.label}</Select.Item
+												>
+											{/each}
+										</Select.Group>
+									</Select.Content>
+									<Select.Input name="token" />
+								</Select.Root>
+							</div>
+						</div>
+						<Dialog.Footer>
+							<Button class="w-full" on:click={createToken}>Create Token</Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
+			</div>
+			<Form.Button class="w-full">Create Token</Form.Button>
 			<!--{#if browser}
 				<SuperDebug data={$formData} />
 				{/if}-->

@@ -59,8 +59,8 @@ export const pumpy_idlFactory = ({ IDL }) => {
   });
   const PumpRequest = IDL.Record({
     'token' : IDL.Nat,
-    'amount': IDL.Opt(IDL.Tuple(IDL.Nat, IDL.Nat)),
     'holder' : MintRequest__1,
+    'amount' : IDL.Opt(IDL.Tuple(IDL.Nat, IDL.Nat)),
     'tokenRequest' : TokenRequest__1,
   });
   const PoolRequest = IDL.Variant({

@@ -51,8 +51,8 @@ export type PoolRequest = { 'RUG' : TokenRequest__1 } |
   { 'PUMP' : PumpRequest };
 export interface PumpRequest {
   'token' : bigint,
-  'amount': [] | [bigint, bigint]
   'holder' : MintRequest__1,
+  'amount' : [] | [[bigint, bigint]],
   'tokenRequest' : TokenRequest__1,
 }
 export interface Pumpy {
