@@ -22,6 +22,7 @@
 		slippage,
 		toCurrency
 	} from '../store/swap.store';
+
 	import {
 		pioneerActor,
 		principalStore,
@@ -31,113 +32,94 @@
 		balancesStore
 	} from '$lib/store/store';
 	import type { Pioneer, TokenInfo } from '$lib/api/pioneer.did';
+	import type { Principal } from '@dfinity/principal';
 
-	// onMount(() => {
-	// 	selectedToToken = tokens[0];
-	// 	selectedFromToken = tokens[1];
-	// });
+	let tokens: Array<TokenInfo> = [];
+	let pumpyActor: Pioneer;
+	let principal: Principal;
 
-	// type Token = {
-	// 	symbol: string;
-	// 	balance: number;
-	// 	logo: string;
-	// };
-
-	// let ethBalance: number = 0.0;
-	// let tokenBalance: number = 0.0;
-
-	// let amountToSwap: number = 0.0;
-	// let amountToReceive: number = 0.0;
-
-	// let selectedFromToken: Token | null = null;
-	// let selectedToToken: Token | null = null;
-
-	// const tokens: Token[] = [
-	// 	{
-	// 		symbol: 'ICP',
-	// 		balance: 23709837498.249898696,
-	// 		logo: 'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'
-	// 	},
-	// 	{
-	// 		symbol: 'ckUSDC',
-	// 		balance: 2344120230.347923907,
-	// 		logo: 'https://cdn.sonic.ooo/icons/xevnm-gaaaa-aaaar-qafnq-cai'
-	// 	}
-	// ];
-
-	// function selectFromToken(token: Token): void {
-	// 	selectedFromToken = token;
-	// 	calculateSwapResult();
-	// }
-
-	// function selectToToken(token: Token): void {
-	// 	selectedToToken = token;
-	// 	calculateSwapResult();
-	// }
-
-	// function calculateSwapResult(): void {
-	// 	if (selectedFromToken && selectedToToken && amountToSwap > 0) {
-	// 		// Example swap logic
-	// 		const rate = 1; // Example rate, replace with actual logic
-	// 		amountToReceive = amountToSwap * rate;
-	// 	} else {
-	// 		amountToReceive = 0.0;
-	// 	}
-	// }
-
-	function createCoin(): void {
-	let tokenReq = {
-		decimals: BigInt(8),
-		tribute: 'sid',
-		icon: '',
-		name: 'Mango Coin',
-		minter: '',
-		symbol: 'MNGO'
-	};
-	let mintReq = {
-		id: BigInt(0),
-		to: '',
-		amount: BigInt(2100000000)
-	};
-	pioneerActor.subscribe((p) => {
-		var res = p.createTokens(tokenReq, [mintReq]);
-		console.log(res);
-		return res;
-	});
-	}
-
-	let tokens : Array<TokenInfo> = [];
-
-	tokensStore.subscribe((t) => {
-		tokens = t;
-	});
-
-	let pumpyActor : Pioneer;
+	let _fromAmount;
+	let _toAmount;
+	let _deadline;
+	let _toCurrency: TokenInfo;
+	let _fromCurrency: TokenInfo;
+	let _isExactIn;
+	let _slippage;
 
 	pioneerActor.subscribe((p) => {
 		pumpyActor = p;
 	});
+	tokensStore.subscribe((t) => {
+		tokens = t;
+		if (_fromCurrency === undefined && tokens.length > 0) {
+			_fromCurrency = tokens[0] ?? {};
+		}
+		if (_toCurrency === undefined) {
+			_toCurrency = tokens[1] ?? {};
+		}
+	});
+	principalStore.subscribe((p) => {
+		principal = p;
+	});
 
-	function listenToStore(): void {
-		// pioneerActor.subscribe((p) => {
-		// 	p.swapToken({
-		// 		fromAmount: fromAmount,
-		// 		toAmount: toAmount,
-		// 		deadline: deadline,
-		// 		fromCurrency: fromCurrency,
-		// 		isExactIn: isExactIn,
-		// 		slippage: slippage,
-		// 		toCurrency: toCurrency
-		// 	});
-		// });
+	fromAmount.subscribe((a) => {
+		_fromAmount = a;
+	});
+	toAmount.subscribe((a) => {
+		_toAmount = a;
+	});
+	deadline.subscribe((d) => {
+		_deadline = d;
+	});
+	slippage.subscribe((s) => {
+		_slippage = s;
+	});
+	isExactIn.subscribe((e) => {
+		_isExactIn = e;
+	});
+	fromCurrency.subscribe((c) => {
+		_fromCurrency = c!;
+	});
+	toCurrency.subscribe((c) => {
+		_toCurrency = c!;
+	});
+
+	function mint() {
+		pumpyActor.mint([
+			{
+				id: BigInt(0),
+				to: principal.toString(),
+				amount: BigInt(1000)
+			}
+		]);
 	}
 
-	function swap(){
-		pumpyActor.mint
+	function reverseuno() {}
+	function setSlippage() {}
+
+	function createCoin(): void {
+		let tokenReq = {
+			decimals: BigInt(8),
+			tribute: 'sid',
+			icon: '',
+			name: 'Mango Coin',
+			minter: '',
+			symbol: 'MNGO'
+		};
+		let mintReq = {
+			id: BigInt(0),
+			to: '',
+			amount: BigInt(2100000000)
+		};
+		pioneerActor.subscribe((p) => {
+			var res = p.createTokens(tokenReq, [mintReq]);
+			console.log(res);
+			return res;
+		});
 	}
-	
 </script>
 
+`
 <div class="min-h-screen flex flex-col justify-center items-center">
 	<div class="w-120 bg-surface-700 rounded-lg p-9 shadow-lg">
 		<div class="flex justify-end mb-4">
@@ -190,8 +172,12 @@
 				<div
 					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 				>
-					<img src={tokensStore.} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
-					<span class="text-lg">{selectedToToken?.symbol}</span>
+					<img
+						src={_fromCurrency?.icon ?? ''}
+						alt={_fromCurrency?.name ?? ''}
+						class="w-6 h-6 mr-2"
+					/>
+					<span class="text-lg">{_fromCurrency?.symbol ?? ''}</span>
 					<select
 						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 						on:change={(e) => console.log(e)}
@@ -225,8 +211,8 @@
 				<div
 					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 				>
-					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
-					<span class="text-lg">{selectedToToken?.symbol}</span>
+					<img src={_toCurrency?.icon ?? ''} alt={_toCurrency?.name ?? ''} class="w-6 h-6 mr-2" />
+					<span class="text-lg">{_toCurrency?.symbol ?? ''}</span>
 					<select
 						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 						on:change={(e) => console.log(e)}

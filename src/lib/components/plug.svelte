@@ -26,6 +26,7 @@
 	let isConnected = false;
 	let title = 'Connect Wallet';
 	let isLoading = false;
+
 	const setup = async () => {
 		let ic = icblast();
 		let pioneerQuery = await ic(PIONEER_ID);
@@ -35,9 +36,6 @@
 			canisterId: PIONEER_ID,
 			interfaceFactory: pioneer_idlFactory
 		});
-
-		// @ts-ignore
-		// console.log(pioneer.createCoin());
 		let tokens = await pioneerQuery.fetchTokens();
 		let pools = await pioneerQuery.fetchPools();
 		let balances = await pioneer.fetchBalances();
@@ -61,7 +59,7 @@
 			await setup();
 			isConnected = true;
 			// @ts-ignore
-			title = principal.toString().substring(0, 5) + '...' + principal.toString().substring(37, 42);
+			title = principal.toString().substring(0, 5) + '...';
 		} catch (e) {
 			console.log(e);
 		}
