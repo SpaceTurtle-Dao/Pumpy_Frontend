@@ -1,4 +1,4 @@
-export const pioneer_idlFactory = ({ IDL }) => {
+export const pumpy_idlFactory = ({ IDL }) => {
   const ENV = IDL.Variant({
     'PRODUCTION' : IDL.Null,
     'DEVELOPMENT' : IDL.Null,
@@ -31,17 +31,52 @@ export const pioneer_idlFactory = ({ IDL }) => {
     'amount' : IDL.Nat,
   });
   const BalanceRequest = IDL.Record({ 'id' : IDL.Nat, 'owner' : IDL.Text });
+  const BurnRequest = IDL.Record({
+    'id' : IDL.Nat,
+    'from' : IDL.Text,
+    'amount' : IDL.Nat,
+  });
+  const Image = IDL.Record({
+    'blob' : IDL.Vec(IDL.Nat8),
+    'mimetype' : IDL.Text,
+  });
+  const TokenRequest__1 = IDL.Record({
+    'decimals' : IDL.Nat,
+    'twitter' : IDL.Opt(IDL.Text),
+    'name' : IDL.Text,
+    'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
+    'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
+    'image' : Image,
+    'telegram' : IDL.Opt(IDL.Text),
+    'symbol' : IDL.Text,
+  });
+  const MintRequest__1 = IDL.Record({
+    'id' : IDL.Nat,
+    'to' : IDL.Text,
+    'amount' : IDL.Nat,
+  });
+  const PumpRequest = IDL.Record({
+    'token' : IDL.Nat,
+    'holder' : MintRequest__1,
+    'tokenRequest' : TokenRequest__1,
+  });
   const PoolRequest = IDL.Variant({
-    'RUG' : IDL.Tuple(IDL.Nat, IDL.Nat),
+    'RUG' : TokenRequest__1,
     'POOL' : IDL.Tuple(IDL.Nat, IDL.Nat),
-    'PUMP' : IDL.Tuple(IDL.Nat, IDL.Nat),
+    'PUMP' : PumpRequest,
   });
   const TokenRequest = IDL.Record({
     'decimals' : IDL.Nat,
-    'tribute' : IDL.Text,
-    'icon' : IDL.Text,
+    'twitter' : IDL.Opt(IDL.Text),
     'name' : IDL.Text,
     'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
+    'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
+    'image' : Image,
+    'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
   const MintRequest = IDL.Record({
@@ -49,16 +84,26 @@ export const pioneer_idlFactory = ({ IDL }) => {
     'to' : IDL.Text,
     'amount' : IDL.Nat,
   });
+  const Token = IDL.Variant({
+    'ICP' : IDL.Null,
+    'CKUSDC' : IDL.Null,
+    'CKBTC' : IDL.Null,
+    'CKETH' : IDL.Null,
+  });
   const Time = IDL.Int;
   const TokenInfo = IDL.Record({
     'decimals' : IDL.Nat,
+    'twitter' : IDL.Opt(IDL.Text),
     'icon' : IDL.Text,
     'name' : IDL.Text,
     'createdAt' : Time,
     'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
     'holders' : IDL.Nat,
     'transactions' : IDL.Nat,
+    'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
   const PoolInfo = IDL.Record({
@@ -112,11 +157,12 @@ export const pioneer_idlFactory = ({ IDL }) => {
     'from' : IDL.Text,
     'amount' : IDL.Nat,
   });
-  const Pioneer = IDL.Service({
+  const Pumpy = IDL.Service({
     'add' : IDL.Func([PoolId, IDL.Tuple(IDL.Nat, IDL.Nat)], [TokenResult], []),
     'allowance' : IDL.Func([AllowanceRequest], [IDL.Nat], ['query']),
     'approve' : IDL.Func([ApproveRequest], [TokenResult], []),
     'balance' : IDL.Func([BalanceRequest], [IDL.Nat], ['query']),
+    'burn' : IDL.Func([IDL.Vec(BurnRequest)], [IDL.Vec(TokenResult)], []),
     'createPools' : IDL.Func(
         [IDL.Vec(PoolRequest)],
         [IDL.Vec(TokenResult)],
@@ -127,6 +173,7 @@ export const pioneer_idlFactory = ({ IDL }) => {
         [IDL.Vec(TokenResult)],
         [],
       ),
+    'deposit' : IDL.Func([Token, IDL.Nat], [TokenResult], []),
     'fetchBalances' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(TokenInfo, IDL.Nat))],
@@ -138,6 +185,7 @@ export const pioneer_idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'fetchPools' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
+    'fetchPumps' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
     'fetchTokens' : IDL.Func([], [IDL.Vec(TokenInfo)], ['query']),
     'fetchTransactions' : IDL.Func(
         [IDL.Nat, IDL.Nat, IDL.Nat],
@@ -186,8 +234,9 @@ export const pioneer_idlFactory = ({ IDL }) => {
         [IDL.Vec(TokenResult)],
         [],
       ),
+    'withdraw' : IDL.Func([Token, IDL.Nat], [TokenResult], []),
   });
-  return Pioneer;
+  return Pumpy;
 };
 export const init = ({ IDL }) => {
   const ENV = IDL.Variant({

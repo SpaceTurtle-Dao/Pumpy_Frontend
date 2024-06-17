@@ -1,8 +1,8 @@
 import { Actor, HttpAgent } from "@dfinity/agent";
 
 // Imports and re-exports candid interface
-import { pioneer_idlFactory } from "./pioneer.did.js";
-export { pioneer_idlFactory } from "./pioneer.did.js";
+import { pumpy_idlFactory } from "./pumpy.did.js";
+export { pumpy_idlFactory } from "./pumpy.did.js";
 
 /* CANISTER_ID is replaced by webpack based on node environment
  * Note: canister environment variable will be standardized as
@@ -10,7 +10,7 @@ export { pioneer_idlFactory } from "./pioneer.did.js";
  * beginning in dfx 0.15.0
  */
 export const canisterId =
-  process.env.CANISTER_ID_PIONEER;
+  process.env.CANISTER_ID_PUMPY;
 
 export const createActor = (canisterId, options = {}) => {
   const agent = options.agent || new HttpAgent({ ...options.agentOptions });
@@ -32,11 +32,11 @@ export const createActor = (canisterId, options = {}) => {
   }
 
   // Creates an actor with using the candid interface and the HttpAgent
-  return Actor.createActor(pioneer_idlFactory, {
+  return Actor.createActor(pumpy_idlFactory, {
     agent,
     canisterId,
     ...options.actorOptions,
   });
 };
 
-export const pioneer = canisterId ? createActor(canisterId) : undefined;
+export const pumpy = canisterId ? createActor(canisterId) : undefined;
