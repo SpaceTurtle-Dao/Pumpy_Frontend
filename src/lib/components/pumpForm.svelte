@@ -56,16 +56,6 @@
 		TokenRequest
 	} from '$lib/declarations/pumpy/pumpy.did';
 
-	let pumpy: Pumpy;
-	let isLoading = false;
-	let isVisible = false;
-	let principal: Principal;
-	let buttonText = 'Show more options';
-	let token = 0;
-	let amountA: string;
-	let amountB: string;
-	let dialogOpen = false;
-	let icon: File;
 	interface Data {
 		minter: string;
 		name: string;
@@ -81,8 +71,20 @@
 		allocation: string;
 		amount: string;
 		token: string;
-	};
-	let _formData:Data;
+	}
+
+	let pumpy: Pumpy;
+	let isLoading = false;
+	let isVisible = false;
+	let principal: Principal;
+	let buttonText = 'Show more options';
+	let token = 0;
+	let amountA: string;
+	let amountB: string;
+	let dialogOpen = false;
+	let decimals = 100000000;
+
+	let _formData: Data;
 	const tokens = [
 		{ value: 0, label: 'ICP' },
 		{ value: 1, label: 'ckBTC' },
@@ -123,14 +125,13 @@
 	});
 
 	const createToken = async () => {
+		let tokenInfo = await pumpy.tokenInfo(BigInt(token));
+		let _decimals = 1;
+		for (let i = 0; i < Number(tokenInfo[0]?.decimals); i++) {
+			_decimals = _decimals * 10;
+		}
 		let blob = Array.from(new Uint8Array(await _formData.icon.arrayBuffer()));
 		let mimetype = _formData.icon.type;
-		let mintRequest: MintRequest = {
-			id: BigInt(0),
-			to: principal.toText(),
-			amount: BigInt(amountA)
-		};
-
 		let tokenRequest: TokenRequest = {
 			decimals: BigInt(0),
 			image: { blob: blob, mimetype: mimetype },
@@ -145,8 +146,7 @@
 		};
 		let request: PumpRequest = {
 			token: BigInt(token),
-			amount: [[BigInt(amountA), BigInt(amountB)]],
-			holder: mintRequest,
+			amount: [[BigInt(amountA) * BigInt(decimals), BigInt(amountB)*BigInt(_decimals)]],
 			tokenRequest: tokenRequest
 		};
 		console.log('pump request');
