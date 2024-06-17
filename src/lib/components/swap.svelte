@@ -30,84 +30,112 @@
 		tokensStore,
 		balancesStore
 	} from '$lib/store/store';
+	import type { Pioneer, TokenInfo } from '$lib/api/pioneer.did';
 
-	onMount(() => {
-		selectedToToken = tokens[0];
-		selectedFromToken = tokens[1];
-	});
+	// onMount(() => {
+	// 	selectedToToken = tokens[0];
+	// 	selectedFromToken = tokens[1];
+	// });
 
-	type Token = {
-		symbol: string;
-		balance: number;
-		logo: string;
-	};
+	// type Token = {
+	// 	symbol: string;
+	// 	balance: number;
+	// 	logo: string;
+	// };
 
-	let ethBalance: number = 0.0;
-	let tokenBalance: number = 0.0;
+	// let ethBalance: number = 0.0;
+	// let tokenBalance: number = 0.0;
 
-	let amountToSwap: number = 0.0;
-	let amountToReceive: number = 0.0;
+	// let amountToSwap: number = 0.0;
+	// let amountToReceive: number = 0.0;
 
-	let selectedFromToken: Token | null = null;
-	let selectedToToken: Token | null = null;
+	// let selectedFromToken: Token | null = null;
+	// let selectedToToken: Token | null = null;
 
-	const tokens: Token[] = [
-		{
-			symbol: 'ICP',
-			balance: 23709837498.249898696,
-			logo: 'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'
-		},
-		{
-			symbol: 'ckUSDC',
-			balance: 2344120230.347923907,
-			logo: 'https://cdn.sonic.ooo/icons/xevnm-gaaaa-aaaar-qafnq-cai'
-		}
-	];
+	// const tokens: Token[] = [
+	// 	{
+	// 		symbol: 'ICP',
+	// 		balance: 23709837498.249898696,
+	// 		logo: 'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'
+	// 	},
+	// 	{
+	// 		symbol: 'ckUSDC',
+	// 		balance: 2344120230.347923907,
+	// 		logo: 'https://cdn.sonic.ooo/icons/xevnm-gaaaa-aaaar-qafnq-cai'
+	// 	}
+	// ];
 
-	function selectFromToken(token: Token): void {
-		selectedFromToken = token;
-		calculateSwapResult();
-	}
+	// function selectFromToken(token: Token): void {
+	// 	selectedFromToken = token;
+	// 	calculateSwapResult();
+	// }
 
-	function selectToToken(token: Token): void {
-		selectedToToken = token;
-		calculateSwapResult();
-	}
+	// function selectToToken(token: Token): void {
+	// 	selectedToToken = token;
+	// 	calculateSwapResult();
+	// }
 
-	function calculateSwapResult(): void {
-		if (selectedFromToken && selectedToToken && amountToSwap > 0) {
-			// Example swap logic
-			const rate = 1; // Example rate, replace with actual logic
-			amountToReceive = amountToSwap * rate;
-		} else {
-			amountToReceive = 0.0;
-		}
-	}
+	// function calculateSwapResult(): void {
+	// 	if (selectedFromToken && selectedToToken && amountToSwap > 0) {
+	// 		// Example swap logic
+	// 		const rate = 1; // Example rate, replace with actual logic
+	// 		amountToReceive = amountToSwap * rate;
+	// 	} else {
+	// 		amountToReceive = 0.0;
+	// 	}
+	// }
 
 	function createCoin(): void {
-		let tokenReq = {
-			decimals: BigInt(8),
-			tribute: 'sid',
-			icon: '',
-			name: 'Mango Coin',
-			minter: '',
-			symbol: 'MNGO'
-		};
-		let mintReq = {
-			id: BigInt(0),
-			to: '',
-			amount: BigInt(1000000000000000000)
-		};
-		pioneerActor.subscribe((p) => {
-			var res = p.createTokens(tokenReq, [mintReq]);
-			console.log(res);
-			return res;
-		});
+	let tokenReq = {
+		decimals: BigInt(8),
+		tribute: 'sid',
+		icon: '',
+		name: 'Mango Coin',
+		minter: '',
+		symbol: 'MNGO'
+	};
+	let mintReq = {
+		id: BigInt(0),
+		to: '',
+		amount: BigInt(2100000000)
+	};
+	pioneerActor.subscribe((p) => {
+		var res = p.createTokens(tokenReq, [mintReq]);
+		console.log(res);
+		return res;
+	});
 	}
 
-	function swap(): void {
-		pioneerActor.subscribe((p) => {});
+	let tokens : Array<TokenInfo> = [];
+
+	tokensStore.subscribe((t) => {
+		tokens = t;
+	});
+
+	let pumpyActor : Pioneer;
+
+	pioneerActor.subscribe((p) => {
+		pumpyActor = p;
+	});
+
+	function listenToStore(): void {
+		// pioneerActor.subscribe((p) => {
+		// 	p.swapToken({
+		// 		fromAmount: fromAmount,
+		// 		toAmount: toAmount,
+		// 		deadline: deadline,
+		// 		fromCurrency: fromCurrency,
+		// 		isExactIn: isExactIn,
+		// 		slippage: slippage,
+		// 		toCurrency: toCurrency
+		// 	});
+		// });
 	}
+
+	function swap(){
+		pumpyActor.mint
+	}
+	
 </script>
 
 <div class="min-h-screen flex flex-col justify-center items-center">
@@ -162,7 +190,7 @@
 				<div
 					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 				>
-					<img src={selectedToToken?.logo} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
+					<img src={tokensStore.} alt={selectedToToken?.symbol} class="w-6 h-6 mr-2" />
 					<span class="text-lg">{selectedToToken?.symbol}</span>
 					<select
 						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
@@ -222,11 +250,6 @@
 				on:click={() => {}}
 			>
 				SWAP
-				<!-- {#if loadingStore}
-					<div class="mb-4 flex flex-row pt-0.5 items-center"><SmallSpinner /></div>
-				{:else}
-					Connect Wallet
-				{/if} -->
 			</Button>
 		</div>
 	</div>
@@ -269,16 +292,5 @@
 	}
 	.rounded-full {
 		border-radius: 9999px;
-	}
-
-	.currency-input {
-		width: 6rem;
-		flex: 1 1 0%;
-		border-radius: 0.75rem;
-		background-color: transparent;
-		font-size: 1.5rem;
-		line-height: 2rem;
-		outline: 2px solid transparent;
-		outline-offset: 2px;
 	}
 </style>

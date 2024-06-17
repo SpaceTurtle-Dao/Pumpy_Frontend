@@ -45,6 +45,7 @@
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		balancesStore.set(balances);
+		console.log(tokens);
 	};
 
 	async function requestConnect() {
