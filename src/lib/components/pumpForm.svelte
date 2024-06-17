@@ -230,8 +230,8 @@
 						</Dialog.Header>
 						<div class="grid gap-4 py-4">
 							<div class="grid grid-cols-4 items-center gap-4">
-								<Input bind:value={amountA} id="token" placeholder="{$formData.ticker} 0.0 (optional)" class="col-span-3" />
-								<Input bind:value={amountB} id="token" placeholder="0.0 (optional)" class="col-span-3" />
+								<Input type="number"  min="0" bind:value={amountA} id="token" placeholder="{$formData.ticker} 0.0 (optional)" class="col-span-3" />
+								<Input type="number"  min="0" bind:value={amountB} id="token" placeholder="0.0 (optional)" class="col-span-3" />
 								<Select.Root onSelectedChange={(v) => {
 									if(v){
 										if(typeof v.value === "number"){ token = v.value}
