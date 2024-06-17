@@ -65,7 +65,24 @@
 	let amountA: string;
 	let amountB: string;
 	let dialogOpen = false;
-	let icon:File;
+	let icon: File;
+	interface Data {
+		minter: string;
+		name: string;
+		ticker: string;
+		description: string;
+		icon: File;
+		twitter: string;
+		telegram: string;
+		discord: string;
+		website: string;
+		supply: string;
+		decimals: string;
+		allocation: string;
+		amount: string;
+		token: string;
+	};
+	let _formData:Data;
 	const tokens = [
 		{ value: 0, label: 'ICP' },
 		{ value: 1, label: 'ckBTC' },
@@ -90,8 +107,8 @@
 		clearOnSubmit: 'errors-and-message',
 		multipleSubmits: 'prevent',
 		onSubmit: async (formData) => {
-			icon = $formData.icon;
-			console.log(icon);
+			_formData = $formData;
+			console.log(_formData);
 		},
 		onUpdated: async ({ form: f }) => {
 			if (f.valid) {
@@ -106,26 +123,25 @@
 	});
 
 	const createToken = async () => {
-		console.log($formData);
-		let blob = Array.from(new Uint8Array(await icon.arrayBuffer()));
-		let mimetype = icon.type;
+		let blob = Array.from(new Uint8Array(await _formData.icon.arrayBuffer()));
+		let mimetype = _formData.icon.type;
 		let mintRequest: MintRequest = {
 			id: BigInt(0),
-			to: $formData.minter,
-			amount: BigInt($formData.amount)
+			to: principal.toText(),
+			amount: BigInt(amountA)
 		};
 
 		let tokenRequest: TokenRequest = {
 			decimals: BigInt(0),
 			image: { blob: blob, mimetype: mimetype },
-			name: $formData.name,
-			minter: $formData.minter,
+			name: _formData.name,
+			minter: _formData.minter,
 			supply: BigInt(0),
-			symbol: $formData.ticker,
-			telegram: [$formData.telegram],
-			twitter: [$formData.twitter],
-			discord: [$formData.discord],
-			website: [$formData.website]
+			symbol: _formData.ticker,
+			telegram: [_formData.telegram],
+			twitter: [_formData.twitter],
+			discord: [_formData.discord],
+			website: [_formData.website]
 		};
 		let request: PumpRequest = {
 			token: BigInt(token),
@@ -133,6 +149,7 @@
 			holder: mintRequest,
 			tokenRequest: tokenRequest
 		};
+		console.log('pump request');
 		console.log(request);
 		loadingStore.set(true);
 		let result = await pumpy.createPools([{ PUMP: request }]);
