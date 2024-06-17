@@ -11,7 +11,7 @@
   <div class="flex items-center space-x-2">
     <img src={Logo} alt="Logo" class="h-10 w-10">
     <div>
-      <span class="font-bold text-xl">$STACK</span>
+      <span class="font-bold text-xl">$PUMPY</span>
       <span class="text-sm">Pioneer Release</span>
     </div>
   </div>

@@ -1,16 +1,20 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card";
+  import AddIcon from '$lib/components/daimond_plus.svelte'; // Adjust the path as necessary
 </script>
 
-<Card.Root class="bg-gray-900 text-white p-6 rounded-lg shadow-lg flex flex-col justify-between">
+<Card.Root class="bg-black text-white p-6 rounded-lg shadow-lg flex flex-col justify-between">
   <Card.Header>
     <div class="flex justify-between items-center mb-2">
       <span class="text-gray-400">29-03-2024</span>
       <span class="text-green-400">Project Type</span>
     </div>
     <Card.Title>
-      <h2 class="text-2xl font-bold mb-2">PROJECT NAME HERE 
-        <button class="ml-2 bg-gray-500 text-black p-1 rounded-full">+</button>
+      <h2 class="text-2xl font-bold mb-2">
+        PROJECT NAME HERE 
+        <button class="ml-2 bg-gray-500 text-black p-1 rounded-full">
+          <AddIcon />
+        </button>
       </h2>
     </Card.Title>
     <Card.Description>
