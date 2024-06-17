@@ -35,10 +35,11 @@
 	import { Input, type FormInputEvent } from '$lib/components/ui/input/index.js';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import type { Principal } from '@dfinity/principal';
-	import { useIsFocusVisible } from '@material-ui/core';
 	import MediumSpinner from './mediumSpinner.svelte';
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Accordion from '$lib/components/ui/accordion';
+	import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
+	import * as Select from '$lib/components/ui/select/index.js';
 	import {
 		pumpyActor,
 		principalStore,
@@ -61,6 +62,14 @@
 	let principal: Principal;
 	let buttonText = 'Show more options';
 	let icon: File;
+
+	const tokens = [
+		{ value: { 'ICP' : null }, label: 'ICP' },
+		{ value: { 'CKUSDC' : null }, label: 'ckUSDC' },
+		{ value: { 'CKBTC' : null }, label: 'ckBTC' },
+		{ value: { 'CKETH' : null }, label: 'ckETH' },
+	];
+
 	const toggleVissible = () => {
 		console.log('Boom');
 		isVisible = !isVisible;
@@ -202,7 +211,45 @@
 				<Form.Description>Cost to deploy: ~0.02 ICP</Form.Description>
 			</Form.Field>
 			<div class="flex flex-col space-y-6">
-				<Form.Button>Submit</Form.Button>
+				<Dialog.Root>
+					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+						>Create Token</Dialog.Trigger
+					>
+					<Dialog.Content >
+						<Dialog.Header>
+							<Dialog.Title
+								>Choose how many {$formData.ticker} you want to buy (optional)</Dialog.Title
+							>
+							<Dialog.Description>
+								tip: its optional but buying a small amount of tokens helps protect your tokens from
+								snipers
+							</Dialog.Description>
+						</Dialog.Header>
+						<div class="grid gap-4 py-4">
+							<div class="grid grid-cols-4 items-center gap-4">
+								<Input id="token" placeholder="0.0 (optional)" class="col-span-3" />
+								<Select.Root portal={null}>
+									<Select.Trigger>
+									  <Select.Value placeholder="token" />
+									</Select.Trigger>
+									<Select.Content>
+									  <Select.Group>
+										{#each tokens as token}
+										  <Select.Item value={token.value} label={token.label}
+											>{token.label}</Select.Item
+										  >
+										{/each}
+									  </Select.Group>
+									</Select.Content>
+									<Select.Input name="favoriteFruit" />
+								  </Select.Root>
+							</div>
+						</div>
+						<Dialog.Footer>
+							<Form.Button class="w-full">Submit</Form.Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
 				<Button class="w-36" variant="ghost" on:click={toggleVissible}>{buttonText}</Button>
 			</div>
 			{#if isVisible}
