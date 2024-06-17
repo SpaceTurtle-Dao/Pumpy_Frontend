@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { z } from 'zod';
+	import { number, z } from 'zod';
 	export const formSchema = z.object({
 		minter: z.string(),
 		name: z.string().max(50),
@@ -62,12 +62,13 @@
 	let principal: Principal;
 	let buttonText = 'Show more options';
 	let icon: File;
+	let token = 0;
 
 	const tokens = [
-		{ value: { 'ICP' : null }, label: 'ICP' },
-		{ value: { 'CKUSDC' : null }, label: 'ckUSDC' },
-		{ value: { 'CKBTC' : null }, label: 'ckBTC' },
-		{ value: { 'CKETH' : null }, label: 'ckETH' },
+		{ value: 0, label: 'ICP' },
+		{ value: 1, label: 'ckBTC' },
+		{ value: 2, label: 'ckETH' },
+		{ value: 3, label: 'ckUSDC' },
 	];
 
 	const toggleVissible = () => {
@@ -122,7 +123,7 @@
 			website: [$formData.website]
 		};
 		let request: PumpRequest = {
-			token: BigInt($formData.token),
+			token: BigInt(token),
 			holder: mintRequest,
 			tokenRequest: tokenRequest
 		};
@@ -228,7 +229,11 @@
 						<div class="grid gap-4 py-4">
 							<div class="grid grid-cols-4 items-center gap-4">
 								<Input id="token" placeholder="0.0 (optional)" class="col-span-3" />
-								<Select.Root portal={null}>
+								<Select.Root onSelectedChange={(v) => {
+									if(v){
+										if(typeof v.value === "number"){ token = v.value}
+									};
+								  }} portal={null}>
 									<Select.Trigger>
 									  <Select.Value placeholder="token" />
 									</Select.Trigger>
