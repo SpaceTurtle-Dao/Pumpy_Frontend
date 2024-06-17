@@ -31,6 +31,11 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'amount' : IDL.Nat,
   });
   const BalanceRequest = IDL.Record({ 'id' : IDL.Nat, 'owner' : IDL.Text });
+  const BurnRequest = IDL.Record({
+    'id' : IDL.Nat,
+    'from' : IDL.Text,
+    'amount' : IDL.Nat,
+  });
   const Image = IDL.Record({
     'blob' : IDL.Vec(IDL.Nat8),
     'mimetype' : IDL.Text,
@@ -78,6 +83,12 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'id' : IDL.Nat,
     'to' : IDL.Text,
     'amount' : IDL.Nat,
+  });
+  const Token = IDL.Variant({
+    'ICP' : IDL.Null,
+    'CKUSDC' : IDL.Null,
+    'CKBTC' : IDL.Null,
+    'CKETH' : IDL.Null,
   });
   const Time = IDL.Int;
   const TokenInfo = IDL.Record({
@@ -151,6 +162,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'allowance' : IDL.Func([AllowanceRequest], [IDL.Nat], ['query']),
     'approve' : IDL.Func([ApproveRequest], [TokenResult], []),
     'balance' : IDL.Func([BalanceRequest], [IDL.Nat], ['query']),
+    'burn' : IDL.Func([IDL.Vec(BurnRequest)], [IDL.Vec(TokenResult)], []),
     'createPools' : IDL.Func(
         [IDL.Vec(PoolRequest)],
         [IDL.Vec(TokenResult)],
@@ -161,6 +173,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
         [IDL.Vec(TokenResult)],
         [],
       ),
+    'deposit' : IDL.Func([Token, IDL.Nat], [TokenResult], []),
     'fetchBalances' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(TokenInfo, IDL.Nat))],
@@ -172,6 +185,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'fetchPools' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
+    'fetchPumps' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
     'fetchTokens' : IDL.Func([], [IDL.Vec(TokenInfo)], ['query']),
     'fetchTransactions' : IDL.Func(
         [IDL.Nat, IDL.Nat, IDL.Nat],
@@ -220,6 +234,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
         [IDL.Vec(TokenResult)],
         [],
       ),
+    'withdraw' : IDL.Func([Token, IDL.Nat], [TokenResult], []),
   });
   return Pumpy;
 };

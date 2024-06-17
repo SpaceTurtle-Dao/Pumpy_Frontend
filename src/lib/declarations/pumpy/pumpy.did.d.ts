@@ -14,6 +14,11 @@ export interface ApproveRequest {
   'amount' : bigint,
 }
 export interface BalanceRequest { 'id' : bigint, 'owner' : string }
+export interface BurnRequest {
+  'id' : bigint,
+  'from' : string,
+  'amount' : bigint,
+}
 export type ENV = { 'PRODUCTION' : null } |
   { 'DEVELOPMENT' : null } |
   { 'STAGING' : null };
@@ -54,17 +59,20 @@ export interface Pumpy {
   'allowance' : ActorMethod<[AllowanceRequest], bigint>,
   'approve' : ActorMethod<[ApproveRequest], TokenResult>,
   'balance' : ActorMethod<[BalanceRequest], bigint>,
+  'burn' : ActorMethod<[Array<BurnRequest>], Array<TokenResult>>,
   'createPools' : ActorMethod<[Array<PoolRequest>], Array<TokenResult>>,
   'createTokens' : ActorMethod<
     [TokenRequest, Array<MintRequest>],
     Array<TokenResult>
   >,
+  'deposit' : ActorMethod<[Token, bigint], TokenResult>,
   'fetchBalances' : ActorMethod<[], Array<[TokenInfo, bigint]>>,
   'fetchHolders' : ActorMethod<
     [bigint, bigint, bigint],
     Array<[string, bigint]>
   >,
   'fetchPools' : ActorMethod<[], Array<PoolInfo>>,
+  'fetchPumps' : ActorMethod<[], Array<PoolInfo>>,
   'fetchTokens' : ActorMethod<[], Array<TokenInfo>>,
   'fetchTransactions' : ActorMethod<
     [bigint, bigint, bigint],
@@ -98,6 +106,7 @@ export interface Pumpy {
     [Array<TransferFromRequest>],
     Array<TokenResult>
   >,
+  'withdraw' : ActorMethod<[Token, bigint], TokenResult>,
 }
 export interface Swap {
   'id' : bigint,
@@ -107,6 +116,10 @@ export interface Swap {
   'sell' : Amount,
 }
 export type Time = bigint;
+export type Token = { 'ICP' : null } |
+  { 'CKUSDC' : null } |
+  { 'CKBTC' : null } |
+  { 'CKETH' : null };
 export type TokenError = {
     'GenericError' : { 'message' : string, 'error_code' : bigint }
   } |
