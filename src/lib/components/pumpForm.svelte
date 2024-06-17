@@ -62,8 +62,8 @@
 	let principal: Principal;
 	let buttonText = 'Show more options';
 	let token = 0;
-	let amountA:Number;
-	let amountB:Number;
+	let amountA:string;
+	let amountB:string;
 
 	const tokens = [
 		{ value: 0, label: 'ICP' },
