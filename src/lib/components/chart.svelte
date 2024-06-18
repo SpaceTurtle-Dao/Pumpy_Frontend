@@ -66,7 +66,7 @@
             autoSize:true,
 			layout: {
 				// @ts-ignore
-				background: { type: 'solid', color: 'white' },
+				background: { type: 'solid', color: 'black' },
 				textColor: 'rgba(33, 56, 77, 1)'
 			},
 			localization: {
