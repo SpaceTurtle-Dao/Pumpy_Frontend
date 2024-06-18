@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { type Pioneer, type PoolInfo, type TokenInfo } from '$lib/declarations/pioneer/pioneer.did';
+import { type Pumpy, type PoolInfo, type TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
 
 export let toAmount = writable(0);
 export let fromAmount = writable(0);

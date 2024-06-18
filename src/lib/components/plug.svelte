@@ -10,7 +10,7 @@
 		poolsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store';
+	} from '$lib/store/store';
 	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';

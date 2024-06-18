@@ -5,38 +5,16 @@
 
 <nav class="bg-black text-white p-4 flex items-center justify-between">
 	<div class="flex items-center space-x-2">
-		<img src={Logo} alt="Logo" class="h-10 w-10" />
+		<!-- <img src={Logo} alt="Logo" class="h-10 w-10" /> -->
+		<span class="font-bold text-xl">:)</span>
 		<div>
-			<span class="font-bold text-xl">$STACK</span>
-			<span class="text-sm">Pioneer Release</span>
+			<span class="font-bold text-xl">PUMPY</span>
+			<!-- <span class="text-sm">Pioneer Release</span> -->
 		</div>
 	</div>
 	<div class="flex items-center space-x-8">
-		<a href="#" class="hover:text-gray-400">GENESIS</a>
-		<a href="#" class="hover:text-gray-400">PATHFINDER</a>
-		<a href="#" class="hover:text-gray-400">VANGUARD</a>
-		<a href="/pioneer" class="hover:text-gray-400">PIONEER</a>
-		<a href="#" class="hover:text-gray-400">DEBUG</a>
-		<a href="https://usdstack.gitbook.io/stack-whitepaper" class="hover:text-gray-400"
-			>WHITE-PAPER</a
-		>
-		<Plug />
-	</div>
-	<div class="flex items-center space-x-2">
-		<img src={Logo} alt="Logo" class="h-10 w-10" />
-		<div>
-			<span class="font-bold text-xl">$STACK</span>
-			<span class="text-sm">Pumpy Release</span>
-		</div>
-	</div>
-	<div class="flex items-center space-x-8">
-		<a href="#" class="hover:text-gray-400">GENESIS</a>
-		<a href="#" class="hover:text-gray-400">PATHFINDER</a>
-		<a href="#" class="hover:text-gray-400">VANGUARD</a>
-		<a href="#" class="hover:text-gray-400">DEBUG</a>
-		<a href="https://usdstack.gitbook.io/stack-whitepaper" class="hover:text-gray-400"
-			>WHITE-PAPER</a
-		>
+		<a href="/create" class="hover:text-gray-400">CREATE</a>
+		<a href="/swap" class="hover:text-gray-400">SWAP</a>
 		<Plug />
 	</div>
 </nav>

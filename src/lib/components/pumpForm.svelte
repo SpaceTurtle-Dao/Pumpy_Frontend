@@ -47,7 +47,7 @@
 		poolsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store';
+	} from '$lib/store/store';
 	import type {
 		MintRequest,
 		Pumpy,
@@ -64,10 +64,10 @@
 	let icon: File;
 
 	const tokens = [
-		{ value: { 'ICP' : null }, label: 'ICP' },
-		{ value: { 'CKUSDC' : null }, label: 'ckUSDC' },
-		{ value: { 'CKBTC' : null }, label: 'ckBTC' },
-		{ value: { 'CKETH' : null }, label: 'ckETH' },
+		{ value: { ICP: null }, label: 'ICP' },
+		{ value: { CKUSDC: null }, label: 'ckUSDC' },
+		{ value: { CKBTC: null }, label: 'ckBTC' },
+		{ value: { CKETH: null }, label: 'ckETH' }
 	];
 
 	const toggleVissible = () => {
@@ -215,7 +215,7 @@
 					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
 						>Create Token</Dialog.Trigger
 					>
-					<Dialog.Content >
+					<Dialog.Content>
 						<Dialog.Header>
 							<Dialog.Title
 								>Choose how many {$formData.ticker} you want to buy (optional)</Dialog.Title
@@ -230,19 +230,19 @@
 								<Input id="token" placeholder="0.0 (optional)" class="col-span-3" />
 								<Select.Root portal={null}>
 									<Select.Trigger>
-									  <Select.Value placeholder="token" />
+										<Select.Value placeholder="token" />
 									</Select.Trigger>
 									<Select.Content>
-									  <Select.Group>
-										{#each tokens as token}
-										  <Select.Item value={token.value} label={token.label}
-											>{token.label}</Select.Item
-										  >
-										{/each}
-									  </Select.Group>
+										<Select.Group>
+											{#each tokens as token}
+												<Select.Item value={token.value} label={token.label}
+													>{token.label}</Select.Item
+												>
+											{/each}
+										</Select.Group>
 									</Select.Content>
 									<Select.Input name="favoriteFruit" />
-								  </Select.Root>
+								</Select.Root>
 							</div>
 						</div>
 						<Dialog.Footer>

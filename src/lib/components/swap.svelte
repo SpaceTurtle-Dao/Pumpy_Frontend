@@ -12,7 +12,7 @@
 	} from 'lucide-svelte/icons';
 	import SmallSpinner from './smallSpinner.svelte';
 	import { PIONEER_ID } from '../common/constants';
-	import type { TokenRequest, MintRequest } from '../declarations/pioneer/pioneer.did';
+	import type { TokenRequest, MintRequest } from '../declarations/pumpy/pumpy.did';
 	import {
 		fromAmount,
 		toAmount,
@@ -24,18 +24,18 @@
 	} from '../store/swap.store';
 
 	import {
-		pioneerActor,
+		pumpyActor,
 		principalStore,
 		loadingStore,
 		poolsStore,
 		tokensStore,
 		balancesStore
 	} from '$lib/store/store';
-	import type { Pioneer, TokenInfo } from '$lib/api/pioneer.did';
+	import type { Pumpy, TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
 	import type { Principal } from '@dfinity/principal';
 
 	let tokens: Array<TokenInfo> = [];
-	let pumpyActor: Pioneer;
+	let pumpy: Pumpy;
 	let principal: Principal;
 
 	let _fromAmount;
@@ -46,15 +46,15 @@
 	let _isExactIn;
 	let _slippage;
 
-	pioneerActor.subscribe((p) => {
-		pumpyActor = p;
+	pumpyActor.subscribe((p) => {
+		pumpy = p;
 	});
 	tokensStore.subscribe((t) => {
 		tokens = t;
-		if (_fromCurrency === undefined && tokens.length > 0) {
+		console.log(t);
+		console.log('tokens');
+		if (tokens !== undefined && tokens.length > 0) {
 			_fromCurrency = tokens[0] ?? {};
-		}
-		if (_toCurrency === undefined) {
 			_toCurrency = tokens[1] ?? {};
 		}
 	});
@@ -85,7 +85,7 @@
 	});
 
 	function mint() {
-		pumpyActor.mint([
+		pumpy.mint([
 			{
 				id: BigInt(0),
 				to: principal.toString(),
@@ -111,15 +111,12 @@
 			to: '',
 			amount: BigInt(2100000000)
 		};
-		pioneerActor.subscribe((p) => {
-			var res = p.createTokens(tokenReq, [mintReq]);
-			console.log(res);
-			return res;
-		});
+		// var res = pumpy.createTokens(tokenReq, [mintReq]);
+		// console.log(res);
+		// return res;
 	}
 </script>
 
-`
 <div class="min-h-screen flex flex-col justify-center items-center">
 	<div class="w-120 bg-surface-700 rounded-lg p-9 shadow-lg">
 		<div class="flex justify-end mb-4">
@@ -172,20 +169,24 @@
 				<div
 					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 				>
-					<img
-						src={_fromCurrency?.icon ?? ''}
-						alt={_fromCurrency?.name ?? ''}
-						class="w-6 h-6 mr-2"
-					/>
-					<span class="text-lg">{_fromCurrency?.symbol ?? ''}</span>
-					<select
-						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
-						on:change={(e) => console.log(e)}
-					>
-						{#each tokens as token}
-							<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
-						{/each}
-					</select>
+					{#if tokens !== undefined && tokens.length > 0}
+						<img
+							src={_fromCurrency?.icon ?? ''}
+							alt={_fromCurrency?.name ?? ''}
+							class="w-6 h-6 mr-2"
+						/>
+						<span class="text-lg">{_fromCurrency?.symbol ?? ''}</span>
+						<select
+							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
+							on:change={(e) => console.log(e)}
+						>
+							<!-- {#each tokens as token}
+								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
+							{/each} -->
+						</select>
+					{:else}
+						<div></div>
+					{/if}
 				</div>
 				<Input
 					class="input text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
