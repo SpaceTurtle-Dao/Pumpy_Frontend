@@ -1,11 +1,7 @@
 <script lang="ts">
-	import Tokens from '$lib/components/tokens.svelte';
-	// import Chat from '$lib/components/chat.svelte';
-	// import Chart from '$lib/components/chart.svelte';
-	import Landing from '$lib/components/landing.svelte';
-	import Swap from '$lib/components/swap.svelte';
+	import type { PageData } from './$types.js';
+	import PumpForm from '$lib/components/pumpForm.svelte';
+	export let data: PageData;
 </script>
 
-<div class="px-24 py-16" data-theme="skeleton">
-	<Swap />
-</div>
+<PumpForm form={data.form} />

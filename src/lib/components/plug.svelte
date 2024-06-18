@@ -4,24 +4,40 @@
 
 	// @ts-ignore
 	import {
-		pioneerActor,
+		pumpyActor,
 		principalStore,
 		loadingStore,
 		poolsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store/store';
-	import { pioneer_idlFactory } from '$lib/declarations/pioneer/pioneer.did';
+	} from '$lib/store';
+	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';
 	// @ts-ignore
 	import icblast from '@infu/icblast';
 	import SmallSpinner from '$lib/components/smallSpinner.svelte';
-	import { PIONEER_ID } from '$lib/common/constants';
 
+	let pumpyCanisterId = '';
+
+	switch (import.meta.env.MODE) {
+		case 'development': {
+			pumpyCanisterId = 'x2ble-2aaaa-aaaak-qiknq-cai';
+			break;
+		}
+		case 'staging': {
+			pumpyCanisterId = 'ucgwg-baaaa-aaaak-qibva-cai';
+			break;
+		}
+		case 'production': {
+			pumpyCanisterId = 'yxccl-myaaa-aaaak-qihga-cai';
+			break;
+		}
+	}
 	console.log(import.meta.env.MODE);
+	console.log(pumpyCanisterId);
 
-	const whitelist = [PIONEER_ID];
+	const whitelist = [pumpyCanisterId];
 
 	let isConnected = false;
 	let title = 'Connect Wallet';
@@ -29,17 +45,19 @@
 
 	const setup = async () => {
 		let ic = icblast();
-		let pioneerQuery = await ic(PIONEER_ID);
+		let pumpyQuery = await ic(pumpyCanisterId);
 
 		// @ts-ignore
-		let pioneer = await window.ic.plug.createActor({
-			canisterId: PIONEER_ID,
-			interfaceFactory: pioneer_idlFactory
+		let pumpy = await window.ic.plug.createActor({
+			canisterId: pumpyCanisterId,
+			interfaceFactory: pumpy_idlFactory
 		});
-		let tokens = await pioneerQuery.fetchTokens();
-		let pools = await pioneerQuery.fetchPools();
-		let balances = await pioneer.fetchBalances();
-		pioneerActor.set(pioneer);
+
+		// @ts-ignore
+		let tokens = await pumpyQuery.fetchTokens();
+		let pools = await pumpyQuery.fetchPools();
+		let balances = await pumpy.fetchBalances();
+		pumpyActor.set(pumpy);
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		balancesStore.set(balances);
@@ -111,10 +129,10 @@
 	}
 	onMount(async () => {
 		let ic = icblast();
-		let pioneerQuery = await ic(PIONEER_ID);
+		let pumpyQuery = await ic(pumpyCanisterId);
 		// @ts-ignore
-		let tokens = await pioneerQuery.fetchTokens();
-		let pools = await pioneerQuery.fetchPools();
+		let tokens = await pumpyQuery.fetchTokens();
+		let pools = await pumpyQuery.fetchPools();
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		console.log(tokens);
