@@ -14,9 +14,15 @@ export interface ApproveRequest {
   'amount' : bigint,
 }
 export interface BalanceRequest { 'id' : bigint, 'owner' : string }
+export interface BurnRequest {
+  'id' : bigint,
+  'from' : string,
+  'amount' : bigint,
+}
 export type ENV = { 'PRODUCTION' : null } |
   { 'DEVELOPMENT' : null } |
   { 'STAGING' : null };
+export interface Image { 'blob' : Uint8Array | number[], 'mimetype' : string }
 export interface Liquidity {
   'id' : bigint,
   'owner' : string,
@@ -24,6 +30,11 @@ export interface Liquidity {
   'share' : bigint,
 }
 export interface MintRequest { 'id' : bigint, 'to' : string, 'amount' : bigint }
+export interface MintRequest__1 {
+  'id' : bigint,
+  'to' : string,
+  'amount' : bigint,
+}
 export type PoolId = { 'RUG' : bigint } |
   { 'POOL' : bigint } |
   { 'PUMP' : bigint };
@@ -35,33 +46,33 @@ export interface PoolInfo {
   'swaps' : bigint,
   'totalShares' : bigint,
 }
-export type PoolRequest = { 'RUG' : [bigint, bigint] } |
+export type PoolRequest = { 'RUG' : TokenRequest__1 } |
   { 'POOL' : [bigint, bigint] } |
-  { 'PUMP' : [bigint, bigint] };
-export interface Swap {
-  'id' : bigint,
-  'buy' : Amount,
-  'owner' : string,
-  'createdAt' : Time,
-  'sell' : Amount,
+  { 'PUMP' : PumpRequest };
+export interface PumpRequest {
+  'token' : bigint,
+  'holder' : MintRequest__1,
+  'tokenRequest' : TokenRequest__1,
 }
-export type Time = bigint;
-export interface Pioneer {
+export interface Pumpy {
   'add' : ActorMethod<[PoolId, [bigint, bigint]], TokenResult>,
   'allowance' : ActorMethod<[AllowanceRequest], bigint>,
   'approve' : ActorMethod<[ApproveRequest], TokenResult>,
   'balance' : ActorMethod<[BalanceRequest], bigint>,
+  'burn' : ActorMethod<[Array<BurnRequest>], Array<TokenResult>>,
   'createPools' : ActorMethod<[Array<PoolRequest>], Array<TokenResult>>,
   'createTokens' : ActorMethod<
     [TokenRequest, Array<MintRequest>],
     Array<TokenResult>
   >,
+  'deposit' : ActorMethod<[Token, bigint], TokenResult>,
   'fetchBalances' : ActorMethod<[], Array<[TokenInfo, bigint]>>,
   'fetchHolders' : ActorMethod<
     [bigint, bigint, bigint],
     Array<[string, bigint]>
   >,
   'fetchPools' : ActorMethod<[], Array<PoolInfo>>,
+  'fetchPumps' : ActorMethod<[], Array<PoolInfo>>,
   'fetchTokens' : ActorMethod<[], Array<TokenInfo>>,
   'fetchTransactions' : ActorMethod<
     [bigint, bigint, bigint],
@@ -95,7 +106,20 @@ export interface Pioneer {
     [Array<TransferFromRequest>],
     Array<TokenResult>
   >,
+  'withdraw' : ActorMethod<[Token, bigint], TokenResult>,
 }
+export interface Swap {
+  'id' : bigint,
+  'buy' : Amount,
+  'owner' : string,
+  'createdAt' : Time,
+  'sell' : Amount,
+}
+export type Time = bigint;
+export type Token = { 'ICP' : null } |
+  { 'CKUSDC' : null } |
+  { 'CKBTC' : null } |
+  { 'CKETH' : null };
 export type TokenError = {
     'GenericError' : { 'message' : string, 'error_code' : bigint }
   } |
@@ -105,21 +129,41 @@ export type TokenError = {
   { 'InsufficientFunds' : { 'balance' : bigint } };
 export interface TokenInfo {
   'decimals' : bigint,
+  'twitter' : [] | [string],
   'icon' : string,
   'name' : string,
   'createdAt' : Time,
   'minter' : string,
+  'website' : [] | [string],
   'supply' : bigint,
+  'discord' : [] | [string],
   'holders' : bigint,
   'transactions' : bigint,
+  'telegram' : [] | [string],
   'symbol' : string,
 }
 export interface TokenRequest {
   'decimals' : bigint,
-  'tribute' : string,
-  'icon' : string,
+  'twitter' : [] | [string],
   'name' : string,
   'minter' : string,
+  'website' : [] | [string],
+  'supply' : bigint,
+  'discord' : [] | [string],
+  'image' : Image,
+  'telegram' : [] | [string],
+  'symbol' : string,
+}
+export interface TokenRequest__1 {
+  'decimals' : bigint,
+  'twitter' : [] | [string],
+  'name' : string,
+  'minter' : string,
+  'website' : [] | [string],
+  'supply' : bigint,
+  'discord' : [] | [string],
+  'image' : Image,
+  'telegram' : [] | [string],
   'symbol' : string,
 }
 export type TokenResult = { 'Ok' : bigint } |
@@ -151,6 +195,6 @@ export interface TransferRequest {
   'to' : string,
   'amount' : bigint,
 }
-export interface _SERVICE extends Pioneer {}
-export declare const pioneer_idlFactory: IDL.InterfaceFactory;
+export interface _SERVICE extends Pumpy {}
+export declare const pumpy_idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];
