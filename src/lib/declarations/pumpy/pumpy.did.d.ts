@@ -30,11 +30,6 @@ export interface Liquidity {
   'share' : bigint,
 }
 export interface MintRequest { 'id' : bigint, 'to' : string, 'amount' : bigint }
-export interface MintRequest__1 {
-  'id' : bigint,
-  'to' : string,
-  'amount' : bigint,
-}
 export type PoolId = { 'RUG' : bigint } |
   { 'POOL' : bigint } |
   { 'PUMP' : bigint };
@@ -51,7 +46,7 @@ export type PoolRequest = { 'RUG' : TokenRequest__1 } |
   { 'PUMP' : PumpRequest };
 export interface PumpRequest {
   'token' : bigint,
-  'holder' : MintRequest__1,
+  'amount' : [] | [[bigint, bigint]],
   'tokenRequest' : TokenRequest__1,
 }
 export interface Pumpy {

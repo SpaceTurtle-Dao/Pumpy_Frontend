@@ -2,12 +2,20 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	// @ts-ignore
-	import { pumpyActor,principalStore,loadingStore,poolsStore,tokensStore,balancesStore } from '$lib/store';
+	import {
+		pumpyActor,
+		principalStore,
+		loadingStore,
+		poolsStore,
+		pumpsStore,
+		tokensStore,
+		balancesStore
+	} from '$lib/store';
 	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';
 	// @ts-ignore
-	import icblast from "@infu/icblast";
+	import icblast from '@infu/icblast';
 	import SmallSpinner from '$lib/components/smallSpinner.svelte';
 
 	let pumpyCanisterId = '';
@@ -25,7 +33,7 @@
 			pumpyCanisterId = 'yxccl-myaaa-aaaak-qihga-cai';
 			break;
 		}
-	};
+	}
 	console.log(import.meta.env.MODE);
 	console.log(pumpyCanisterId);
 
@@ -37,27 +45,26 @@
 	const setup = async () => {
 		let ic = icblast();
 		let pumpyQuery = await ic(pumpyCanisterId);
-		
+
 		// @ts-ignore
 		let pumpy = await window.ic.plug.createActor({
 			canisterId: pumpyCanisterId,
 			interfaceFactory: pumpy_idlFactory
 		});
-		
+
 		// @ts-ignore
 		let tokens = await pumpyQuery.fetchTokens();
 		let pools = await pumpyQuery.fetchPools();
-		let balances = await pumpy.fetchBalances()
+		let balances = await pumpy.fetchBalances();
 		pumpyActor.set(pumpy);
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		balancesStore.set(balances);
-		
 	};
 
 	async function requestConnect() {
 		isLoading = true;
-		title = "Connecting";
+		title = 'Connecting';
 		try {
 			// @ts-ignore
 			await window.ic.plug.requestConnect([whitelist]);
@@ -71,7 +78,7 @@
 			title = principal.toString().substring(0, 13) + '...';
 		} catch (e) {
 			console.log(e);
-		};
+		}
 		isLoading = false;
 	}
 	// @ts-ignore
@@ -102,7 +109,7 @@
 						_principal.toString()
 					);
 				} else {
-					await requestConnect()
+					await requestConnect();
 				}
 			} catch (e) {
 				await requestConnect();
@@ -124,10 +131,13 @@
 		// @ts-ignore
 		let tokens = await pumpyQuery.fetchTokens();
 		let pools = await pumpyQuery.fetchPools();
+		let pumps = await pumpyQuery.fetchPumps();
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
-		console.log(tokens)
-		console.log(pools)
+		pumpsStore.set(pumps);
+		console.log(tokens);
+		console.log(pools);
+		console.log(pumps);
 	});
 </script>
 
@@ -136,11 +146,14 @@
 	on:click={requestConnect}
 	type="button"
 	class="btn justify-center self-stretch px-4 py-2 text-sm text-black bg-emerald-200 rounded"
-	tabindex="0">
-	{#if isLoading}
-	<div class="flex flex-row">{title } <div class="pl-2"><div class="pt-0.5"><SmallSpinner/></div></div></div>
-	{:else}
-	{title}
-	{/if}
-	</button
+	tabindex="0"
 >
+	{#if isLoading}
+		<div class="flex flex-row">
+			{title}
+			<div class="pl-2"><div class="pt-0.5"><SmallSpinner /></div></div>
+		</div>
+	{:else}
+		{title}
+	{/if}
+</button>
