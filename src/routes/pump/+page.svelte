@@ -94,7 +94,7 @@
 					data-x-chunk-name="dashboard-05-chunk-1"
 					data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
 				>
-					<Card.Header class="pb-2">
+					<Card.Header class="pb-0">
 						<div class="flex flex-row justify-between">
 							<div class="flex flex-row gap-2">
 								<Avatar.Root class="hidden h-9 w-9 sm:flex">
