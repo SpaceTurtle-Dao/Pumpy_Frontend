@@ -11,7 +11,7 @@
 	import Footer from '$lib/components/footer.svelte';
 	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronUp} from 'lucide-svelte';
+	import { ChevronUp } from 'lucide-svelte';
 </script>
 
 <div class="flex flex-row gap-10">
@@ -40,7 +40,13 @@
 						</div>
 					</Card.Content>
 					<Card.Footer class="flex flex-col space-y-3">
-						<Input type="number" placeholder="0.0" />
+						<div class="flex flex-row gap-2 w-full">
+							<Input type="number" placeholder="0.0"></Input>
+							<Avatar.Root class="hidden h-9 w-9 sm:flex">
+								<Avatar.Image src="https://img.cryptorank.io/coins/internet%20computer1620718852173.png" alt="Avatar" />
+								<Avatar.Fallback>JL</Avatar.Fallback>
+							</Avatar.Root>
+						</div>
 						<div class="flex flex-row gap-4">
 							<Button variant="outline" size="sm">reset</Button>
 							<Button variant="outline" size="sm">1 ICP</Button>
@@ -65,7 +71,7 @@
 								<Card.Title class="text-4xl">$1329</Card.Title>
 							</Card.Content>
 							<Card.Footer class="gap-2">
-								<ChevronUp/>
+								<ChevronUp />
 								<p class="text-xs text-green-400">25%</p>
 								<p class="text-xs text-muted-foreground">1hr</p>
 							</Card.Footer>
@@ -83,7 +89,7 @@
 								<Card.Title class="text-4xl">$1329</Card.Title>
 							</Card.Content>
 							<Card.Footer class="gap-2">
-								<ChevronUp/>
+								<ChevronUp />
 								<p class="text-xs text-green-400">25%</p>
 								<p class="text-xs text-muted-foreground">1hr</p>
 							</Card.Footer>
