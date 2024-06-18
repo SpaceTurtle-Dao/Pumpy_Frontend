@@ -47,6 +47,7 @@
 		"@junobuild/core-peer": "^0.0.14",
 		"@material-ui/core": "^4.12.4",
 		"@material-ui/icons": "^4.11.3",
+		"@rodneylab/svelte-social-icons": "^0.0.30",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@types/react": "^17.0.80",
 		"@types/scheduler": "^0.16.8",
