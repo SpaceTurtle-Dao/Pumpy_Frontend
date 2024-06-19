@@ -5,7 +5,7 @@
     "replies": 0,
     "ticker": "NGMI",
     "description": "NGMI (ticker: NGMI): The Biggest Meme Coin",
-    "image": "path/to/image1.png"
+    "image": "src/assets/luna.png"
   },
   {
     "createdBy": "HngPxa",
@@ -13,7 +13,7 @@
     "replies": 29,
     "ticker": "Yichi",
     "description": "Yichi (ticker: Yichi): Yichi is the first yawning cat, tired of these shit coins.",
-    "image": "path/to/image2.png"
+    "image": "src/assets/luna.png"
   },
   {
     "createdBy": "HngPxa",
@@ -21,7 +21,7 @@
     "replies": 29,
     "ticker": "Yichi",
     "description": "Yichi (ticker: Yichi): Yichi is the first yawning cat, tired of these shit coins.",
-    "image": "path/to/image2.png"
+    "image": "src/assets/luna.png"
   },
   {
     "createdBy": "HngPxa",
@@ -29,7 +29,7 @@
     "replies": 29,
     "ticker": "Yichi",
     "description": "Yichi (ticker: Yichi): Yichi is the first yawning cat, tired of these shit coins.",
-    "image": "path/to/image2.png"
+    "image": "src/assets/luna.png"
   },
   {
     "createdBy": "HngPxa",
@@ -37,7 +37,7 @@
     "replies": 29,
     "ticker": "Yichi",
     "description": "Yichi (ticker: Yichi): Yichi is the first yawning cat, tired of these shit coins.",
-    "image": "path/to/image2.png"
+    "image": "src/assets/luna.png"
   },
   {
     "createdBy": "HngPxa",
@@ -45,6 +45,6 @@
     "replies": 29,
     "ticker": "Yichi",
     "description": "Yichi (ticker: Yichi): Yichi is the first yawning cat, tired of these shit coins.",
-    "image": "path/to/image2.png"
+    "image": "src/assets/luna.png"
   }
 ]
