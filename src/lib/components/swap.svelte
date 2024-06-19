@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Input } from '$lib/components/ui/input/index';
+	import { Input } from '$lib/components/ui/input/swap_index';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import {
 		ArrowUpDown,
@@ -49,13 +49,14 @@
 	pumpyActor.subscribe((p) => {
 		pumpy = p;
 	});
+
 	tokensStore.subscribe((t) => {
-		tokens = t;
-		console.log(t);
-		console.log('tokens');
-		if (tokens !== undefined && tokens.length > 0) {
-			_fromCurrency = tokens[0] ?? {};
-			_toCurrency = tokens[1] ?? {};
+		if (t !== undefined && t.length > 0) {
+			tokens = t;
+			fromCurrency.set(tokens[0]);
+			toCurrency.set(tokens[1]);
+		} else {
+			console.log('no tokens swap:62');
 		}
 	});
 	principalStore.subscribe((p) => {
@@ -117,7 +118,7 @@
 	}
 </script>
 
-<div class="min-h-screen flex flex-col justify-center items-center">
+<div class="min-h-screen w-full flex flex-col justify-center items-center">
 	<div class="w-120 bg-surface-700 rounded-lg p-9 shadow-lg">
 		<div class="flex justify-end mb-4">
 			<Button
@@ -166,30 +167,26 @@
 				</div>
 			</div>
 			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div
-					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
-				>
-					{#if tokens !== undefined && tokens.length > 0}
-						<img
-							src={_fromCurrency?.icon ?? ''}
-							alt={_fromCurrency?.name ?? ''}
-							class="w-6 h-6 mr-2"
-						/>
-						<span class="text-lg">{_fromCurrency?.symbol ?? ''}</span>
+				{#if tokens !== undefined && tokens.length > 0}
+					<div
+						class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
+					>
+						<img src={_fromCurrency.icon} alt={_fromCurrency.name} class="w-6 h-6 mr-2" />
+						<span class="text-lg">{_fromCurrency.symbol}</span>
 						<select
 							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 							on:change={(e) => console.log(e)}
 						>
-							<!-- {#each tokens as token}
+							{#each tokens as token}
 								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
-							{/each} -->
+							{/each}
 						</select>
-					{:else}
-						<div></div>
-					{/if}
-				</div>
+					</div>
+				{:else}
+					<div class="w-16 h-9 relative bg-secondary-600 rounded-full px-2 py-1"></div>
+				{/if}
 				<Input
-					class="input text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
+					class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 					type="text"
 					placeholder="0.00"
 				/>
@@ -209,22 +206,26 @@
 		<div class="mb-4">
 			<label class="block mb-2 text-sm">To receive</label>
 			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
-				<div
-					class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
-				>
-					<img src={_toCurrency?.icon ?? ''} alt={_toCurrency?.name ?? ''} class="w-6 h-6 mr-2" />
-					<span class="text-lg">{_toCurrency?.symbol ?? ''}</span>
-					<select
-						class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
-						on:change={(e) => console.log(e)}
+				{#if tokens !== undefined && tokens.length > 0}
+					<div
+						class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 					>
-						{#each tokens as token}
-							<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
-						{/each}
-					</select>
-				</div>
+						<img src={_toCurrency?.icon ?? ''} alt={_toCurrency?.name ?? ''} class="w-6 h-6 mr-2" />
+						<span class="text-lg">{_toCurrency?.symbol ?? ''}</span>
+						<select
+							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
+							on:change={(e) => console.log(e)}
+						>
+							{#each tokens as token}
+								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
+							{/each}
+						</select>
+					</div>
+				{:else}
+					<div class="w-16 h-9 relative bg-secondary-600 rounded-full px-2 py-1"></div>
+				{/if}
 				<Input
-					class="input text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
+					class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 					type="text"
 					placeholder="0.00"
 				/>

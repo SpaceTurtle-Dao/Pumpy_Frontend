@@ -61,7 +61,7 @@
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		balancesStore.set(balances);
-		console.log(tokens);
+		// console.log(tokens);
 	};
 
 	async function requestConnect() {
@@ -135,8 +135,10 @@
 		let pools = await pumpyQuery.fetchPools();
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
-		console.log(tokens);
-		console.log(pools);
+		// console.log(tokens);
+		// console.log(pools);
+		// console.log(tokens);
+		// console.log('plug:141');
 	});
 </script>
 
