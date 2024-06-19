@@ -219,6 +219,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'mint' : IDL.Func([IDL.Vec(MintRequest)], [IDL.Vec(TokenResult)], []),
     'poolInfo' : IDL.Func([IDL.Nat], [IDL.Opt(PoolInfo)], ['query']),
     'price' : IDL.Func([IDL.Nat], [IDL.Nat], []),
+    'pumpInfo' : IDL.Func([IDL.Nat], [IDL.Opt(PoolInfo)], ['query']),
     'remove' : IDL.Func([PoolId, IDL.Nat], [TokenResult], []),
     'swapTokenA' : IDL.Func([PoolId, IDL.Nat, IDL.Nat], [TokenResult], []),
     'swapTokenB' : IDL.Func([PoolId, IDL.Nat, IDL.Nat], [TokenResult], []),

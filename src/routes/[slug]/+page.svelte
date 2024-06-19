@@ -32,7 +32,10 @@
 		TokenRequest,
 		PoolInfo,
 
-		TokenResult
+		TokenResult,
+
+		TokenInfo
+
 
 
 	} from '$lib/declarations/pumpy/pumpy.did';
@@ -40,17 +43,27 @@
 	let id = $page.params.slug;
 	let pumpy: Pumpy;
 	let pool:PoolInfo;
+	let tokenA:TokenInfo;
+	let tokenB:TokenInfo;
 	let principal: Principal;
 	let isLoading = true;
 	let dialogOpen = false;
-	let decimals = 100000000;
+	let decimalsA = 100000000;
+	let decimalsB = 100000000;
 	let isTokenA = true;
 	let isBuy = true;
 	let slippage = BigInt(0);
 	let amount = BigInt(0);
 
 	const setup = async () => {
-
+		let _pool:[] | [PoolInfo] = await pumpy.pumpInfo(BigInt(id));
+		if(_pool.length > 0){
+			pool = _pool[0]!
+			let _tokenA:[] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[0]));
+			let _tokenB:[] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
+			tokenA = _tokenA[0]!
+			tokenB = _tokenB[0]!
+		};
 	};
 
 	const buy = async () => {

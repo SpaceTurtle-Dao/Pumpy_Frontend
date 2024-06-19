@@ -92,6 +92,7 @@ export interface Pumpy {
   'mint' : ActorMethod<[Array<MintRequest>], Array<TokenResult>>,
   'poolInfo' : ActorMethod<[bigint], [] | [PoolInfo]>,
   'price' : ActorMethod<[bigint], bigint>,
+  'pumpInfo' : ActorMethod<[bigint], [] | [PoolInfo]>,
   'remove' : ActorMethod<[PoolId, bigint], TokenResult>,
   'swapTokenA' : ActorMethod<[PoolId, bigint, bigint], TokenResult>,
   'swapTokenB' : ActorMethod<[PoolId, bigint, bigint], TokenResult>,
