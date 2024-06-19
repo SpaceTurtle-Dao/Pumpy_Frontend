@@ -10,6 +10,7 @@
 	import Trades from '$lib/components/trades.svelte';
 	import Holders from '$lib/components/holders.svelte';
 	import Footer from '$lib/components/footer.svelte';
+	// @ts-ignore
 	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUp } from 'lucide-svelte';
@@ -52,7 +53,7 @@
 	let tokenA:TokenInfo;
 	let tokenB:TokenInfo;
 	let principal: Principal;
-	let isLoading = true;
+	let isLoading = false;
 	let dialogOpen = false;
 	let decimalsA = 100000000;
 	let decimalsB = 100000000;
@@ -63,7 +64,7 @@
 	let transactions:Array<TransactionType> = [];
 
 	const setup = async () => {
-		let _pool:[] | [PoolInfo] = await pumpy.pumpInfo(BigInt(id));
+		/*let _pool:[] | [PoolInfo] = await pumpy.pumpInfo(BigInt(id));
 		if(_pool.length > 0){
 			pool = _pool[0]!
 			let _tokenA:[] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[0]));
@@ -72,7 +73,8 @@
 			tokenB = _tokenB[0]!
 			decimalsA = decimals(tokenA.decimals);
 			decimalsB = decimals(tokenB.decimals);
-		};
+			transactions = await pumpy.fet
+		};*/
 	};
 
 	const decimals = (value:BigInt) => {
