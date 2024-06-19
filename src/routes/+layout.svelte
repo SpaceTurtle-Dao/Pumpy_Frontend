@@ -8,7 +8,6 @@
 	import { env } from '$env/dynamic/public'
 	import Card from '$lib/components/card.svelte';
 	import { Toaster } from "$lib/components/ui/sonner";
-	import Board from '$lib/components/board.svelte';
 	let satelliteId = env.PUBLIC_SATELLITE;
 	
 	onMount(

@@ -52,14 +52,9 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
-  const MintRequest__1 = IDL.Record({
-    'id' : IDL.Nat,
-    'to' : IDL.Text,
-    'amount' : IDL.Nat,
-  });
   const PumpRequest = IDL.Record({
     'token' : IDL.Nat,
-    'holder' : MintRequest__1,
+    'amount' : IDL.Opt(IDL.Tuple(IDL.Nat, IDL.Nat)),
     'tokenRequest' : TokenRequest__1,
   });
   const PoolRequest = IDL.Variant({
