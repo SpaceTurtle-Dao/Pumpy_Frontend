@@ -34,7 +34,13 @@
 
 		TokenResult,
 
-		TokenInfo
+		TokenInfo,
+
+		Transaction,
+
+		TransactionType
+
+
 
 
 
@@ -54,6 +60,7 @@
 	let isBuy = true;
 	let slippage = BigInt(0);
 	let amount = BigInt(0);
+	let transactions:Array<TransactionType> = [];
 
 	const setup = async () => {
 		let _pool:[] | [PoolInfo] = await pumpy.pumpInfo(BigInt(id));
