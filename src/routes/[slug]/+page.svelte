@@ -63,7 +63,18 @@
 			let _tokenB:[] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
 			tokenA = _tokenA[0]!
 			tokenB = _tokenB[0]!
+			decimalsA = decimals(tokenA.decimals);
+			decimalsB = decimals(tokenB.decimals);
 		};
+	};
+
+	const decimals = (value:BigInt) => {
+		let _decimals = 1;
+		for (let i = 0; i < Number(value); i++) {
+			_decimals = _decimals * 10;
+		};
+
+		return _decimals
 	};
 
 	const buy = async () => {
