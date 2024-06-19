@@ -31,6 +31,6 @@
     <slot />
   </div>
 </div>
-<Footer />
+<!--<Footer />-->
 
 
