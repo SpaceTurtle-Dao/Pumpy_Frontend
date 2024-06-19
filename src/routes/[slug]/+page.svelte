@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Chart from '$lib/components/chart.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -12,8 +13,90 @@
 	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronUp } from 'lucide-svelte';
+	import type { Principal } from '@dfinity/principal';
+	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
+	import {
+		pumpyActor,
+		principalStore,
+		loadingStore,
+		poolsStore,
+		pumpsStore,
+		tokensStore,
+		balancesStore
+	} from '$lib/store';
+	import type {
+		MintRequest,
+		Pumpy,
+		PoolRequest,
+		PumpRequest,
+		TokenRequest,
+		PoolInfo,
+
+		TokenResult
+
+
+	} from '$lib/declarations/pumpy/pumpy.did';
+
+	let id = $page.params.slug;
+	let pumpy: Pumpy;
+	let pool:PoolInfo;
+	let principal: Principal;
+	let isLoading = true;
+	let dialogOpen = false;
+	let decimals = 100000000;
+	let isTokenA = true;
+	let isBuy = true;
+	let slippage = BigInt(0);
+	let amount = BigInt(0);
+
+	const setup = async () => {
+
+	};
+
+	const buy = async () => {
+		console.log("buy")
+		if(isTokenA){
+			return await pumpy.swapTokenB({"PUMP":pool.id},amount,slippage);
+		}else{
+			return await pumpy.swapTokenA({"PUMP":pool.id},amount,slippage);
+		};
+	};
+
+	const sell = async () => {
+		console.log("sell");
+		if(isTokenA){
+			return  await pumpy.swapTokenA({"PUMP":pool.id},amount,slippage);
+		}else{
+			return await pumpy.swapTokenB({"PUMP":pool.id},amount,slippage);
+		};
+	};
+	
+	const toggleToken = async () => {
+		isTokenA = !isTokenA;
+		console.log("toggle");
+	};
+
+	const setSlippage = async () => {
+		console.log("slippage");
+	};
+
+	const swap = async () => {
+		let result:TokenResult;
+		if(isBuy){
+			result = await buy();
+		}else{
+			result = await sell();
+		};
+		console.log("swap");
+	};
+	setup();
 </script>
 
+{#if isLoading}
+<div class="w-full flex justify-center">
+	<MediumSpinner/>
+</div>
+{:else}
 <div class="flex flex-row gap-10">
 	<div class="w-full basis-3/5">
 		<div class="flex flex-col space-y-8">
@@ -27,15 +110,15 @@
 				<Card.Root class="space-y-1">
 					<Card.Header>
 						<div class="flex flex-row gap-2">
-							<Button class="w-full">Buy</Button>
-							<Button class="w-full" variant="secondary">Sell</Button>
+							<Button class="w-full" on:click={buy}>Buy</Button>
+							<Button class="w-full" variant="secondary" on:click={sell}>Sell</Button>
 						</div>
 					</Card.Header>
 					<Card.Content>
 						<div class="flex flex-col space-y-4">
 							<div class="flex flex-row justify-between">
-								<Button class="h-6 ">switch to ICP</Button>
-								<Button class="h-6">set max slippage</Button>
+								<Button class="h-6 " on:click={toggleToken}>switch to ICP</Button>
+								<Button class="h-6" on:click={setSlippage}>set max slippage</Button>
 							</div>
 						</div>
 					</Card.Content>
@@ -43,7 +126,10 @@
 						<div class="flex flex-row gap-2 w-full">
 							<Input type="number" placeholder="0.0"></Input>
 							<Avatar.Root class="hidden h-9 w-9 sm:flex">
-								<Avatar.Image src="https://img.cryptorank.io/coins/internet%20computer1620718852173.png" alt="Avatar" />
+								<Avatar.Image
+									src="https://img.cryptorank.io/coins/internet%20computer1620718852173.png"
+									alt="Avatar"
+								/>
 								<Avatar.Fallback>JL</Avatar.Fallback>
 							</Avatar.Root>
 						</div>
@@ -53,7 +139,7 @@
 							<Button variant="outline" size="sm">5 ICP</Button>
 							<Button variant="outline" size="sm">10 ICP</Button>
 						</div>
-						<Button class="w-full">place trade</Button>
+						<Button class="w-full" on:click={swap}>place trade</Button>
 					</Card.Footer>
 				</Card.Root>
 			</div>
@@ -222,3 +308,4 @@
 		</div>
 	</div>
 </div>
+{/if}
