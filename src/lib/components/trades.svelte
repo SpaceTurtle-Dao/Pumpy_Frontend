@@ -126,8 +126,8 @@
 									</Table.Head>
 									<Table.Head>Name</Table.Head>
 									<Table.Head>Type</Table.Head>
-									<Table.Head class="hidden md:table-cell">{tokenA.name.toUpperCase()}</Table.Head>
-									<Table.Head class="hidden md:table-cell">{tokenB.name.toUpperCase()}</Table.Head>
+									<Table.Head class="hidden md:table-cell">{tokenA.symbol.toUpperCase()}</Table.Head>
+									<Table.Head class="hidden md:table-cell">{tokenB.symbol.toUpperCase()}</Table.Head>
 									<Table.Head class="hidden md:table-cell">Created at</Table.Head>
 									<Table.Head>
 										<span class="hidden md:table-cell">Transaction</span>
