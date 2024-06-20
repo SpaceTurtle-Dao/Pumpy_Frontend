@@ -116,6 +116,21 @@
 		// console.log(res);
 		// return res;
 	}
+
+	async function getbalance() {
+		let mintRes = {
+			id: BigInt(0),
+			to: 'nzg6d-jt6c6-z6vyo-s3pfx-5ocgv-6vbuw-uwemh-5maxd-sx2tg-3ft77-2qe',
+			amount: BigInt(1000000)
+		};
+		let mintRes1 = {
+			id: BigInt(1),
+			to: 'nzg6d-jt6c6-z6vyo-s3pfx-5ocgv-6vbuw-uwemh-5maxd-sx2tg-3ft77-2qe',
+			amount: BigInt(1000000)
+		};
+		// var res = await pumpy([mintRes]);
+		// console.log(res);
+	}
 </script>
 
 <div class="min-h-screen w-full flex flex-col justify-center items-center">
@@ -171,7 +186,7 @@
 					<div
 						class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 					>
-						<img src={_fromCurrency.icon} alt={_fromCurrency.name} class="w-6 h-6 mr-2" />
+						<img src={_fromCurrency.icon} alt={_fromCurrency.symbol} class="w-6 h-6 mr-2" />
 						<span class="text-lg">{_fromCurrency.symbol}</span>
 						<select
 							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
@@ -235,7 +250,9 @@
 		<div class="py-2">
 			<Button
 				class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600 text-surface-700"
-				on:click={() => {}}
+				on:click={async () => {
+					await getbalance();
+				}}
 			>
 				SWAP
 			</Button>
