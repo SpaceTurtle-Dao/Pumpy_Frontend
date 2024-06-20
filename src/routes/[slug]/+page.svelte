@@ -234,11 +234,12 @@
 					</div>
 				</div>
 				<div class="flex flex-row gap-4">
-					<BalanceCard title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
-					<BalanceCard title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
+					<BalanceCard icon={tokenA.icon} title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
+					<BalanceCard icon={tokenB.icon} title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
 					<CreatorCard/>
 				</div>
 				<DescriptionCard title={tokenA.name} description={tokenA.description}/>
+				<Holders/>
 			</div>
 		</div>
 	{/if}

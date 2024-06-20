@@ -3,6 +3,7 @@
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	export let title: string;
 	export let value: string;
+    export let icon: string;
 </script>
 
 <Card.Root
@@ -13,7 +14,7 @@
 	<Card.Header class="pb-2">
 		<div class="flex flex-row gap-2">
 			<Avatar.Root class="hidden h-9 w-9 sm:flex">
-				<Avatar.Image src="luna.png" alt="Avatar" />
+				<Avatar.Image src={icon} alt="Avatar" />
 				<Avatar.Fallback>OM</Avatar.Fallback>
 			</Avatar.Root>
 			<Card.Description class="pt-2">{title}</Card.Description>
