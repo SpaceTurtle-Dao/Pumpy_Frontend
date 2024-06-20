@@ -96,4 +96,4 @@
 	});
 </script>
 
-<div id="container" class="w-full h-96"></div>
+<div id="container" class="h-96"></div>

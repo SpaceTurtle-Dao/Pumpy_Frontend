@@ -36,24 +36,16 @@
 		TokenInfo,
 		Transaction,
 		TransactionType,
-		Swap,
-
-		BalanceRequest
-
+		Swap
 	} from '$lib/declarations/pumpy/pumpy.did';
-	import PumpSwap from '$lib/components/pumpSwap.svelte';
-	import AnalyticsCard from '$lib/components/analyticsCard.svelte';
-	import CreatorCard from '$lib/components/creatorCard.svelte';
-	import BalanceCard from '$lib/components/BalanceCard.svelte';
-	import AnalyticsProgressCard from '$lib/components/analyticsProgressCard.svelte';
 
 	interface AnalyticsData {
 		marketCap: string;
 		marketCapPercentage: string;
-		isMarketCapUp: boolean;
+		isMarketCapUp: Boolean;
 		volume: string;
 		volumePercentage: string;
-		isVolumeUp: boolean;
+		isVolumeUp: Boolean;
 		liquidy: string;
 	}
 
@@ -73,8 +65,6 @@
 	let amount = BigInt(0);
 	let swaps: Array<Swap> = [];
 	let analyticsData: AnalyticsData;
-	let tokenABalance:string;
-	let tokenBBalance:string;
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -106,21 +96,11 @@
 			let _tokenB: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
 			tokenA = _tokenA[0]!;
 			tokenB = _tokenB[0]!;
-			let balanceRequestA:BalanceRequest ={
-				id:pool.pair[0],
-				owner:principal.toString()
-			};
-			let balanceRequestB:BalanceRequest ={
-				id:pool.pair[1],
-				owner:principal.toString()
-			};
-			tokenABalance = (Number(await pumpy.balance(balanceRequestA))/decimals(tokenA.decimals)).toString();
-			tokenBBalance = (Number(await pumpy.balance(balanceRequestB))/decimals(tokenB.decimals)).toString();
 			decimalsA = decimals(tokenA.decimals);
 			decimalsB = decimals(tokenB.decimals);
 			//transactions = await pumpy.f
-			let isVolumeUp: boolean;
-			let isMarketCapUp: boolean = false;
+			let isVolumeUp: Boolean;
+			let isMarketCapUp: Boolean = false;
 			if (pool.analytics.volume >= pool.analytics.hourVolume) {
 				isVolumeUp = true;
 			} else {
@@ -144,10 +124,6 @@
 			};
 		}
 	};
-
-	principalStore.subscribe((value)=>{
-		principal = value;
-	});
 
 	pumpyActor.subscribe((value) => {
 		pumpy = value;
@@ -201,44 +177,38 @@
 	};
 </script>
 
-<div class="w-full">
-	{#if analyticsData == undefined}
-		<div class="flex justify-center">
-			<MediumSpinner />
-		</div>
-	{:else}
-		<div class="flex flex-row gap-4">
-			<div class="basis-3/4 space-y-4">
-				<Chart />
-				<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
-			</div>
-			<div class="basis-1/4 space-y-4">
-				<div class="flex flex-row gap-4">
-					<PumpSwap />
-					<div class="space-y-4">
-						<div class="flex flex-row gap-4">
-							<AnalyticsCard title={"Market Cap"}  value={analyticsData.marketCap} percentage={analyticsData.marketCapPercentage} isUp={analyticsData.isMarketCapUp}/>
-							<AnalyticsCard title={"Volume"}  value={analyticsData.volume} percentage={analyticsData.volumePercentage} isUp={analyticsData.isVolumeUp}/>
-						</div>
-						<div class="flex flex-row gap-4">
-							<AnalyticsProgressCard title={"Liquidity"} value={NumberFormatter(
-								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-								3
-							)}/>
-							<AnalyticsProgressCard title={"King of the kill progress"} value={NumberFormatter(
-								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-								3
-							)}/>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-row gap-4">
-					<BalanceCard title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
-					<BalanceCard title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
-					<CreatorCard/>
-				</div>
-				
-			</div>
-		</div>
-	{/if}
-</div>
+<Card.Root class="space-y-1">
+    <Card.Header>
+        <div class="flex flex-row gap-2">
+            <Button class="w-full" on:click={buy}>Buy</Button>
+            <Button class="w-full" variant="secondary" on:click={sell}>Sell</Button>
+        </div>
+    </Card.Header>
+    <Card.Content>
+        <div class="flex flex-col space-y-4">
+            <div class="flex flex-row justify-between">
+                <Button class="h-6 " on:click={toggleToken}>switch to ICP</Button>
+                <Button class="h-6" on:click={setSlippage}>set max slippage</Button>
+            </div>
+        </div>
+    </Card.Content>
+    <Card.Footer class="flex flex-col space-y-3">
+        <div class="flex flex-row gap-2 w-full">
+            <Input type="number" placeholder="0.0"></Input>
+            <Avatar.Root class="hidden h-9 w-9 sm:flex">
+                <Avatar.Image
+                    src="https://img.cryptorank.io/coins/internet%20computer1620718852173.png"
+                    alt="Avatar"
+                />
+                <Avatar.Fallback>JL</Avatar.Fallback>
+            </Avatar.Root>
+        </div>
+        <div class="flex flex-row gap-4">
+            <Button variant="outline" size="sm">reset</Button>
+            <Button variant="outline" size="sm">1 ICP</Button>
+            <Button variant="outline" size="sm">5 ICP</Button>
+            <Button variant="outline" size="sm">10 ICP</Button>
+        </div>
+        <Button class="w-full" on:click={swap}>place trade</Button>
+    </Card.Footer>
+</Card.Root>
