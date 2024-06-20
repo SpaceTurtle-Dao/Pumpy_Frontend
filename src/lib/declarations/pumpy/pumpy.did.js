@@ -45,6 +45,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'twitter' : IDL.Opt(IDL.Text),
     'name' : IDL.Text,
     'minter' : IDL.Text,
+    'description' : IDL.Text,
     'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
     'discord' : IDL.Opt(IDL.Text),
@@ -67,6 +68,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'twitter' : IDL.Opt(IDL.Text),
     'name' : IDL.Text,
     'minter' : IDL.Text,
+    'description' : IDL.Text,
     'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
     'discord' : IDL.Opt(IDL.Text),
@@ -93,6 +95,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'name' : IDL.Text,
     'createdAt' : Time,
     'minter' : IDL.Text,
+    'description' : IDL.Text,
     'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
     'discord' : IDL.Opt(IDL.Text),
@@ -100,6 +103,12 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'transactions' : IDL.Nat,
     'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
+  });
+  const Liquidity__1 = IDL.Record({
+    'id' : IDL.Nat,
+    'owner' : IDL.Text,
+    'createdAt' : Time,
+    'share' : IDL.Nat,
   });
   const Liquidity = IDL.Record({
     'id' : IDL.Nat,
@@ -150,6 +159,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'name' : IDL.Text,
     'createdAt' : Time,
     'minter' : IDL.Text,
+    'description' : IDL.Text,
     'website' : IDL.Opt(IDL.Text),
     'supply' : IDL.Nat,
     'discord' : IDL.Opt(IDL.Text),
@@ -168,6 +178,14 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'tokenA' : TokenInfo__1,
     'tokenB' : TokenInfo__1,
     'totalShares' : IDL.Nat,
+  });
+  const Swap__1 = IDL.Record({
+    'id' : IDL.Nat,
+    'owner' : IDL.Text,
+    'createdAt' : Time,
+    'swapType' : SwapType,
+    'tokenA' : IDL.Nat,
+    'tokenB' : IDL.Nat,
   });
   const AnalyticsData__1 = IDL.Record({
     'liquidty' : IDL.Nat,
@@ -216,12 +234,47 @@ export const pumpy_idlFactory = ({ IDL }) => {
         [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Nat))],
         ['query'],
       ),
+    'fetchPoolAdd' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(Liquidity__1)],
+        ['query'],
+      ),
+    'fetchPoolRemove' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(Liquidity__1)],
+        ['query'],
+      ),
     'fetchPoolTransactions' : IDL.Func(
         [IDL.Nat, IDL.Nat, IDL.Nat],
         [IDL.Vec(TransactionType)],
         ['query'],
       ),
     'fetchPools' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
+    'fetchPoolsSwaps' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(Swap__1)],
+        ['query'],
+      ),
+    'fetchPumpAdd' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(Liquidity__1)],
+        ['query'],
+      ),
+    'fetchPumpRemove' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(Liquidity__1)],
+        ['query'],
+      ),
+    'fetchPumpSwaps' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(Swap__1)],
+        ['query'],
+      ),
+    'fetchPumpTransactions' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(TransactionType)],
+        ['query'],
+      ),
     'fetchPumps' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
     'fetchTokens' : IDL.Func([], [IDL.Vec(TokenInfo)], ['query']),
     'fetchTransactions' : IDL.Func(

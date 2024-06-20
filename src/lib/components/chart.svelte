@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { createChart } from 'lightweight-charts';
-
+	//const data = [];
 	onMount(() => {
 		// @ts-ignore
 		function generateRandomCandlestickData(numCandles) {
@@ -96,4 +96,4 @@
 	});
 </script>
 
-<div id="container" class="w-full h-96"></div>
+<div id="container" class="h-96"></div>

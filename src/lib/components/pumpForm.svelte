@@ -142,7 +142,8 @@
 			telegram: [_formData.telegram],
 			twitter: [_formData.twitter],
 			discord: [_formData.discord],
-			website: [_formData.website]
+			website: [_formData.website],
+			description: _formData.description,
 		};
 		let request: PumpRequest = {
 			token: BigInt(token),
