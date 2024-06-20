@@ -16,9 +16,6 @@
     </div>
   </div>
   <div class="flex items-center space-x-8">
-    <a href="#" class="hover:text-gray-400">GENESIS</a>
-    <a href="#" class="hover:text-gray-400">PATHFINDER</a>
-    <a href="#" class="hover:text-gray-400">VANGUARD</a>
     <a href="#" class="hover:text-gray-400">DEBUG</a>
     <a href="" class="hover:text-gray-400">WHITE-PAPER</a>
     <Plug/>

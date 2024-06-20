@@ -101,14 +101,6 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'telegram' : IDL.Opt(IDL.Text),
     'symbol' : IDL.Text,
   });
-  const PoolInfo = IDL.Record({
-    'id' : IDL.Nat,
-    'createdAt' : Time,
-    'pair' : IDL.Tuple(IDL.Nat, IDL.Nat),
-    'precision' : IDL.Nat,
-    'swaps' : IDL.Nat,
-    'totalShares' : IDL.Nat,
-  });
   const Liquidity = IDL.Record({
     'id' : IDL.Nat,
     'owner' : IDL.Text,
@@ -122,13 +114,14 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'createdAt' : Time,
     'amount' : IDL.Nat,
   });
-  const Amount = IDL.Record({ 'value' : IDL.Nat, 'symbol' : IDL.Text });
+  const SwapType = IDL.Variant({ 'Buy' : IDL.Null, 'Sell' : IDL.Null });
   const Swap = IDL.Record({
     'id' : IDL.Nat,
-    'buy' : Amount,
     'owner' : IDL.Text,
     'createdAt' : Time,
-    'sell' : Amount,
+    'swapType' : SwapType,
+    'tokenA' : IDL.Nat,
+    'tokenB' : IDL.Nat,
   });
   const TransactionType = IDL.Variant({
     'Add' : Liquidity,
@@ -140,6 +133,50 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'Remove' : Liquidity,
     'Transfer' : Transaction,
     'TransferFrom' : Transaction,
+  });
+  const AnalyticsData = IDL.Record({
+    'liquidty' : IDL.Nat,
+    'weekVolume' : IDL.Nat,
+    'marketCap' : IDL.Nat,
+    'dayVolume' : IDL.Nat,
+    'volume' : IDL.Nat,
+    'price' : IDL.Nat,
+    'hourVolume' : IDL.Nat,
+  });
+  const TokenInfo__1 = IDL.Record({
+    'decimals' : IDL.Nat,
+    'twitter' : IDL.Opt(IDL.Text),
+    'icon' : IDL.Text,
+    'name' : IDL.Text,
+    'createdAt' : Time,
+    'minter' : IDL.Text,
+    'website' : IDL.Opt(IDL.Text),
+    'supply' : IDL.Nat,
+    'discord' : IDL.Opt(IDL.Text),
+    'holders' : IDL.Nat,
+    'transactions' : IDL.Nat,
+    'telegram' : IDL.Opt(IDL.Text),
+    'symbol' : IDL.Text,
+  });
+  const PoolInfo = IDL.Record({
+    'id' : IDL.Nat,
+    'createdAt' : Time,
+    'pair' : IDL.Tuple(IDL.Nat, IDL.Nat),
+    'analytics' : AnalyticsData,
+    'precision' : IDL.Nat,
+    'swaps' : IDL.Nat,
+    'tokenA' : TokenInfo__1,
+    'tokenB' : TokenInfo__1,
+    'totalShares' : IDL.Nat,
+  });
+  const AnalyticsData__1 = IDL.Record({
+    'liquidty' : IDL.Nat,
+    'weekVolume' : IDL.Nat,
+    'marketCap' : IDL.Nat,
+    'dayVolume' : IDL.Nat,
+    'volume' : IDL.Nat,
+    'price' : IDL.Nat,
+    'hourVolume' : IDL.Nat,
   });
   const TransferRequest = IDL.Record({
     'id' : IDL.Nat,
@@ -177,6 +214,11 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'fetchHolders' : IDL.Func(
         [IDL.Nat, IDL.Nat, IDL.Nat],
         [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Nat))],
+        ['query'],
+      ),
+    'fetchPoolTransactions' : IDL.Func(
+        [IDL.Nat, IDL.Nat, IDL.Nat],
+        [IDL.Vec(TransactionType)],
         ['query'],
       ),
     'fetchPools' : IDL.Func([], [IDL.Vec(PoolInfo)], ['query']),
@@ -217,11 +259,15 @@ export const pumpy_idlFactory = ({ IDL }) => {
       ),
     'lock' : IDL.Func([IDL.Nat], [TokenResult], []),
     'mint' : IDL.Func([IDL.Vec(MintRequest)], [IDL.Vec(TokenResult)], []),
+    'poolAnalytics' : IDL.Func([IDL.Nat], [IDL.Opt(AnalyticsData__1)], []),
     'poolInfo' : IDL.Func([IDL.Nat], [IDL.Opt(PoolInfo)], ['query']),
     'price' : IDL.Func([IDL.Nat], [IDL.Nat], []),
+    'pumpAnalytics' : IDL.Func([IDL.Nat], [IDL.Opt(AnalyticsData__1)], []),
+    'pumpInfo' : IDL.Func([IDL.Nat], [IDL.Opt(PoolInfo)], ['query']),
     'remove' : IDL.Func([PoolId, IDL.Nat], [TokenResult], []),
     'swapTokenA' : IDL.Func([PoolId, IDL.Nat, IDL.Nat], [TokenResult], []),
     'swapTokenB' : IDL.Func([PoolId, IDL.Nat, IDL.Nat], [TokenResult], []),
+    'testMint' : IDL.Func([MintRequest], [TokenResult], []),
     'tokenInfo' : IDL.Func([IDL.Nat], [IDL.Opt(TokenInfo)], ['query']),
     'transfer' : IDL.Func([TransferRequest], [TokenResult], []),
     'transferFrom' : IDL.Func(

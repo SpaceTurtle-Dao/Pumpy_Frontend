@@ -32,15 +32,6 @@
     <slot />
   </div>
 </div>
-<Footer />
-
-<!-- 
-<div class="min-h-screen p-10">
-  <div class="flex space-x-6">
-	<Toaster />
-    <slot />
-  </div>
-</div>
-<Footer /> -->
+<!--<Footer />-->
 
 

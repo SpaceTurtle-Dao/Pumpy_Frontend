@@ -27,7 +27,6 @@
 				var hour = date.toLocaleString('default', { hour: '2-digit' });
 				// Generate yyyy-mm-dd date string
 				// @ts-ignore
-				// @ts-ignore
 				var formattedDate = year + '-' + month + '-' + day + '-' + hour;
 				data.push({
 					time: time, // assuming each candle represents 1 minute
@@ -44,15 +43,11 @@
 		}
 
 		// Usage example:
-		const numCandles = 100;
+		const numCandles = 1000;
 		// @ts-ignore
 		const candlestickData = generateRandomCandlestickData(numCandles);
 		console.log(candlestickData);
 
-		// @ts-ignore
-		// @ts-ignore
-		// @ts-ignore
-		// @ts-ignore
 		// @ts-ignore
 		const chartOptions = {
 			layout: { textColor: 'black', background: { type: 'solid', color: 'white' } }
