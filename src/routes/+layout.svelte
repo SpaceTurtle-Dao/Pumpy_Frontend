@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Navbar from '$lib/components/navbar.svelte';
 	import Footer from '$lib/components/footer.svelte';
-	import FeaturedDAOs from '$lib/components/FeaturedDao.svelte';
 	import { onMount } from 'svelte';
 	import { initJuno } from '@junobuild/core-peer';
 	import '../app.css';

@@ -46,6 +46,12 @@ export interface Liquidity {
   'createdAt' : Time,
   'share' : bigint,
 }
+export interface Liquidity__1 {
+  'id' : bigint,
+  'owner' : string,
+  'createdAt' : Time,
+  'share' : bigint,
+}
 export interface MintRequest { 'id' : bigint, 'to' : string, 'amount' : bigint }
 export interface MintRequest__1 {
   'id' : bigint,
@@ -91,11 +97,27 @@ export interface Pumpy {
     [bigint, bigint, bigint],
     Array<[string, bigint]>
   >,
+  'fetchPoolAdd' : ActorMethod<[bigint, bigint, bigint], Array<Liquidity__1>>,
+  'fetchPoolRemove' : ActorMethod<
+    [bigint, bigint, bigint],
+    Array<Liquidity__1>
+  >,
   'fetchPoolTransactions' : ActorMethod<
     [bigint, bigint, bigint],
     Array<TransactionType>
   >,
   'fetchPools' : ActorMethod<[], Array<PoolInfo>>,
+  'fetchPoolsSwaps' : ActorMethod<[bigint, bigint, bigint], Array<Swap__1>>,
+  'fetchPumpAdd' : ActorMethod<[bigint, bigint, bigint], Array<Liquidity__1>>,
+  'fetchPumpRemove' : ActorMethod<
+    [bigint, bigint, bigint],
+    Array<Liquidity__1>
+  >,
+  'fetchPumpSwaps' : ActorMethod<[bigint, bigint, bigint], Array<Swap__1>>,
+  'fetchPumpTransactions' : ActorMethod<
+    [bigint, bigint, bigint],
+    Array<TransactionType>
+  >,
   'fetchPumps' : ActorMethod<[], Array<PoolInfo>>,
   'fetchTokens' : ActorMethod<[], Array<TokenInfo>>,
   'fetchTransactions' : ActorMethod<
@@ -146,6 +168,14 @@ export interface Swap {
 }
 export type SwapType = { 'Buy' : null } |
   { 'Sell' : null };
+export interface Swap__1 {
+  'id' : bigint,
+  'owner' : string,
+  'createdAt' : Time,
+  'swapType' : SwapType,
+  'tokenA' : bigint,
+  'tokenB' : bigint,
+}
 export type Time = bigint;
 export type Token = { 'ICP' : null } |
   { 'CKUSDC' : null } |
@@ -165,6 +195,7 @@ export interface TokenInfo {
   'name' : string,
   'createdAt' : Time,
   'minter' : string,
+  'description' : string,
   'website' : [] | [string],
   'supply' : bigint,
   'discord' : [] | [string],
@@ -180,6 +211,7 @@ export interface TokenInfo__1 {
   'name' : string,
   'createdAt' : Time,
   'minter' : string,
+  'description' : string,
   'website' : [] | [string],
   'supply' : bigint,
   'discord' : [] | [string],
@@ -193,6 +225,7 @@ export interface TokenRequest {
   'twitter' : [] | [string],
   'name' : string,
   'minter' : string,
+  'description' : string,
   'website' : [] | [string],
   'supply' : bigint,
   'discord' : [] | [string],
@@ -205,6 +238,7 @@ export interface TokenRequest__1 {
   'twitter' : [] | [string],
   'name' : string,
   'minter' : string,
+  'description' : string,
   'website' : [] | [string],
   'supply' : bigint,
   'discord' : [] | [string],
