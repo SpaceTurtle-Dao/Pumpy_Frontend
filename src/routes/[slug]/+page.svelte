@@ -46,6 +46,7 @@
 	import CreatorCard from '$lib/components/creatorCard.svelte';
 	import BalanceCard from '$lib/components/BalanceCard.svelte';
 	import AnalyticsProgressCard from '$lib/components/analyticsProgressCard.svelte';
+	import DescriptionCard from '$lib/components/descriptionCard.svelte';
 
 	interface AnalyticsData {
 		marketCap: string;
@@ -237,7 +238,7 @@
 					<BalanceCard title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
 					<CreatorCard/>
 				</div>
-				
+				<DescriptionCard title={tokenA.name} description={tokenA.description}/>
 			</div>
 		</div>
 	{/if}
