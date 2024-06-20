@@ -209,11 +209,11 @@
 		</div>
 	{:else}
 		<div class="flex flex-row gap-4">
-			<div class="basis-3/4 space-y-4">
+			<div class="basis-1/2 space-y-4">
 				<Chart />
 				<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
 			</div>
-			<div class="basis-1/4 space-y-4">
+			<div class="basis-1/2 space-y-4">
 				<div class="flex flex-row gap-4">
 					<PumpSwap />
 					<div class="space-y-4">
@@ -233,13 +233,23 @@
 						</div>
 					</div>
 				</div>
+				
+				
 				<div class="flex flex-row gap-4">
-					<BalanceCard icon={tokenA.icon} title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
-					<BalanceCard icon={tokenB.icon} title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
-					<CreatorCard/>
+					<DescriptionCard title={tokenA.name} description={tokenA.description}/>
+					<div class="flex flex-row gap-4">
+						<BalanceCard icon={tokenA.icon} title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
+						<BalanceCard icon={tokenB.icon} title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
+						
+					</div>
+					
 				</div>
-				<DescriptionCard title={tokenA.name} description={tokenA.description}/>
+				<div class="flex flex-row gap-4">
+					
 				<Holders/>
+				<CreatorCard/>
+				</div>
+				
 			</div>
 		</div>
 	{/if}

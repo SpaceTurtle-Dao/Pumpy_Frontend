@@ -177,7 +177,7 @@
 	};
 </script>
 
-<Card.Root class="space-y-1">
+<Card.Root class="space-y-1 min-w-72">
     <Card.Header>
         <div class="flex flex-row gap-2">
             <Button class="w-full" on:click={buy}>Buy</Button>
