@@ -37,9 +37,7 @@
 		Transaction,
 		TransactionType,
 		Swap,
-
 		BalanceRequest
-
 	} from '$lib/declarations/pumpy/pumpy.did';
 	import PumpSwap from '$lib/components/pumpSwap.svelte';
 	import AnalyticsCard from '$lib/components/analyticsCard.svelte';
@@ -74,8 +72,8 @@
 	let amount = BigInt(0);
 	let swaps: Array<Swap> = [];
 	let analyticsData: AnalyticsData;
-	let tokenABalance:string;
-	let tokenBBalance:string;
+	let tokenABalance: string;
+	let tokenBBalance: string;
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -107,16 +105,20 @@
 			let _tokenB: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
 			tokenA = _tokenA[0]!;
 			tokenB = _tokenB[0]!;
-			let balanceRequestA:BalanceRequest ={
-				id:pool.pair[0],
-				owner:principal.toString()
+			let balanceRequestA: BalanceRequest = {
+				id: pool.pair[0],
+				owner: principal.toString()
 			};
-			let balanceRequestB:BalanceRequest ={
-				id:pool.pair[1],
-				owner:principal.toString()
+			let balanceRequestB: BalanceRequest = {
+				id: pool.pair[1],
+				owner: principal.toString()
 			};
-			tokenABalance = (Number(await pumpy.balance(balanceRequestA))/decimals(tokenA.decimals)).toString();
-			tokenBBalance = (Number(await pumpy.balance(balanceRequestB))/decimals(tokenB.decimals)).toString();
+			tokenABalance = (
+				Number(await pumpy.balance(balanceRequestA)) / decimals(tokenA.decimals)
+			).toString();
+			tokenBBalance = (
+				Number(await pumpy.balance(balanceRequestB)) / decimals(tokenB.decimals)
+			).toString();
 			decimalsA = decimals(tokenA.decimals);
 			decimalsB = decimals(tokenB.decimals);
 			//transactions = await pumpy.f
@@ -146,7 +148,7 @@
 		}
 	};
 
-	principalStore.subscribe((value)=>{
+	principalStore.subscribe((value) => {
 		principal = value;
 	});
 
@@ -215,41 +217,62 @@
 			</div>
 			<div class="basis-1/2 space-y-4">
 				<div class="flex flex-row gap-4">
-					<PumpSwap />
+					<PumpSwap {pumpy} {pool} {tokenA} {tokenB} />
 					<div class="space-y-4">
 						<div class="flex flex-row gap-4">
-							<AnalyticsCard title={"Market Cap"}  value={analyticsData.marketCap} percentage={analyticsData.marketCapPercentage} isUp={analyticsData.isMarketCapUp}/>
-							<AnalyticsCard title={"Volume"}  value={analyticsData.volume} percentage={analyticsData.volumePercentage} isUp={analyticsData.isVolumeUp}/>
+							<AnalyticsCard
+								title={'Market Cap'}
+								value={analyticsData.marketCap}
+								percentage={analyticsData.marketCapPercentage}
+								isUp={analyticsData.isMarketCapUp}
+							/>
+							<AnalyticsCard
+								title={'Volume'}
+								value={analyticsData.volume}
+								percentage={analyticsData.volumePercentage}
+								isUp={analyticsData.isVolumeUp}
+							/>
 						</div>
 						<div class="flex flex-row gap-4">
-							<AnalyticsProgressCard title={"Liquidity"} value={NumberFormatter(
-								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-								3
-							)}/>
-							<AnalyticsProgressCard title={"King of the kill progress"} value={NumberFormatter(
-								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-								3
-							)}/>
+							<AnalyticsProgressCard
+								title={'Liquidity'}
+								value={NumberFormatter(
+									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									3
+								)}
+							/>
+							<AnalyticsProgressCard
+								title={'King of the kill progress'}
+								value={NumberFormatter(
+									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									3
+								)}
+							/>
 						</div>
 					</div>
 				</div>
-				
-				
+
 				<div class="flex flex-row gap-4">
-					<DescriptionCard title={tokenA.name} description={tokenA.description}/>
-					<div class="flex flex-row gap-4">
-						<BalanceCard icon={tokenA.icon} title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
-						<BalanceCard icon={tokenB.icon} title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
-						
+					<div class="basis-1/3">
+						<BalanceCard
+							icon={tokenA.icon}
+							title={tokenA.name}
+							value={NumberFormatter(tokenABalance, 3)}
+						/>
 					</div>
-					
+					<div class="basis-1/3">
+						<BalanceCard
+							icon={tokenB.icon}
+							title={tokenB.name}
+							value={NumberFormatter(tokenBBalance, 3)}
+						/>
+					</div>
+					<div class="basis-1/3">
+						<CreatorCard />
+					</div>
 				</div>
-				<div class="flex flex-row gap-4">
-					
-				<Holders/>
-				<CreatorCard/>
-				</div>
-				
+				<DescriptionCard title={tokenA.name} description={tokenA.description} />
+				<Holders />
 			</div>
 		</div>
 	{/if}

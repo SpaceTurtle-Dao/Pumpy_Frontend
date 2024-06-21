@@ -39,22 +39,11 @@
 		Swap
 	} from '$lib/declarations/pumpy/pumpy.did';
 
-	interface AnalyticsData {
-		marketCap: string;
-		marketCapPercentage: string;
-		isMarketCapUp: Boolean;
-		volume: string;
-		volumePercentage: string;
-		isVolumeUp: Boolean;
-		liquidy: string;
-	}
-
-	let id = $page.params.slug;
-	let pumpy: Pumpy;
-	let pool: PoolInfo;
-	let tokenA: TokenInfo;
-	let tokenB: TokenInfo;
-	let principal: Principal;
+	export let pumpy: Pumpy;
+	export let pool: PoolInfo;
+	export let tokenA: TokenInfo;
+	export let tokenB: TokenInfo;
+	//let principal: Principal;
 	let isLoading = false;
 	let dialogOpen = false;
 	let decimalsA = 100000000;
@@ -63,8 +52,6 @@
 	let isBuy = true;
 	let slippage = BigInt(0);
 	let amount = BigInt(0);
-	let swaps: Array<Swap> = [];
-	let analyticsData: AnalyticsData;
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -86,51 +73,7 @@
 		});
 	};
 
-	const setup = async () => {
-		let _id = BigInt(id);
-		let _pool: [] | [PoolInfo] = await pumpy.pumpInfo(_id);
-		swaps = await pumpy.fetchPumpSwaps(_id, BigInt(0), BigInt(1000));
-		if (_pool.length > 0) {
-			pool = _pool[0]!;
-			let _tokenA: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[0]));
-			let _tokenB: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
-			tokenA = _tokenA[0]!;
-			tokenB = _tokenB[0]!;
-			decimalsA = decimals(tokenA.decimals);
-			decimalsB = decimals(tokenB.decimals);
-			//transactions = await pumpy.f
-			let isVolumeUp: Boolean;
-			let isMarketCapUp: Boolean = false;
-			if (pool.analytics.volume >= pool.analytics.hourVolume) {
-				isVolumeUp = true;
-			} else {
-				isVolumeUp = false;
-			}
-			let marketCap = pool.analytics.marketCap / BigInt(decimalsB);
-			let volume = pool.analytics.volume / BigInt(decimalsB);
-			let liquidty = pool.analytics.liquidty / BigInt(decimalsB);
-
-			analyticsData = {
-				marketCap: formatter.format(marketCap),
-				marketCapPercentage: '0',
-				isMarketCapUp: isMarketCapUp,
-				volume: formatter.format(volume),
-				volumePercentage: relDiff(
-					Number(pool.analytics.volume),
-					Number(pool.analytics.hourVolume)
-				).toString(),
-				isVolumeUp: isVolumeUp,
-				liquidy: formatter.format(liquidty)
-			};
-		}
-	};
-
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-		setup();
-	});
-
-	const decimals = (value: BigInt) => {
+    const decimals = (value: BigInt) => {
 		let _decimals = 1;
 		for (let i = 0; i < Number(value); i++) {
 			_decimals = _decimals * 10;
