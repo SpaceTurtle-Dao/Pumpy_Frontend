@@ -42,8 +42,9 @@
 
 	export let pumpy: Pumpy;
 	export let pool: PoolInfo;
-	export let token: TokenInfo;
-	//let principal: Principal;
+	export let tokenA: TokenInfo;
+	export let tokenB: TokenInfo;
+	let token: TokenInfo = tokenA;
 	let isLoading = false;
 	let dialogOpen = false;
 	let decimalsA = 100000000;
@@ -73,7 +74,7 @@
 		});
 	};
 
-    const decimals = (value: BigInt) => {
+	const decimals = (value: BigInt) => {
 		let _decimals = 1;
 		for (let i = 0; i < Number(value); i++) {
 			_decimals = _decimals * 10;
@@ -82,10 +83,9 @@
 		return _decimals;
 	};
 
-	function getPercentage(percentage:number, totalValue:number) {
+	function getPercentage(percentage: number, totalValue: number) {
 		return (percentage / 100) * totalValue;
-	};
-
+	}
 
 	const buy = async () => {
 		console.log('buy');
@@ -112,6 +112,18 @@
 		console.log('toggleToken');
 	};
 
+	const toggleBuy = async () => {
+		isTokenA = false;
+		isBuy = true;
+		console.log('toggleBuy');
+	};
+
+	const toggleSell = async () => {
+		isTokenA = true;
+		isBuy = false;
+		console.log('toggleSell');
+	};
+
 	const toggleSlippage = async () => {
 		dialogOpen = !dialogOpen;
 		console.log('toggleSlippage');
@@ -132,64 +144,96 @@
 	};
 </script>
 
-<Card.Root class="space-y-1 min-w-72">
-    <Card.Header>
-        <div class="flex flex-row gap-2">
-            <Button class="w-full" on:click={buy}>Buy</Button>
-            <Button class="w-full" variant="secondary" on:click={sell}>Sell</Button>
-        </div>
-    </Card.Header>
-    <Card.Content>
-        <div class="flex flex-col space-y-4">
-            <div class="flex flex-row justify-between">
-                <Button class="h-6 " on:click={toggleToken}>switch to ICP</Button>
-                <Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
-            </div>
-        </div>
-    </Card.Content>
-    <Card.Footer class="flex flex-col space-y-3">
-        <div class="flex flex-row gap-2 w-full">
-            <Input type="number" placeholder="0.0"></Input>
-            <Avatar.Root class="hidden h-9 w-9 sm:flex">
-                <Avatar.Image
-                    src={token.icon}
-                    alt="Avatar"
-                />
-                <Avatar.Fallback>JL</Avatar.Fallback>
-            </Avatar.Root>
-        </div>
-        <div class="flex flex-row gap-4">
-            <Button variant="outline" size="sm">reset</Button>
-            <Button variant="outline" size="sm">1 ICP</Button>
-            <Button variant="outline" size="sm">5 ICP</Button>
-            <Button variant="outline" size="sm">10 ICP</Button>
-        </div>
-        <Button class="w-full" on:click={swap}>place trade</Button>
-    </Card.Footer>
+<Card.Root class="space-y-1 min-w-80">
+	<Card.Header>
+		<div class="flex flex-row gap-2">
+			<Button class="w-full" on:click={toggleBuy}>Buy</Button>
+			<Button class="w-full" variant="secondary" on:click={toggleSell}>Sell</Button>
+		</div>
+	</Card.Header>
+	<Card.Content>
+		<div class="flex flex-col space-y-4">
+			{#if isBuy}
+				<div class="flex flex-row justify-between gap-6">
+					{#if isTokenA}
+						<Button class="h-6 " on:click={toggleToken}>switch to {tokenB.symbol}</Button>
+					{:else}
+						<Button class="h-6 " on:click={toggleToken}>switch to {tokenA.symbol}</Button>
+					{/if}
+
+					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
+				</div>
+			{:else}
+				<div class="flex flex-row justify-end gap-6">
+					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
+				</div>
+			{/if}
+		</div>
+	</Card.Content>
+	<Card.Footer class="flex flex-col space-y-3">
+		<div class="flex flex-row gap-2 w-full">
+			<Input type="number" placeholder="0.0"></Input>
+			<Avatar.Root class="hidden h-9 w-9 sm:flex">
+				{#if isTokenA}
+					<Avatar.Image src={tokenA.icon} alt="Avatar" />
+				{:else}
+					<Avatar.Image src={tokenB.icon} alt="Avatar" />
+				{/if}
+				<Avatar.Fallback>JL</Avatar.Fallback>
+			</Avatar.Root>
+		</div>
+		{#if isBuy}
+			{#if !isTokenA}
+				<div class="flex flex-row gap-4">
+					<Button variant="outline" size="sm">reset</Button>
+					<Button variant="outline" size="sm">1 {tokenB.symbol}</Button>
+					<Button variant="outline" size="sm">5 {tokenB.symbol}</Button>
+					<Button variant="outline" size="sm">10 {tokenB.symbol}</Button>
+				</div>
+			{/if}
+		{:else}
+			<div class="flex flex-row gap-4">
+				<Button variant="outline" size="sm">reset</Button>
+				<Button variant="outline" size="sm">1 {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm">5 {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm">10 {tokenA.symbol}</Button>
+			</div>
+		{/if}
+		<Button class="w-full" on:click={swap}>place trade</Button>
+	</Card.Footer>
 </Card.Root>
 <div>
 	<Dialog.Root bind:open={dialogOpen}>
-	<Dialog.Content>
-		<Dialog.Header class="space-y-6">
-			<Dialog.Title
-				>Set Slippage</Dialog.Title
-			>
-			<Input
-									type="number"
-									min="0"
-									bind:value={slippage}
-									id="token"
-									placeholder="{token.symbol} 0.0"
-									class="col-span-3"
-								/>
-			<Dialog.Description>
-				tip: its optional but buying a small amount of tokens helps protect your tokens from
-				snipers
-			</Dialog.Description>
-		</Dialog.Header>
-		<Dialog.Footer>
-			<Button class="w-full" on:click={setSlippage}>Close</Button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
+		<Dialog.Content>
+			<Dialog.Header class="space-y-6">
+				<Dialog.Title>Set Slippage</Dialog.Title>
+				{#if isTokenA}
+					<Input
+						type="number"
+						min="0"
+						bind:value={slippage}
+						id="token"
+						placeholder="{tokenA.symbol} 0.0"
+						class="col-span-3"
+					/>
+				{:else}
+					<Input
+						type="number"
+						min="0"
+						bind:value={slippage}
+						id="token"
+						placeholder="{tokenB.symbol} 0.0"
+						class="col-span-3"
+					/>
+				{/if}
+				<Dialog.Description>
+					tip: its optional but buying a small amount of tokens helps protect your tokens from
+					snipers
+				</Dialog.Description>
+			</Dialog.Header>
+			<Dialog.Footer>
+				<Button class="w-full" on:click={setSlippage}>Close</Button>
+			</Dialog.Footer>
+		</Dialog.Content>
+	</Dialog.Root>
 </div>

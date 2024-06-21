@@ -155,8 +155,10 @@
 	});
 
 	pumpyActor.subscribe((value) => {
+		console.log("boom")
 		pumpy = value;
 		setup();
+		console.log("stick")
 	});
 
 	const decimals = (value: BigInt) => {
@@ -212,70 +214,71 @@
 			<MediumSpinner />
 		</div>
 	{:else}
-		<div class="flex flex-row gap-4">
-			<div class="basis-1/2 space-y-4">
-				<Chart />
-				<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
-			</div>
-			<div class="basis-1/2 space-y-4">
-				<div class="flex flex-row gap-4">
-					<PumpSwap {pumpy} {pool} token={tokenA} />
-					<div class="space-y-4">
-						<div class="flex flex-row gap-4">
-							<AnalyticsCard
-								title={'Market Cap'}
-								value={analyticsData.marketCap}
-								percentage={analyticsData.marketCapPercentage}
-								isUp={analyticsData.isMarketCapUp}
-							/>
-							<AnalyticsCard
-								title={'Volume'}
-								value={analyticsData.volume}
-								percentage={analyticsData.volumePercentage}
-								isUp={analyticsData.isVolumeUp}
-							/>
-						</div>
-						<div class="flex flex-row gap-4">
-							<AnalyticsProgressCard
-								title={'Liquidity'}
-								value={NumberFormatter(
-									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-									3
-								)}
-							/>
-							<AnalyticsProgressCard
-								title={'King of the kill progress'}
-								value={NumberFormatter(
-									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-									3
-								)}
-							/>
-						</div>
-					</div>
-				</div>
-
-				<div class="flex flex-row gap-4">
-					<div class="basis-1/3">
-						<BalanceCard
-							icon={tokenA.icon}
-							title={tokenA.name}
-							value={NumberFormatter(tokenABalance, 3)}
-						/>
-					</div>
-					<div class="basis-1/3">
-						<BalanceCard
-							icon={tokenB.icon}
-							title={tokenB.name}
-							value={NumberFormatter(tokenBBalance, 3)}
-						/>
-					</div>
-					<div class="basis-1/3">
-						<CreatorCard />
-					</div>
-				</div>
-				<DescriptionCard title={tokenA.name} description={tokenA.description} />
-				<Holders {holders} token={tokenA} poolId={pool.id.toString()}/>
-			</div>
+	<div class="flex flex-row gap-4">
+		<div class="basis-1/2 space-y-4">
+			<Chart />
+			<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
 		</div>
+		<div class="basis-1/2 space-y-4">
+			<div class="flex flex-row gap-4">
+				<PumpSwap {pumpy} {pool} {tokenA} {tokenB} />
+				<div class="space-y-4">
+					<div class="flex flex-row gap-4">
+						<AnalyticsCard
+							title={'Market Cap'}
+							value={analyticsData.marketCap}
+							percentage={analyticsData.marketCapPercentage}
+							isUp={analyticsData.isMarketCapUp}
+						/>
+						<AnalyticsCard
+							title={'Volume'}
+							value={analyticsData.volume}
+							percentage={analyticsData.volumePercentage}
+							isUp={analyticsData.isVolumeUp}
+						/>
+					</div>
+					<div class="flex flex-row gap-4">
+						<AnalyticsProgressCard
+							title={'Liquidity'}
+							value={NumberFormatter(
+								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+								3
+							)}
+						/>
+						<AnalyticsProgressCard
+							title={'King of the kill progress'}
+							value={NumberFormatter(
+								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+								3
+							)}
+						/>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex flex-row gap-4">
+				<div class="basis-1/3">
+					<BalanceCard
+						icon={tokenA.icon}
+						title={tokenA.name}
+						value={NumberFormatter(tokenABalance, 3)}
+					/>
+				</div>
+				<div class="basis-1/3">
+					<BalanceCard
+						icon={tokenB.icon}
+						title={tokenB.name}
+						value={NumberFormatter(tokenBBalance, 3)}
+					/>
+				</div>
+				<div class="basis-1/3">
+					<CreatorCard />
+				</div>
+			</div>
+			<DescriptionCard title={tokenA.name} description={tokenA.description} />
+			<Holders {holders} token={tokenA} poolId={pool.id.toString()}/>
+		</div>
+	</div>
 	{/if}
+	
 </div>
