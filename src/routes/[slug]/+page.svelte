@@ -74,6 +74,7 @@
 	let analyticsData: AnalyticsData;
 	let tokenABalance: string;
 	let tokenBBalance: string;
+	let holders: Array<[string, bigint]> = [];
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -103,6 +104,7 @@
 			pool = _pool[0]!;
 			let _tokenA: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[0]));
 			let _tokenB: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
+			holders = await pumpy.fetchHolders(BigInt(pool.pair[0]), BigInt(0), BigInt(100));
 			tokenA = _tokenA[0]!;
 			tokenB = _tokenB[0]!;
 			let balanceRequestA: BalanceRequest = {
@@ -272,7 +274,7 @@
 					</div>
 				</div>
 				<DescriptionCard title={tokenA.name} description={tokenA.description} />
-				<Holders />
+				<Holders {holders} token={tokenA} poolId={pool.id.toString()}/>
 			</div>
 		</div>
 	{/if}

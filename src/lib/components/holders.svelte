@@ -16,6 +16,16 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
+	import type { TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
+
+	export let holders: Array<[string, bigint]> = [];
+	export let token: TokenInfo;
+	export let poolId: string;
+
+	function percentage(partialValue:number, totalValue:number) {
+		return (100 * partialValue) / totalValue;
+	}
+
 </script>
 
 <Card.Root
@@ -26,60 +36,23 @@
 		<Card.Title>Holder Distribution</Card.Title>
 	</Card.Header>
 	<Card.Content class="grid gap-8">
+		{#each holders as holder}
 		<div class="flex items-center gap-4">
 			<Avatar.Root class="hidden h-9 w-9 sm:flex">
 				<Avatar.Image src="luna.png" alt="Avatar" />
 				<Avatar.Fallback>OM</Avatar.Fallback>
 			</Avatar.Root>
 			<div class="grid gap-1">
-				<p class="text-sm font-medium leading-none">Olivia Martin</p>
-				<p class="text-sm text-muted-foreground truncate ...">43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe</p>
+				{#if poolId == holder[0]}
+					<p class="text-sm font-medium leading-none">Bonding</p>
+				{/if}
+				{#if token.minter == holder[0]}
+					<p class="text-sm font-medium leading-none">Dev</p>
+				{/if}
+				<p class="text-sm text-muted-foreground truncate ...">{holder[0]}</p>
 			</div>
-			<div class="ml-auto font-medium">10.5%</div>
+			<div class="ml-auto font-medium">{percentage(Number(holder[1]), Number(token.supply))}%</div>
 		</div>
-		<div class="flex items-center gap-4">
-			<Avatar.Root class="hidden h-9 w-9 sm:flex">
-				<Avatar.Image src="sunny.jpeg" alt="Avatar" />
-				<Avatar.Fallback>JL</Avatar.Fallback>
-			</Avatar.Root>
-			<div class="grid gap-1">
-				<p class="text-sm font-medium leading-none">Jackson Lee</p>
-				<p class="text-sm text-muted-foreground truncate ...">43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe</p>
-			</div>
-			<div class="ml-auto font-medium">39.00%</div>
-		</div>
-		<div class="flex items-center gap-4">
-			<Avatar.Root class="hidden h-9 w-9 sm:flex">
-				<Avatar.Image src="luna.png" alt="Avatar" />
-				<Avatar.Fallback>IN</Avatar.Fallback>
-			</Avatar.Root>
-			<div class="grid gap-1">
-				<p class="text-sm font-medium leading-none">Isabella Nguyen</p>
-				<p class="text-sm text-muted-foreground truncate ...">43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe</p>
-			</div>
-			<div class="ml-auto font-medium">9.0%</div>
-		</div>
-		<div class="flex items-center gap-4">
-			<Avatar.Root class="hidden h-9 w-9 sm:flex">
-				<Avatar.Image src="sunny.jpeg" alt="Avatar" />
-				<Avatar.Fallback>WK</Avatar.Fallback>
-			</Avatar.Root>
-			<div class="grid gap-1">
-				<p class="text-sm font-medium leading-none">William Kim</p>
-				<p class="text-sm text-muted-foreground truncate ...">43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe</p>
-			</div>
-			<div class="ml-auto font-medium">$9.90%</div>
-		</div>
-		<div class="flex items-center gap-4">
-			<Avatar.Root class="hidden h-9 w-9 sm:flex">
-				<Avatar.Image src="luna.png" alt="Avatar" />
-				<Avatar.Fallback>SD</Avatar.Fallback>
-			</Avatar.Root>
-			<div class="grid gap-1">
-				<p class="text-sm font-medium leading-none">Sofia Davis</p>
-				<p class="text-sm text-muted-foreground truncate ...">43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe/p>
-			</div>
-			<div class="ml-auto font-medium">3.9%</div>
-		</div>
+		{/each}
 	</Card.Content>
 </Card.Root>
