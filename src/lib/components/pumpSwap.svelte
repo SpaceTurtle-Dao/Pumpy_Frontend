@@ -154,11 +154,11 @@
 	<Card.Content>
 		<div class="flex flex-col space-y-4">
 			{#if isBuy}
-				<div class="flex flex-row justify-between gap-6">
+				<div class="flex flex-row gap-6">
 					{#if isTokenA}
-						<Button class="h-6 " on:click={toggleToken}>switch to {tokenB.symbol}</Button>
+						<Button class="h-6 w-full" on:click={toggleToken}>switch to {tokenB.symbol}</Button>
 					{:else}
-						<Button class="h-6 " on:click={toggleToken}>switch to {tokenA.symbol}</Button>
+						<Button class="h-6 w-full" on:click={toggleToken}>switch to {tokenA.symbol}</Button>
 					{/if}
 
 					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
