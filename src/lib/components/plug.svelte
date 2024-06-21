@@ -8,9 +8,10 @@
 		principalStore,
 		loadingStore,
 		poolsStore,
+		pumpsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store/store';
+	} from '$lib/store';
 	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';
@@ -61,7 +62,6 @@
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
 		balancesStore.set(balances);
-		console.log(balances);
 	};
 
 	async function requestConnect() {
@@ -133,12 +133,13 @@
 		// @ts-ignore
 		let tokens = await pumpyQuery.fetchTokens();
 		let pools = await pumpyQuery.fetchPools();
+		let pumps = await pumpyQuery.fetchPumps();
 		tokensStore.set(tokens);
 		poolsStore.set(pools);
-		// console.log(tokens);
-		// console.log(pools);
-		// console.log(tokens);
-		// console.log('plug:141');
+		pumpsStore.set(pumps);
+		console.log(tokens);
+		console.log(pools);
+		console.log(pumps);
 	});
 </script>
 

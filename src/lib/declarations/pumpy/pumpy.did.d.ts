@@ -6,7 +6,24 @@ export interface AllowanceRequest {
   'to': string,
   'from': string,
 }
-export interface Amount { 'value': bigint, 'symbol': string }
+export interface AnalyticsData {
+  'liquidty' : bigint,
+  'weekVolume' : bigint,
+  'marketCap' : bigint,
+  'dayVolume' : bigint,
+  'volume' : bigint,
+  'price' : bigint,
+  'hourVolume' : bigint,
+}
+export interface AnalyticsData__1 {
+  'liquidty' : bigint,
+  'weekVolume' : bigint,
+  'marketCap' : bigint,
+  'dayVolume' : bigint,
+  'volume' : bigint,
+  'price' : bigint,
+  'hourVolume' : bigint,
+}
 export interface ApproveRequest {
   'id': bigint,
   'to': string,
@@ -28,30 +45,28 @@ export interface Liquidity {
   'createdAt': Time,
   'share': bigint,
 }
-export interface MintRequest { 'id': bigint, 'to': string, 'amount': bigint }
-export interface MintRequest__1 {
-  'id': bigint,
-  'to': string,
-  'amount': bigint,
-}
-export type PoolId = { 'RUG': bigint } |
-{ 'POOL': bigint } |
-{ 'PUMP': bigint };
+export interface MintRequest { 'id' : bigint, 'to' : string, 'amount' : bigint }
+export type PoolId = { 'RUG' : bigint } |
+  { 'POOL' : bigint } |
+  { 'PUMP' : bigint };
 export interface PoolInfo {
-  'id': bigint,
-  'createdAt': Time,
-  'pair': [bigint, bigint],
-  'precision': bigint,
-  'swaps': bigint,
-  'totalShares': bigint,
+  'id' : bigint,
+  'createdAt' : Time,
+  'pair' : [bigint, bigint],
+  'analytics' : AnalyticsData,
+  'precision' : bigint,
+  'swaps' : bigint,
+  'tokenA' : TokenInfo__1,
+  'tokenB' : TokenInfo__1,
+  'totalShares' : bigint,
 }
 export type PoolRequest = { 'RUG': TokenRequest__1 } |
 { 'POOL': [bigint, bigint] } |
 { 'PUMP': PumpRequest };
 export interface PumpRequest {
-  'token': bigint,
-  'holder': MintRequest__1,
-  'tokenRequest': TokenRequest__1,
+  'token' : bigint,
+  'amount' : [] | [[bigint, bigint]],
+  'tokenRequest' : TokenRequest__1,
 }
 export interface Pumpy {
   'add': ActorMethod<[PoolId, [bigint, bigint]], TokenResult>,
@@ -70,10 +85,14 @@ export interface Pumpy {
     [bigint, bigint, bigint],
     Array<[string, bigint]>
   >,
-  'fetchPools': ActorMethod<[], Array<PoolInfo>>,
-  'fetchPumps': ActorMethod<[], Array<PoolInfo>>,
-  'fetchTokens': ActorMethod<[], Array<TokenInfo>>,
-  'fetchTransactions': ActorMethod<
+  'fetchPoolTransactions' : ActorMethod<
+    [bigint, bigint, bigint],
+    Array<TransactionType>
+  >,
+  'fetchPools' : ActorMethod<[], Array<PoolInfo>>,
+  'fetchPumps' : ActorMethod<[], Array<PoolInfo>>,
+  'fetchTokens' : ActorMethod<[], Array<TokenInfo>>,
+  'fetchTransactions' : ActorMethod<
     [bigint, bigint, bigint],
     Array<TransactionType>
   >,
@@ -92,28 +111,35 @@ export interface Pumpy {
     [bigint, bigint],
     { 'shareA': bigint, 'shareB': bigint }
   >,
-  'lock': ActorMethod<[bigint], TokenResult>,
-  'mint': ActorMethod<[Array<MintRequest>], Array<TokenResult>>,
-  'poolInfo': ActorMethod<[bigint], [] | [PoolInfo]>,
-  'price': ActorMethod<[bigint], bigint>,
-  'remove': ActorMethod<[PoolId, bigint], TokenResult>,
-  'swapTokenA': ActorMethod<[PoolId, bigint, bigint], TokenResult>,
-  'swapTokenB': ActorMethod<[PoolId, bigint, bigint], TokenResult>,
-  'tokenInfo': ActorMethod<[bigint], [] | [TokenInfo]>,
-  'transfer': ActorMethod<[TransferRequest], TokenResult>,
-  'transferFrom': ActorMethod<
+  'lock' : ActorMethod<[bigint], TokenResult>,
+  'mint' : ActorMethod<[Array<MintRequest>], Array<TokenResult>>,
+  'poolAnalytics' : ActorMethod<[bigint], [] | [AnalyticsData__1]>,
+  'poolInfo' : ActorMethod<[bigint], [] | [PoolInfo]>,
+  'price' : ActorMethod<[bigint], bigint>,
+  'pumpAnalytics' : ActorMethod<[bigint], [] | [AnalyticsData__1]>,
+  'pumpInfo' : ActorMethod<[bigint], [] | [PoolInfo]>,
+  'remove' : ActorMethod<[PoolId, bigint], TokenResult>,
+  'swapTokenA' : ActorMethod<[PoolId, bigint, bigint], TokenResult>,
+  'swapTokenB' : ActorMethod<[PoolId, bigint, bigint], TokenResult>,
+  'testMint' : ActorMethod<[MintRequest], TokenResult>,
+  'tokenInfo' : ActorMethod<[bigint], [] | [TokenInfo]>,
+  'transfer' : ActorMethod<[TransferRequest], TokenResult>,
+  'transferFrom' : ActorMethod<
     [Array<TransferFromRequest>],
     Array<TokenResult>
   >,
   'withdraw': ActorMethod<[Token, bigint], TokenResult>,
 }
 export interface Swap {
-  'id': bigint,
-  'buy': Amount,
-  'owner': string,
-  'createdAt': Time,
-  'sell': Amount,
+  'id' : bigint,
+  'owner' : string,
+  'createdAt' : Time,
+  'swapType' : SwapType,
+  'tokenA' : bigint,
+  'tokenB' : bigint,
 }
+export type SwapType = { 'Buy' : null } |
+  { 'Sell' : null };
 export type Time = bigint;
 export type Token = { 'ICP': null } |
 { 'CKUSDC': null } |
@@ -140,6 +166,36 @@ export interface TokenInfo {
   'transactions': bigint,
   'telegram': [] | [string],
   'symbol': string,
+}
+export interface TokenInfo__1 {
+  'decimals' : bigint,
+  'twitter' : [] | [string],
+  'icon' : string,
+  'name' : string,
+  'createdAt' : Time,
+  'minter' : string,
+  'website' : [] | [string],
+  'supply' : bigint,
+  'discord' : [] | [string],
+  'holders' : bigint,
+  'transactions' : bigint,
+  'telegram' : [] | [string],
+  'symbol' : string,
+}
+export interface TokenInfo__1 {
+  'decimals' : bigint,
+  'twitter' : [] | [string],
+  'icon' : string,
+  'name' : string,
+  'createdAt' : Time,
+  'minter' : string,
+  'website' : [] | [string],
+  'supply' : bigint,
+  'discord' : [] | [string],
+  'holders' : bigint,
+  'transactions' : bigint,
+  'telegram' : [] | [string],
+  'symbol' : string,
 }
 export interface TokenRequest {
   'decimals': bigint,
