@@ -16,6 +16,7 @@
 	import { ChevronDown, ChevronUp } from 'lucide-svelte';
 	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import {
 		pumpyActor,
 		principalStore,
@@ -41,8 +42,7 @@
 
 	export let pumpy: Pumpy;
 	export let pool: PoolInfo;
-	export let tokenA: TokenInfo;
-	export let tokenB: TokenInfo;
+	export let token: TokenInfo;
 	//let principal: Principal;
 	let isLoading = false;
 	let dialogOpen = false;
@@ -50,7 +50,7 @@
 	let decimalsB = 100000000;
 	let isTokenA = true;
 	let isBuy = true;
-	let slippage = BigInt(0);
+	let slippage = 0.1;
 	let amount = BigInt(0);
 
 	// Create our number formatter.
@@ -82,27 +82,39 @@
 		return _decimals;
 	};
 
+	function getPercentage(percentage:number, totalValue:number) {
+		return (percentage / 100) * totalValue;
+	};
+
+
 	const buy = async () => {
 		console.log('buy');
+		let _slippage = BigInt(getPercentage(slippage, Number(amount)));
 		if (isTokenA) {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, slippage);
+			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		} else {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, slippage);
+			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
 
 	const sell = async () => {
 		console.log('sell');
+		let _slippage = BigInt(getPercentage(slippage, Number(amount)));
 		if (isTokenA) {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, slippage);
+			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
 		} else {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, slippage);
+			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
 
 	const toggleToken = async () => {
 		isTokenA = !isTokenA;
-		console.log('toggle');
+		console.log('toggleToken');
+	};
+
+	const toggleSlippage = async () => {
+		dialogOpen = !dialogOpen;
+		console.log('toggleSlippage');
 	};
 
 	const setSlippage = async () => {
@@ -131,7 +143,7 @@
         <div class="flex flex-col space-y-4">
             <div class="flex flex-row justify-between">
                 <Button class="h-6 " on:click={toggleToken}>switch to ICP</Button>
-                <Button class="h-6" on:click={setSlippage}>set max slippage</Button>
+                <Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
             </div>
         </div>
     </Card.Content>
@@ -140,7 +152,7 @@
             <Input type="number" placeholder="0.0"></Input>
             <Avatar.Root class="hidden h-9 w-9 sm:flex">
                 <Avatar.Image
-                    src="https://img.cryptorank.io/coins/internet%20computer1620718852173.png"
+                    src={token.icon}
                     alt="Avatar"
                 />
                 <Avatar.Fallback>JL</Avatar.Fallback>
@@ -155,3 +167,29 @@
         <Button class="w-full" on:click={swap}>place trade</Button>
     </Card.Footer>
 </Card.Root>
+<div>
+	<Dialog.Root bind:open={dialogOpen}>
+	<Dialog.Content>
+		<Dialog.Header class="space-y-6">
+			<Dialog.Title
+				>Set Slippage</Dialog.Title
+			>
+			<Input
+									type="number"
+									min="0"
+									bind:value={slippage}
+									id="token"
+									placeholder="{token.symbol} 0.0"
+									class="col-span-3"
+								/>
+			<Dialog.Description>
+				tip: its optional but buying a small amount of tokens helps protect your tokens from
+				snipers
+			</Dialog.Description>
+		</Dialog.Header>
+		<Dialog.Footer>
+			<Button class="w-full" on:click={setSlippage}>Close</Button>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
+</div>

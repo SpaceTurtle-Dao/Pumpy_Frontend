@@ -219,7 +219,7 @@
 			</div>
 			<div class="basis-1/2 space-y-4">
 				<div class="flex flex-row gap-4">
-					<PumpSwap {pumpy} {pool} {tokenA} {tokenB} />
+					<PumpSwap {pumpy} {pool} token={tokenA} />
 					<div class="space-y-4">
 						<div class="flex flex-row gap-4">
 							<AnalyticsCard
