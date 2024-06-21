@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { type Pumpy, type PoolInfo, type TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
+import { type TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
 
 export let toAmount = writable(0);
 export let fromAmount = writable(0);
