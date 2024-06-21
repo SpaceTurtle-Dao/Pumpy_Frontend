@@ -18,6 +18,8 @@
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
 	// @ts-ignore
 	import icblast from '@infu/icblast';
+	import { onMount } from 'svelte';
+	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	import {
 		pumpyActor,
 		principalStore,
@@ -118,8 +120,10 @@
 	const setup = async () => {
 		//let _id = BigInt(id);
 		let ic = icblast();
-		let pumpyQuery = await ic(pumpyCanisterId);
+		let pumpyQuery = await ic(pumpyCanisterId, pumpy_idlFactory);
+		console.log(pumpyQuery);
 		pool = await pumpyQuery.pumpInfo(id);
+		console.log(pool);
 		swaps = await pumpyQuery.fetchPumpSwaps(id, 0, 1000);
 		console.log(pool);
 		tokenA = await pumpyQuery.tokenInfo(pool.pair[0]);
@@ -179,7 +183,6 @@
 	pumpyActor.subscribe((value) => {
 		console.log('boom');
 		pumpy = value;
-		setup();
 		console.log('stick');
 	});
 
@@ -228,6 +231,9 @@
 		}
 		console.log('swap');
 	};
+	onMount(async () => {
+		setup();
+	});
 </script>
 
 <div class="w-full">
