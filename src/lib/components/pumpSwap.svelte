@@ -40,19 +40,17 @@
 		Swap
 	} from '$lib/declarations/pumpy/pumpy.did';
 
-	export let pumpy: Pumpy;
+	let pumpy: Pumpy;
 	export let pool: PoolInfo;
 	export let tokenA: TokenInfo;
 	export let tokenB: TokenInfo;
 	let token: TokenInfo = tokenA;
 	let isLoading = false;
 	let dialogOpen = false;
-	let decimalsA = 100000000;
-	let decimalsB = 100000000;
-	let isTokenA = true;
+	let isTokenA = false;
 	let isBuy = true;
 	let slippage = 0.1;
-	let amount = BigInt(0);
+	let amount = 0;
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -84,26 +82,55 @@
 	};
 
 	function getPercentage(percentage: number, totalValue: number) {
-		return (percentage / 100) * totalValue;
+		return percentage * totalValue;
 	}
 
 	const buy = async () => {
 		console.log('buy');
-		let _slippage = BigInt(getPercentage(slippage, Number(amount)));
+		let poolId = {"PUMP":pool.id};
 		if (isTokenA) {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
+			let _amount = amount * decimals(tokenA.decimals);
+			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId,BigInt(_amount));
+			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
+			console.log("Swapping")
+			console.log(amount + " "+tokenA.symbol + " for " + tokenB.symbol);
+			console.log('slippage: ' + _slippage+"%" + " "+tokenB.symbol);
+			console.log('estimate: ' + (Number(esitmate) / decimals(tokenB.decimals)) + " "+tokenB.symbol);
+			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		} else {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
+			let _amount = amount * decimals(tokenB.decimals);
+			console.log(_amount)
+			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId,BigInt(_amount));
+			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
+			console.log("Swapping")
+			console.log(amount + " "+tokenB.symbol + " for " + tokenA.symbol);
+			console.log('slippage: ' + _slippage + " "+tokenA.symbol);
+			console.log('estimate: ' + (Number(esitmate) / decimals(tokenA.decimals)) + " "+tokenA.symbol);
+			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
 
 	const sell = async () => {
 		console.log('sell');
-		let _slippage = BigInt(getPercentage(slippage, Number(amount)));
+		let poolId = {"PUMP":pool.id};
 		if (isTokenA) {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
+			let _amount = amount * decimals(tokenA.decimals);
+			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId,BigInt(_amount));
+			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
+			console.log("Swapping")
+			console.log(amount + " "+tokenA.symbol + " for " + tokenB.symbol);
+			console.log('slippage: ' + _slippage+"%" + " "+tokenB.symbol);
+			console.log('estimate: ' + (Number(esitmate) / decimals(tokenB.decimals)) + " "+tokenB.symbol);
+			//return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
 		} else {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
+			let _amount = amount * decimals(tokenB.decimals);
+			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId,BigInt(_amount));
+			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
+			console.log("Swapping")
+			console.log(amount + " "+tokenB.symbol + " for " + tokenA.symbol);
+			console.log('slippage: ' + _slippage+"%" + " "+tokenA.symbol);
+			console.log('estimate: ' + (Number(esitmate) / decimals(tokenA.decimals)) + " "+tokenA.symbol);
+			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
 
@@ -134,14 +161,20 @@
 	};
 
 	const swap = async () => {
-		let result: TokenResult;
+		//let result: TokenResult;
 		if (isBuy) {
-			result = await buy();
+			//result = await buy();
+			await buy();
 		} else {
-			result = await sell();
+			//result = await sell();
+			await sell();
 		}
 		console.log('swap');
 	};
+
+	pumpyActor.subscribe((value) => {
+		pumpy = value;
+	});
 </script>
 
 <Card.Root class="space-y-1 min-w-80">
@@ -172,7 +205,7 @@
 	</Card.Content>
 	<Card.Footer class="flex flex-col space-y-3">
 		<div class="flex flex-row gap-2 w-full">
-			<Input type="number" placeholder="0.0"></Input>
+			<Input type="number" placeholder="0.0" bind:value={amount}></Input>
 			<Avatar.Root class="hidden h-9 w-9 sm:flex">
 				{#if isTokenA}
 					<Avatar.Image src={tokenA.icon} alt="Avatar" />

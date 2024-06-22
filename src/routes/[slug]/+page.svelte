@@ -180,12 +180,6 @@
 		principal = value;
 	});
 
-	pumpyActor.subscribe((value) => {
-		console.log('boom');
-		pumpy = value;
-		console.log('stick');
-	});
-
 	const decimals = (value: BigInt) => {
 		let _decimals = 1;
 		for (let i = 0; i < Number(value); i++) {
@@ -195,42 +189,6 @@
 		return _decimals;
 	};
 
-	const buy = async () => {
-		console.log('buy');
-		if (isTokenA) {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, slippage);
-		} else {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, slippage);
-		}
-	};
-
-	const sell = async () => {
-		console.log('sell');
-		if (isTokenA) {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, slippage);
-		} else {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, slippage);
-		}
-	};
-
-	const toggleToken = async () => {
-		isTokenA = !isTokenA;
-		console.log('toggle');
-	};
-
-	const setSlippage = async () => {
-		console.log('slippage');
-	};
-
-	const swap = async () => {
-		let result: TokenResult;
-		if (isBuy) {
-			result = await buy();
-		} else {
-			result = await sell();
-		}
-		console.log('swap');
-	};
 	onMount(async () => {
 		setup();
 	});
@@ -249,7 +207,7 @@
 			</div>
 			<div class="basis-1/2 space-y-4">
 				<div class="flex flex-row gap-2">
-					<PumpSwap {pumpy} {pool} {tokenA} {tokenB} />
+					<PumpSwap {pool} {tokenA} {tokenB} />
 					<div class="space-y-4">
 						<div class="flex flex-row gap-4">
 							<AnalyticsCard
