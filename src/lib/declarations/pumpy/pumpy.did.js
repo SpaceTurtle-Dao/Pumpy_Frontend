@@ -213,6 +213,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'approve' : IDL.Func([ApproveRequest], [TokenResult], []),
     'balance' : IDL.Func([BalanceRequest], [IDL.Nat], ['query']),
     'burn' : IDL.Func([IDL.Vec(BurnRequest)], [IDL.Vec(TokenResult)], []),
+    'caculateSlippage' : IDL.Func([IDL.Float64, IDL.Nat], [IDL.Nat], ['query']),
     'createPools' : IDL.Func(
         [IDL.Vec(PoolRequest)],
         [IDL.Vec(TokenResult)],
@@ -224,6 +225,7 @@ export const pumpy_idlFactory = ({ IDL }) => {
         [],
       ),
     'deposit' : IDL.Func([Token, IDL.Nat], [TokenResult], []),
+    'devMint' : IDL.Func([IDL.Text], [], []),
     'fetchBalances' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(TokenInfo, IDL.Nat))],

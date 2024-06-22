@@ -72,64 +72,89 @@
 		});
 	};
 
-	const decimals = (value: BigInt) => {
-		let _decimals = 1;
-		for (let i = 0; i < Number(value); i++) {
-			_decimals = _decimals * 10;
+	const decimals = (value: bigint) => {
+		let _decimals = BigInt(1);
+		for (let i = BigInt(0); i < value; i++) {
+			_decimals = _decimals * BigInt(10);
 		}
 
 		return _decimals;
 	};
 
-	function getPercentage(percentage: number, totalValue: number) {
-		return percentage * totalValue;
+	function getPercentage(percentage: string, totalValue: string) {
+		return (Number(percentage) / 100) * Number(totalValue);
 	}
+
+	/*function calculatePercentage(x:bigint, y:bigint) {
+		return (x / y) * BigInt(100);
+	}*/
 
 	const buy = async () => {
 		console.log('buy');
-		let poolId = {"PUMP":pool.id};
+		let poolId = { PUMP: pool.id };
 		if (isTokenA) {
-			let _amount = amount * decimals(tokenA.decimals);
-			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId,BigInt(_amount));
-			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenA.symbol + " for " + tokenB.symbol);
-			console.log('slippage: ' + _slippage+"%" + " "+tokenB.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenB.decimals)) + " "+tokenB.symbol);
+			let _amount = BigInt(amount) * decimals(tokenA.decimals);
+			console.log("Amount: "+_amount);
+			let esitmate = await pumpy.getSwapTokenBEstimate(poolId, _amount);
+			let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+			console.log('Swapping');
+			console.log(_amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
+			console.log('slippage: ' + slippage + '%');
+			console.log('slippage: ' + _slippage + ' ' + tokenB.symbol);
+			console.log(
+				'estimate: ' + esitmate + ' ' + tokenB.symbol
+			);
+			console.log(esitmate);
+			console.log(BigInt(_slippage));
 			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		} else {
-			let _amount = amount * decimals(tokenB.decimals);
-			console.log(_amount)
-			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId,BigInt(_amount));
-			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenB.symbol + " for " + tokenA.symbol);
-			console.log('slippage: ' + _slippage + " "+tokenA.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenA.decimals)) + " "+tokenA.symbol);
+			let _amount = BigInt(amount) * decimals(tokenB.decimals);
+			console.log(_amount);
+			let esitmate = await pumpy.getSwapTokenAEstimate(poolId, _amount);
+			let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+			console.log('Swapping');
+			console.log(_amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
+			console.log('slippage: ' + slippage + '%');
+			console.log('slippage: ' + _slippage + ' ' + tokenA.symbol);
+			console.log(
+				'estimate: ' + esitmate + ' ' + tokenA.symbol
+			);
+			console.log(esitmate);
+			console.log(_slippage);
 			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
 
 	const sell = async () => {
 		console.log('sell');
-		let poolId = {"PUMP":pool.id};
+		let poolId = { PUMP: pool.id };
 		if (isTokenA) {
-			let _amount = amount * decimals(tokenA.decimals);
-			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId,BigInt(_amount));
-			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenA.symbol + " for " + tokenB.symbol);
-			console.log('slippage: ' + _slippage+"%" + " "+tokenB.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenB.decimals)) + " "+tokenB.symbol);
+			let _amount = BigInt(amount) * decimals(tokenA.decimals);
+			let esitmate = await pumpy.getSwapTokenAEstimate(poolId, _amount);
+			let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+			console.log('Swapping');
+			console.log(_amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
+			console.log('slippage: ' + slippage + '%');
+			console.log('slippage: ' + _slippage + ' ' + tokenB.symbol);
+			console.log(
+				'estimate: ' + esitmate + ' ' + tokenB.symbol
+			);
+			console.log(esitmate);
+			console.log(_slippage);
 			//return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
 		} else {
-			let _amount = amount * decimals(tokenB.decimals);
-			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId,BigInt(_amount));
-			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenB.symbol + " for " + tokenA.symbol);
-			console.log('slippage: ' + _slippage+"%" + " "+tokenA.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenA.decimals)) + " "+tokenA.symbol);
+			let _amount = BigInt(amount) * decimals(tokenB.decimals);
+			let esitmate = await pumpy.getSwapTokenBEstimate(poolId, _amount);
+			let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+			console.log('Swapping');
+			console.log(_amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
+			console.log('slippage: ' + slippage + '%');
+			console.log('slippage: ' + _slippage + ' ' + tokenA.symbol);
+			console.log(
+				'estimate: ' + esitmate + ' ' + tokenA.symbol
+			);
+			console.log(esitmate);
+			console.log(_slippage);
 			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};

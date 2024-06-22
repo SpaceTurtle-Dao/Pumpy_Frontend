@@ -81,12 +81,14 @@ export interface Pumpy {
   'approve' : ActorMethod<[ApproveRequest], TokenResult>,
   'balance' : ActorMethod<[BalanceRequest], bigint>,
   'burn' : ActorMethod<[Array<BurnRequest>], Array<TokenResult>>,
+  'caculateSlippage' : ActorMethod<[number, bigint], bigint>,
   'createPools' : ActorMethod<[Array<PoolRequest>], Array<TokenResult>>,
   'createTokens' : ActorMethod<
     [TokenRequest, Array<MintRequest>],
     Array<TokenResult>
   >,
   'deposit' : ActorMethod<[Token, bigint], TokenResult>,
+  'devMint' : ActorMethod<[string], undefined>,
   'fetchBalances' : ActorMethod<[], Array<[TokenInfo, bigint]>>,
   'fetchHolders' : ActorMethod<
     [bigint, bigint, bigint],
