@@ -12,6 +12,7 @@
 <Card.Root
 	data-x-chunk-name="dashboard-07-chunk-5"
 	data-x-chunk-description="A card with a call to action to archive the product"
+    class="w-full"
 >
 	<Card.Header>
 		<Card.Title>{title}</Card.Title>

@@ -16,6 +16,10 @@
 	import { ChevronDown, ChevronUp } from 'lucide-svelte';
 	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
+	// @ts-ignore
+	import icblast from '@infu/icblast';
+	import { onMount } from 'svelte';
+	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	import {
 		pumpyActor,
 		principalStore,
@@ -37,9 +41,7 @@
 		Transaction,
 		TransactionType,
 		Swap,
-
 		BalanceRequest
-
 	} from '$lib/declarations/pumpy/pumpy.did';
 	import PumpSwap from '$lib/components/pumpSwap.svelte';
 	import AnalyticsCard from '$lib/components/analyticsCard.svelte';
@@ -58,6 +60,23 @@
 		liquidy: string;
 	}
 
+	let pumpyCanisterId = '';
+
+	switch (import.meta.env.MODE) {
+		case 'development': {
+			pumpyCanisterId = 'x2ble-2aaaa-aaaak-qiknq-cai';
+			break;
+		}
+		case 'staging': {
+			pumpyCanisterId = 'ucgwg-baaaa-aaaak-qibva-cai';
+			break;
+		}
+		case 'production': {
+			pumpyCanisterId = 'yxccl-myaaa-aaaak-qihga-cai';
+			break;
+		}
+	}
+
 	let id = $page.params.slug;
 	let pumpy: Pumpy;
 	let pool: PoolInfo;
@@ -74,8 +93,9 @@
 	let amount = BigInt(0);
 	let swaps: Array<Swap> = [];
 	let analyticsData: AnalyticsData;
-	let tokenABalance:string;
-	let tokenBBalance:string;
+	let tokenABalance: string;
+	let tokenBBalance: string;
+	let holders: Array<[string, bigint]> = [];
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -98,61 +118,66 @@
 	};
 
 	const setup = async () => {
-		let _id = BigInt(id);
-		let _pool: [] | [PoolInfo] = await pumpy.pumpInfo(_id);
-		swaps = await pumpy.fetchPumpSwaps(_id, BigInt(0), BigInt(1000));
-		if (_pool.length > 0) {
-			pool = _pool[0]!;
-			let _tokenA: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[0]));
-			let _tokenB: [] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
-			tokenA = _tokenA[0]!;
-			tokenB = _tokenB[0]!;
-			let balanceRequestA:BalanceRequest ={
-				id:pool.pair[0],
-				owner:principal.toString()
+		//let _id = BigInt(id);
+		let ic = icblast();
+		let pumpyQuery = await ic(pumpyCanisterId, pumpy_idlFactory);
+		console.log(pumpyQuery);
+		pool = await pumpyQuery.pumpInfo(id);
+		console.log(pool);
+		swaps = await pumpyQuery.fetchPumpSwaps(id, 0, 1000);
+		console.log(pool);
+		tokenA = await pumpyQuery.tokenInfo(pool.pair[0]);
+		tokenB = await pumpyQuery.tokenInfo(pool.pair[1]);
+		holders = await pumpyQuery.fetchHolders(pool.pair[0], 0, 100);
+		if (principal) {
+			let balanceRequestA: BalanceRequest = {
+				id: pool.pair[0],
+				owner: principal.toString()
 			};
-			let balanceRequestB:BalanceRequest ={
-				id:pool.pair[1],
-				owner:principal.toString()
+			let balanceRequestB: BalanceRequest = {
+				id: pool.pair[1],
+				owner: principal.toString()
 			};
-			tokenABalance = (Number(await pumpy.balance(balanceRequestA))/decimals(tokenA.decimals)).toString();
-			tokenBBalance = (Number(await pumpy.balance(balanceRequestB))/decimals(tokenB.decimals)).toString();
-			decimalsA = decimals(tokenA.decimals);
-			decimalsB = decimals(tokenB.decimals);
-			//transactions = await pumpy.f
-			let isVolumeUp: boolean;
-			let isMarketCapUp: boolean = false;
-			if (pool.analytics.volume >= pool.analytics.hourVolume) {
-				isVolumeUp = true;
-			} else {
-				isVolumeUp = false;
-			}
-			let marketCap = pool.analytics.marketCap / BigInt(decimalsB);
-			let volume = pool.analytics.volume / BigInt(decimalsB);
-			let liquidty = pool.analytics.liquidty / BigInt(decimalsB);
-
-			analyticsData = {
-				marketCap: formatter.format(marketCap),
-				marketCapPercentage: '0',
-				isMarketCapUp: isMarketCapUp,
-				volume: formatter.format(volume),
-				volumePercentage: relDiff(
-					Number(pool.analytics.volume),
-					Number(pool.analytics.hourVolume)
-				).toString(),
-				isVolumeUp: isVolumeUp,
-				liquidy: formatter.format(liquidty)
-			};
+			tokenABalance = (
+				Number(await pumpyQuery.balance(balanceRequestA)) / decimals(tokenA.decimals)
+			).toString();
+			tokenBBalance = (
+				Number(await pumpyQuery.balance(balanceRequestB)) / decimals(tokenB.decimals)
+			).toString();
+		} else {
+			tokenABalance = '0';
+			tokenBBalance = '0';
 		}
+		decimalsA = decimals(tokenA.decimals);
+		decimalsB = decimals(tokenB.decimals);
+		//transactions = await pumpy.f
+		let isVolumeUp: boolean;
+		let isMarketCapUp: boolean = false;
+		if (pool.analytics.volume >= pool.analytics.hourVolume) {
+			isVolumeUp = true;
+		} else {
+			isVolumeUp = false;
+		}
+		let marketCap = Number(pool.analytics.marketCap) / decimalsB;
+		let volume = Number(pool.analytics.volume) / decimalsB;
+		let liquidty = Number(pool.analytics.liquidty) / decimalsB;
+
+		analyticsData = {
+			marketCap: formatter.format(marketCap),
+			marketCapPercentage: '0',
+			isMarketCapUp: isMarketCapUp,
+			volume: formatter.format(volume),
+			volumePercentage: relDiff(
+				Number(pool.analytics.volume),
+				Number(pool.analytics.hourVolume)
+			).toString(),
+			isVolumeUp: isVolumeUp,
+			liquidy: formatter.format(liquidty)
+		};
 	};
 
-	principalStore.subscribe((value)=>{
+	principalStore.subscribe((value) => {
 		principal = value;
-	});
-
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-		setup();
 	});
 
 	const decimals = (value: BigInt) => {
@@ -164,42 +189,9 @@
 		return _decimals;
 	};
 
-	const buy = async () => {
-		console.log('buy');
-		if (isTokenA) {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, slippage);
-		} else {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, slippage);
-		}
-	};
-
-	const sell = async () => {
-		console.log('sell');
-		if (isTokenA) {
-			return await pumpy.swapTokenA({ PUMP: pool.id }, amount, slippage);
-		} else {
-			return await pumpy.swapTokenB({ PUMP: pool.id }, amount, slippage);
-		}
-	};
-
-	const toggleToken = async () => {
-		isTokenA = !isTokenA;
-		console.log('toggle');
-	};
-
-	const setSlippage = async () => {
-		console.log('slippage');
-	};
-
-	const swap = async () => {
-		let result: TokenResult;
-		if (isBuy) {
-			result = await buy();
-		} else {
-			result = await sell();
-		}
-		console.log('swap');
-	};
+	onMount(async () => {
+		setup();
+	});
 </script>
 
 <div class="w-full">
@@ -209,36 +201,68 @@
 		</div>
 	{:else}
 		<div class="flex flex-row gap-4">
-			<div class="basis-3/4 space-y-4">
+			<div class="basis-1/2 space-y-4">
 				<Chart />
 				<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
 			</div>
-			<div class="basis-1/4 space-y-4">
-				<div class="flex flex-row gap-4">
-					<PumpSwap />
+			<div class="basis-1/2 space-y-4">
+				<div class="flex flex-row gap-2">
+					<PumpSwap {pool} {tokenA} {tokenB} />
 					<div class="space-y-4">
 						<div class="flex flex-row gap-4">
-							<AnalyticsCard title={"Market Cap"}  value={analyticsData.marketCap} percentage={analyticsData.marketCapPercentage} isUp={analyticsData.isMarketCapUp}/>
-							<AnalyticsCard title={"Volume"}  value={analyticsData.volume} percentage={analyticsData.volumePercentage} isUp={analyticsData.isVolumeUp}/>
+							<AnalyticsCard
+								title={'Market Cap'}
+								value={analyticsData.marketCap}
+								percentage={analyticsData.marketCapPercentage}
+								isUp={analyticsData.isMarketCapUp}
+							/>
+							<AnalyticsCard
+								title={'Volume'}
+								value={analyticsData.volume}
+								percentage={analyticsData.volumePercentage}
+								isUp={analyticsData.isVolumeUp}
+							/>
 						</div>
 						<div class="flex flex-row gap-4">
-							<AnalyticsProgressCard title={"Liquidity"} value={NumberFormatter(
-								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-								3
-							)}/>
-							<AnalyticsProgressCard title={"King of the kill progress"} value={NumberFormatter(
-								(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-								3
-							)}/>
+							<AnalyticsProgressCard
+								title={'Liquidity'}
+								value={NumberFormatter(
+									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									3
+								)}
+							/>
+							<AnalyticsProgressCard
+								title={'King of the kill progress'}
+								value={NumberFormatter(
+									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									3
+								)}
+							/>
 						</div>
 					</div>
 				</div>
+
 				<div class="flex flex-row gap-4">
-					<BalanceCard title={tokenA.name}  value={NumberFormatter(tokenABalance,3)} />
-					<BalanceCard title={tokenB.name}  value={NumberFormatter(tokenBBalance,3)} />
-					<CreatorCard/>
+					<div class="basis-1/3">
+						<BalanceCard
+							icon={tokenA.icon}
+							title={tokenA.name}
+							value={NumberFormatter(tokenABalance, 3)}
+						/>
+					</div>
+					<div class="basis-1/3">
+						<BalanceCard
+							icon={tokenB.icon}
+							title={tokenB.name}
+							value={NumberFormatter(tokenBBalance, 3)}
+						/>
+					</div>
+					<div class="basis-1/3">
+						<CreatorCard />
+					</div>
 				</div>
-				<DescriptionCard title={tokenA.name} description={tokenA.description}/>
+				<DescriptionCard title={tokenA.name} description={tokenA.description} />
+				<Holders {holders} token={tokenA} poolId={pool.id.toString()} />
 			</div>
 		</div>
 	{/if}
