@@ -7,7 +7,7 @@
 		description: z.string().max(500),
 		icon: z
 			.instanceof(File, { message: 'Please upload a file.' })
-			.refine((f) => f.size < 100_000, 'Max 100 kB upload size.'),
+			.refine((f) => f.size < 200_000, 'Max 100 kB upload size.'),
 		twitter: z.string(),
 		telegram: z.string(),
 		discord: z.string(),
@@ -225,7 +225,7 @@
 							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 							type="file"
 							name="icon"
-							accept="image/png, image/jpeg"
+							accept="image/png, image/jpeg, image/jpg, image/gif"
 							bind:files={$file}
 						/>
 						{#if $errors.icon}

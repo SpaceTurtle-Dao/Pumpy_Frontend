@@ -7,7 +7,7 @@
 <Card.Root
 	data-x-chunk-name="dashboard-05-chunk-1"
 	data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-	class="w-72"
+	class="h-40"
 >
 	<Card.Header class="pb-0">
 		<div class="flex flex-row gap-2">
@@ -23,11 +23,6 @@
 
 	</Card.Header>
 	<Card.Content class="pt-8">
-        <Button class="w-44" size="lg">Follow</Button>
+        <Button class="w-full" size="lg">Follow</Button>
     </Card.Content>
-    <Card.Footer>
-        <p class="text-sm text-muted-foreground truncate ...">
-            43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe
-        </p>
-    </Card.Footer>
 </Card.Root>

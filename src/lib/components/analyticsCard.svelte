@@ -12,7 +12,7 @@
 <Card.Root
 	data-x-chunk-name="dashboard-05-chunk-1"
 	data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-    class="min-w-64"
+    class="min-w-72"
 >
 	<Card.Header class="pb-2">
 		<Card.Description>{title}</Card.Description>
