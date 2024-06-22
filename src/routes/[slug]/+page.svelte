@@ -57,7 +57,7 @@
 		volume: string;
 		volumePercentage: string;
 		isVolumeUp: boolean;
-		liquidy: string;
+		liquidity: string;
 	}
 
 	let pumpyCanisterId = '';
@@ -172,7 +172,7 @@
 				Number(pool.analytics.hourVolume)
 			).toString(),
 			isVolumeUp: isVolumeUp,
-			liquidy: formatter.format(liquidty)
+			liquidity: formatter.format(liquidty)
 		};
 	};
 
@@ -226,17 +226,11 @@
 						<div class="flex flex-row gap-4">
 							<AnalyticsProgressCard
 								title={'Liquidity'}
-								value={NumberFormatter(
-									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-									3
-								)}
+								value={analyticsData.liquidity}
 							/>
 							<AnalyticsProgressCard
 								title={'King of the kill progress'}
-								value={NumberFormatter(
-									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
-									3
-								)}
+								value={analyticsData.liquidity}
 							/>
 						</div>
 					</div>
