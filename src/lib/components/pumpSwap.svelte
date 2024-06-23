@@ -37,8 +37,10 @@
 		TokenInfo,
 		Transaction,
 		TransactionType,
-		Swap
+		Swap,
+		BalanceRequest
 	} from '$lib/declarations/pumpy/pumpy.did';
+	import { bigint } from 'zod';
 
 	let pumpy: Pumpy;
 	export let pool: PoolInfo;
@@ -85,86 +87,78 @@
 		return (Number(percentage) / 100) * Number(totalValue);
 	}
 
+	async function estimateB(amount: bigint) {
+		let balanceARequest: BalanceRequest = {
+			id: pool.pair[0],
+			owner: pool.id.toString()
+		};
+
+		let balanceBRequest: BalanceRequest = {
+			id: pool.pair[1],
+			owner: pool.id.toString()
+		};
+		let tokenA = await pumpy.balance(balanceARequest);
+		let tokenB = await pumpy.balance(balanceBRequest);
+		let price = tokenA * tokenB;
+		let _tokenA = tokenA + amount;
+		let _tokenB = price / _tokenA;
+		let _amount = tokenB - _tokenB;
+		return _amount;
+	}
+
+	async function estimateA(amount: bigint) {
+		let balanceARequest: BalanceRequest = {
+			id: pool.pair[0],
+			owner: pool.id.toString()
+		};
+
+		let balanceBRequest: BalanceRequest = {
+			id: pool.pair[1],
+			owner: pool.id.toString()
+		};
+		let tokenA = await pumpy.balance(balanceARequest);
+		let tokenB = await pumpy.balance(balanceBRequest);
+		let price = tokenA * tokenB;
+		let _tokenB = tokenB + amount;
+		let _tokenA = price / _tokenB;
+		let _amount = tokenA - _tokenA;
+		return _amount;
+	}
+
 	/*function calculatePercentage(x:bigint, y:bigint) {
 		return (x / y) * BigInt(100);
 	}*/
 
 	const buy = async () => {
-		console.log('buy');
+		console.log("slippage: "+slippage);
 		let poolId = { PUMP: pool.id };
-		if (isTokenA) {
-			let _amount = BigInt(amount) * decimals(tokenA.decimals);
-			console.log("Amount: "+ _amount);
-			let esitmate = await pumpy.getSwapTokenBEstimate(poolId, _amount);
-			console.log(esitmate/decimals(tokenA.decimals));
-			//let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
-			/*console.log('Swapping');
-			console.log(_amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
-			console.log('slippage: ' + slippage + '%');
-			console.log('slippage: ' + _slippage + ' ' + tokenB.symbol);
-			console.log(
-				'estimate: ' + esitmate + ' ' + tokenB.symbol
-			);
-			console.log(esitmate);
-			console.log(BigInt(_slippage));*/
-			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
-		} else {
-			let _amount = BigInt(amount) * decimals(tokenB.decimals);
-			console.log(_amount);
-			let esitmate = await pumpy.getSwapTokenAEstimate(poolId, _amount);
-			console.log(esitmate)
-			//let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
-			/*console.log('Swapping');
-			console.log(_amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
-			console.log('slippage: ' + slippage + '%');
-			console.log('slippage: ' + _slippage + ' ' + tokenA.symbol);
-			console.log(
-				'estimate: ' + esitmate + ' ' + tokenA.symbol
-			);
-			console.log(esitmate);
-			console.log(_slippage);*/
-			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
-		}
+		let _amount = BigInt(amount) * decimals(tokenB.decimals);
+		console.log('Amount: ' + _amount);
+		let esitmate = await estimateA(_amount);
+		let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+		let result = await pumpy.swapTokenB(poolId,_amount,_slippage);
+		console.log(esitmate);
+		console.log(_slippage);
+		console.log(result);
 	};
 
 	const sell = async () => {
-		console.log('sell');
+		console.log("slippage: "+slippage);
 		let poolId = { PUMP: pool.id };
-		if (isTokenA) {
-			let _amount = BigInt(amount) * decimals(tokenA.decimals);
-			let esitmate = await pumpy.getSwapTokenAEstimate(poolId, _amount);
-			let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
-			console.log('Swapping');
-			console.log(_amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
-			console.log('slippage: ' + slippage + '%');
-			console.log('slippage: ' + _slippage + ' ' + tokenB.symbol);
-			console.log(
-				'estimate: ' + esitmate + ' ' + tokenB.symbol
-			);
-			console.log(esitmate);
-			console.log(_slippage);
-			//return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
-		} else {
-			let _amount = BigInt(amount) * decimals(tokenB.decimals);
-			let esitmate = await pumpy.getSwapTokenBEstimate(poolId, _amount);
-			let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
-			console.log('Swapping');
-			console.log(_amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
-			console.log('slippage: ' + slippage + '%');
-			console.log('slippage: ' + _slippage + ' ' + tokenA.symbol);
-			console.log(
-				'estimate: ' + esitmate + ' ' + tokenA.symbol
-			);
-			console.log(esitmate);
-			console.log(_slippage);
-			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
-		}
+		let _amount = BigInt(amount) * decimals(tokenA.decimals);
+		console.log('Amount: ' + _amount);
+		let esitmate = await estimateB(_amount);
+		let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+		let result = await pumpy.swapTokenA(poolId,_amount,_slippage);
+		console.log(esitmate);
+		console.log(_slippage);
+		console.log(result);
 	};
 
-	const toggleToken = async () => {
+	/*const toggleToken = async () => {
 		isTokenA = !isTokenA;
 		console.log('toggleToken');
-	};
+	};*/
 
 	const toggleBuy = async () => {
 		isTokenA = false;
@@ -213,21 +207,9 @@
 	</Card.Header>
 	<Card.Content>
 		<div class="flex flex-col space-y-4">
-			{#if isBuy}
-				<div class="flex flex-row gap-6">
-					{#if isTokenA}
-						<Button class="h-6 w-full" on:click={toggleToken}>switch to {tokenB.symbol}</Button>
-					{:else}
-						<Button class="h-6 w-full" on:click={toggleToken}>switch to {tokenA.symbol}</Button>
-					{/if}
-
-					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
-				</div>
-			{:else}
-				<div class="flex flex-row justify-end gap-6">
-					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
-				</div>
-			{/if}
+			<div class="flex flex-row justify-end gap-6">
+				<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
+			</div>
 		</div>
 	</Card.Content>
 	<Card.Footer class="flex flex-col space-y-3">

@@ -178,6 +178,7 @@
 
 	principalStore.subscribe((value) => {
 		principal = value;
+		setup();
 	});
 
 	const decimals = (value: BigInt) => {
