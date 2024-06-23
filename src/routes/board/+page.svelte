@@ -8,10 +8,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     background-color: #000000; 
-    padding: 10px;
+    padding: 20px 10px; /* Add some padding to the top and bottom */
   }
 
   .board-title {

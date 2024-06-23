@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card";
-  import AddIcon from '$lib/components/daimond_plus.svelte'; // Adjust the path as necessary
+  import AddIcon from '$lib/components/daimond_plus.svelte';
 </script>
 
 <Card.Root class="bg-black text-white p-6 rounded-lg shadow-lg flex flex-col justify-between">
