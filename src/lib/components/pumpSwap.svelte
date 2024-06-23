@@ -1,46 +1,27 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Chart from '$lib/components/chart.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import * as Select from '$lib/components/ui/select/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
-	import { Progress } from '$lib/components/ui/progress/index.js';
-	import Trades from '$lib/components/trades.svelte';
-	import Holders from '$lib/components/holders.svelte';
-	import Footer from '$lib/components/footer.svelte';
-	// @ts-ignore
-	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronDown, ChevronUp } from 'lucide-svelte';
-	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { toast } from 'svelte-sonner';
 	import {
 		pumpyActor,
-		principalStore,
-		loadingStore,
-		poolsStore,
-		pumpsStore,
-		tokensStore,
-		balancesStore
+		toastTitleStore,
+		toastDescriptionStore,
+		toastSuccessStore,
+		toastLoadingStore
 	} from '$lib/store';
+	import SwapToast from './swapToast.svelte';
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import type {
-		MintRequest,
 		Pumpy,
-		PoolRequest,
-		PumpRequest,
-		TokenRequest,
 		PoolInfo,
-		TokenResult,
 		TokenInfo,
-		Transaction,
-		TransactionType,
-		Swap,
-		BalanceRequest
+		BalanceRequest,
+		TokenResult
 	} from '$lib/declarations/pumpy/pumpy.did';
-	import { bigint } from 'zod';
 
 	let pumpy: Pumpy;
 	export let pool: PoolInfo;
@@ -51,8 +32,10 @@
 	let dialogOpen = false;
 	let isTokenA = false;
 	let isBuy = true;
+	let isDisabled = false;
 	let slippage = 0.1;
 	let amount = 0;
+	let status = 'Swap';
 
 	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -130,26 +113,66 @@
 	}*/
 
 	const buy = async () => {
-		console.log("slippage: "+slippage);
+		console.log('slippage: ' + slippage);
 		let poolId = { PUMP: pool.id };
 		let _amount = BigInt(amount) * decimals(tokenB.decimals);
 		console.log('Amount: ' + _amount);
 		let esitmate = await estimateA(_amount);
-		let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
-		let result = await pumpy.swapTokenB(poolId,_amount,_slippage);
+		let _slippage =
+			esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+		let result = await pumpy.swapTokenB(poolId, _amount, _slippage);
+		if ('Ok' in result) {
+			toastLoadingStore.set(false);
+			toastTitleStore.set('Transaction Confirmed');
+			let description =
+				'Successfully swapped ' +
+				NumberFormatter(amount.toString(), 3) +
+				' ' +
+				tokenB.symbol.toUpperCase() +
+				' for ' +
+				NumberFormatter((esitmate / decimals(tokenA.decimals)).toString(), 3) +
+				' ' +
+				tokenA.symbol.toUpperCase();
+			toastSuccessStore.set(true);
+			toastDescriptionStore.set(description);
+		} else {
+			toastLoadingStore.set(false);
+			toastSuccessStore.set(false);
+		}
+		toast(SwapToast);
 		console.log(esitmate);
 		console.log(_slippage);
 		console.log(result);
 	};
 
 	const sell = async () => {
-		console.log("slippage: "+slippage);
+		console.log('slippage: ' + slippage);
 		let poolId = { PUMP: pool.id };
 		let _amount = BigInt(amount) * decimals(tokenA.decimals);
 		console.log('Amount: ' + _amount);
 		let esitmate = await estimateB(_amount);
-		let _slippage = esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
-		let result = await pumpy.swapTokenA(poolId,_amount,_slippage);
+		let _slippage =
+			esitmate - BigInt(Math.round(getPercentage(slippage.toString(), esitmate.toString())));
+		let result: TokenResult = await pumpy.swapTokenA(poolId, _amount, _slippage);
+		if ('Ok' in result) {
+			toastLoadingStore.set(false);
+			toastTitleStore.set('Transaction Confirmed');
+			let description =
+				'Successfully swapped ' +
+				NumberFormatter(amount.toString(), 3) +
+				' ' +
+				tokenA.symbol.toUpperCase() +
+				' for ' +
+				NumberFormatter((esitmate / decimals(tokenB.decimals)).toString(), 3) +
+				' ' +
+				tokenB.symbol.toUpperCase();
+			toastSuccessStore.set(true);
+			toastDescriptionStore.set(description);
+		} else {
+			toastLoadingStore.set(false);
+			toastSuccessStore.set(false);
+		}
+		toast(SwapToast);
 		console.log(esitmate);
 		console.log(_slippage);
 		console.log(result);
@@ -183,6 +206,13 @@
 
 	const swap = async () => {
 		//let result: TokenResult;
+		isDisabled = true;
+		status = 'Processing';
+		toastTitleStore.set('');
+		toastDescriptionStore.set('');
+		toastTitleStore.set('Processing Swap');
+		toastLoadingStore.set(true);
+		toast(SwapToast);
 		if (isBuy) {
 			//result = await buy();
 			await buy();
@@ -190,6 +220,8 @@
 			//result = await sell();
 			await sell();
 		}
+		isDisabled = false;
+		status = 'Swap';
 		console.log('swap');
 	};
 
@@ -236,12 +268,23 @@
 		{:else}
 			<div class="flex flex-row gap-4">
 				<Button variant="outline" size="sm">reset</Button>
-				<Button variant="outline" size="sm">1 {tokenA.symbol}</Button>
-				<Button variant="outline" size="sm">5 {tokenA.symbol}</Button>
-				<Button variant="outline" size="sm">10 {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm">10m {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm">50m {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm">100m {tokenA.symbol}</Button>
 			</div>
 		{/if}
-		<Button class="w-full" on:click={swap}>place trade</Button>
+		{#if isDisabled}
+			<Button disabled class="w-full" on:click={swap}>
+				<div class="flex flex-row gap-2">
+					<LoaderCircle class="w-4 animate-spin" />
+					<div class="pt-0.5">
+						{status}
+					</div>
+				</div>
+			</Button>
+		{:else}
+			<Button class="w-full" on:click={swap}>{status}</Button>
+		{/if}
 	</Card.Footer>
 </Card.Root>
 <div>

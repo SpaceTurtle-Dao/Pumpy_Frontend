@@ -26,7 +26,7 @@
 
 <div class="min-h-screen p-10">
   <div class="flex space-x-6">
-	<Toaster />
+	<Toaster  position="bottom-left"/>
     <slot />
   </div>
 </div>

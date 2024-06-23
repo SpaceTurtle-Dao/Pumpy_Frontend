@@ -9,3 +9,8 @@ export let poolsStore: Writable<Array<PoolInfo>> = writable();
 export let pumpsStore: Writable<Array<PoolInfo>> = writable();
 export let tokensStore: Writable<Array<TokenInfo>> = writable();
 export let balancesStore: Writable<Array<[TokenInfo, bigint]>> = writable();
+
+export let toastTitleStore: Writable<string> = writable("");
+export let toastDescriptionStore: Writable<string> = writable("");
+export let toastSuccessStore: Writable<boolean> = writable(false);
+export let toastLoadingStore: Writable<boolean> = writable(false);
