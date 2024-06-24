@@ -54,7 +54,7 @@
 </script>
 
 
-<style>
+<!--<style>
   .card-3d {
     border: 1px solid white;
     background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
@@ -91,59 +91,63 @@
     padding: 10px 0;
     text-align: center;
   }
-</style>
+</style>-->
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {#each paginatedCards as card}
-    <a href="/{card.id}">
-      <Card.Root class="card-3d text-white p-4 shadow-md">
-        <Card.Header class="flex items-center space-x-2 mb-2">
-          <img src={card.image} alt={card.ticker} class="w-12 h-12 rounded-full" />
-          <div>
-            <span class="text-sm text-gray-400">Created by {card.createdBy}</span>
-            <div class="text-green-400 font-semibold text-xs">Market cap: {card.marketCap}</div>
-          </div>
-        </Card.Header>
-        <Card.Content class="card-content">
-          <div class="font-semibold text-lg mb-2">{card.ticker}</div>
-          <div class="text-gray-300 text-sm card-description">{card.description}</div>
-        </Card.Content>
-      </Card.Root>
-    </a>
-  {/each}
-</div>
-
-<div class="pagination-wrapper">
-  <Pagination.Root 
-    count={cards.length} 
-    {perPage} 
-    let:pages 
-    let:currentPage
-  >
-    <Pagination.Content>
-      <Pagination.Item>
-        <Pagination.PrevButton on:click={() => goToPage(currentPage - 1)} />
-      </Pagination.Item>
-      {#each pages as page (page.key)}
-        {#if page.type === "ellipsis"}
-          <Pagination.Item>
-            <Pagination.Ellipsis />
-          </Pagination.Item>
-        {:else}
-          <Pagination.Item>
-            <Pagination.Link 
-              {page} 
-              isActive={currentPage === page.value}
-              on:click={() => goToPage(page.value)}
-            >
-              {page.value}
-            </Pagination.Link>
-          </Pagination.Item>
-        {/if}
-      {/each}
-      <Pagination.Item>
-        <Pagination.NextButton on:click={() => goToPage(currentPage + 1)} />
-      </Pagination.Item>
-    </Pagination.Content>
-  </Pagination.Root>
+<div class="flex flex-col w-full justify-center items-center space-y-80">
+  <div class="max-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-72">
+    {#each paginatedCards as card}
+      <div class="max-w-96 max-h-10 shadow-md ">
+        <a href="/{card.id}">
+          <Card.Root class="card-3d text-white p-4 shadow-md">
+            <Card.Header class="items-center space-x-2 mb-2">
+              <img src={card.image} alt={card.ticker} class="w-12 h-12 rounded-full" />
+              <div>
+                <span class="text-sm text-gray-400">Created by {card.createdBy}</span>
+                <div class="text-green-400 font-semibold text-xs">Market cap: {card.marketCap}</div>
+              </div>
+            </Card.Header>
+            <Card.Content class="card-content">
+              <div class="font-semibold text-lg mb-2">{card.ticker}</div>
+              <div class="line-clamp-1 text-gray-300 text-sm card-description">{card.description}</div>
+            </Card.Content>
+          </Card.Root>
+        </a>
+      </div>
+    {/each}
+  </div>
+  
+  <div class="pagination-wrapper">
+    <Pagination.Root 
+      count={cards.length} 
+      {perPage} 
+      let:pages 
+      let:currentPage
+    >
+      <Pagination.Content>
+        <Pagination.Item>
+          <Pagination.PrevButton on:click={() => goToPage(currentPage - 1)} />
+        </Pagination.Item>
+        {#each pages as page (page.key)}
+          {#if page.type === "ellipsis"}
+            <Pagination.Item>
+              <Pagination.Ellipsis />
+            </Pagination.Item>
+          {:else}
+            <Pagination.Item>
+              <Pagination.Link 
+                {page} 
+                isActive={currentPage === page.value}
+                on:click={() => goToPage(page.value)}
+              >
+                {page.value}
+              </Pagination.Link>
+            </Pagination.Item>
+          {/if}
+        {/each}
+        <Pagination.Item>
+          <Pagination.NextButton on:click={() => goToPage(currentPage + 1)} />
+        </Pagination.Item>
+      </Pagination.Content>
+    </Pagination.Root>
+  </div>
 </div>
