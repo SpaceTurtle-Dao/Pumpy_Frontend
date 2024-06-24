@@ -53,6 +53,11 @@ export interface Liquidity__1 {
   'share' : bigint,
 }
 export interface MintRequest { 'id' : bigint, 'to' : string, 'amount' : bigint }
+export interface MintRequest__1 {
+  'id' : bigint,
+  'to' : string,
+  'amount' : bigint,
+}
 export type PoolId = { 'RUG' : bigint } |
   { 'POOL' : bigint } |
   { 'PUMP' : bigint };
