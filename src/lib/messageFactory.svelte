@@ -31,37 +31,60 @@
 			{ name: 'DenominationB', value: denominationB }
 		];
 	};
-    export const add = async (
-		amountA: string,
-		amountB: string,
-	) => {
+	export const add = async (amountA: string, amountB: string) => {
 		return [
 			{ name: 'Action', value: 'LiquidityBox' },
 			{ name: 'amountA', value: amountA },
 			{ name: 'amountB', value: amountB },
-			{ name: 'isAdd', value: true },
+			{ name: 'isAdd', value: true }
 		];
 	};
 
-    export const remove = async (
-		share: string,
-	) => {
+	export const remove = async (share: string) => {
 		return [
 			{ name: 'Action', value: 'LiquidityBox' },
 			{ name: 'share', value: share },
-			{ name: 'isAdd', value: false },
+			{ name: 'isAdd', value: false }
 		];
 	};
 
-    export const swapA = async (
-		amount: string,
-        slippage: string,
-	) => {
+	export const swapA = async (amount: string, slippage: string) => {
 		return [
-			{ name: 'Action', value: 'LiquidityBox' },
+			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
-            { name: 'slippage', value: slippage },
-			{ name: 'isTokenA', value: true },
+			{ name: 'slippage', value: slippage },
+			{ name: 'isTokenA', value: true }
+		];
+	};
+
+	export const swapB = async (amount: string, slippage: string) => {
+		return [
+			{ name: 'Action', value: 'SwapBox' },
+			{ name: 'amount', value: amount },
+			{ name: 'slippage', value: slippage },
+			{ name: 'isTokenA', value: false }
+		];
+	};
+
+	export const withdrawB = async (amount: string) => {
+		return [
+			{ name: 'Action', value: 'WithdrawBox' },
+			{ name: 'Quantity', value: amount },
+			{ name: 'isTokenA', value: false }
+		];
+	};
+
+	export const withdrawA = async (amount: string) => {
+		return [
+			{ name: 'Action', value: 'WithdrawBox' },
+			{ name: 'Quantity', value: amount },
+			{ name: 'isTokenA', value: true }
+		];
+	};
+
+    export const Balance = async (amount: string) => {
+		return [
+			{ name: 'Action', value: 'BalanceBox' },
 		];
 	};
 </script>
