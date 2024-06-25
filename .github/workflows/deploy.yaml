@@ -13,17 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-      - name: Discord Notifications
-        uses: marvv90/discord-notify@master
-        with:
-          github-token: ${{ secrets.github_token}}
-          discord-webhook: ${{ secrets.webhook }}
-          discord-username: GitHub
-          discord-avatar: https://avatars.githubusercontent.com/u/171693943?s=400&u=c32933a450507f88a4bc295ba8e9100713fe3f70&v=4
-          discord-title: ${{ github.workflow }}
-          discord-clr-success: 17cf48
-          discord-clr-failure: e72727
-          discord-clr-cancelled: d3d3d3
       - name: Check out the repo
         uses: actions/checkout@v3
 

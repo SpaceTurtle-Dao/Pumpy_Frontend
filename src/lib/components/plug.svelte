@@ -128,7 +128,7 @@
 		}
 	}
 	onMount(async () => {
-		let ic = icblast();
+		/*let ic = icblast();
 		let pumpyQuery = await ic(pumpyCanisterId);
 		// @ts-ignore
 		let tokens = await pumpyQuery.fetchTokens();
@@ -139,7 +139,7 @@
 		pumpsStore.set(pumps);
 		console.log(tokens);
 		console.log(pools);
-		console.log(pumps);
+		console.log(pumps);*/
 	});
 </script>
 

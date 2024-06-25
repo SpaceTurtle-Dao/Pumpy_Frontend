@@ -101,6 +101,12 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'telegram': IDL.Opt(IDL.Text),
     'symbol': IDL.Text,
   });
+  const Liquidity__1 = IDL.Record({
+    'id': IDL.Nat,
+    'owner': IDL.Text,
+    'createdAt': Time,
+    'share': IDL.Nat,
+  });
   const Liquidity = IDL.Record({
     'id': IDL.Nat,
     'owner': IDL.Text,
@@ -168,6 +174,14 @@ export const pumpy_idlFactory = ({ IDL }) => {
     'tokenA': TokenInfo__1,
     'tokenB': TokenInfo__1,
     'totalShares': IDL.Nat,
+  });
+  const Swap__1 = IDL.Record({
+    'id': IDL.Nat,
+    'owner': IDL.Text,
+    'createdAt': Time,
+    'swapType': SwapType,
+    'tokenA': IDL.Nat,
+    'tokenB': IDL.Nat,
   });
   const AnalyticsData__1 = IDL.Record({
     'liquidty': IDL.Nat,

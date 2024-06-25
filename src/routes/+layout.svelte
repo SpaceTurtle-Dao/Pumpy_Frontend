@@ -1,12 +1,9 @@
 <script lang="ts">
 	import Navbar from '$lib/components/navbar.svelte';
-	import Footer from '$lib/components/footer.svelte';
-	import FeaturedDAOs from '$lib/components/FeaturedDao.svelte';
 	import { onMount } from 'svelte';
 	import { initJuno } from '@junobuild/core-peer';
 	import '../app.css';
 	import { env } from '$env/dynamic/public';
-	import Card from '$lib/components/card.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	let satelliteId = env.PUBLIC_SATELLITE;
 
@@ -30,5 +27,3 @@
 		<slot />
 	</div>
 </div>
-<Footer />
-<!--<Footer />-->

@@ -13,9 +13,13 @@
 	// @ts-ignore
 	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronUp } from 'lucide-svelte';
+	import { ChevronDown, ChevronUp } from 'lucide-svelte';
 	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
+	// @ts-ignore
+	import icblast from '@infu/icblast';
+	import { onMount } from 'svelte';
+	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	import {
 		pumpyActor,
 		principalStore,
@@ -32,26 +36,52 @@
 		PumpRequest,
 		TokenRequest,
 		PoolInfo,
-
 		TokenResult,
-
 		TokenInfo,
-
 		Transaction,
-
-		TransactionType
-
-
-
-
-
+		TransactionType,
+		Swap,
+		BalanceRequest
 	} from '$lib/declarations/pumpy/pumpy.did';
+	import PumpSwap from '$lib/components/pumpSwap.svelte';
+	import AnalyticsCard from '$lib/components/analyticsCard.svelte';
+	import CreatorCard from '$lib/components/creatorCard.svelte';
+	import BalanceCard from '$lib/components/BalanceCard.svelte';
+	import AnalyticsProgressCard from '$lib/components/analyticsProgressCard.svelte';
+	import DescriptionCard from '$lib/components/descriptionCard.svelte';
+
+	interface AnalyticsData {
+		marketCap: string;
+		marketCapPercentage: string;
+		isMarketCapUp: boolean;
+		volume: string;
+		volumePercentage: string;
+		isVolumeUp: boolean;
+		liquidy: string;
+	}
+
+	let pumpyCanisterId = '';
+
+	switch (import.meta.env.MODE) {
+		case 'development': {
+			pumpyCanisterId = 'x2ble-2aaaa-aaaak-qiknq-cai';
+			break;
+		}
+		case 'staging': {
+			pumpyCanisterId = 'ucgwg-baaaa-aaaak-qibva-cai';
+			break;
+		}
+		case 'production': {
+			pumpyCanisterId = 'yxccl-myaaa-aaaak-qihga-cai';
+			break;
+		}
+	}
 
 	let id = $page.params.slug;
 	let pumpy: Pumpy;
-	let pool:PoolInfo;
-	let tokenA:TokenInfo;
-	let tokenB:TokenInfo;
+	let pool: PoolInfo;
+	let tokenA: TokenInfo;
+	let tokenB: TokenInfo;
 	let principal: Principal;
 	let isLoading = false;
 	let dialogOpen = false;
@@ -61,284 +91,179 @@
 	let isBuy = true;
 	let slippage = BigInt(0);
 	let amount = BigInt(0);
-	let transactions:Array<TransactionType> = [];
+	let swaps: Array<Swap> = [];
+	let analyticsData: AnalyticsData;
+	let tokenABalance: string;
+	let tokenBBalance: string;
+	let holders: Array<[string, bigint]> = [];
 
-	const setup = async () => {
-		/*let _pool:[] | [PoolInfo] = await pumpy.pumpInfo(BigInt(id));
-		if(_pool.length > 0){
-			pool = _pool[0]!
-			let _tokenA:[] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[0]));
-			let _tokenB:[] | [TokenInfo] = await pumpy.tokenInfo(BigInt(pool.pair[1]));
-			tokenA = _tokenA[0]!
-			tokenB = _tokenB[0]!
-			decimalsA = decimals(tokenA.decimals);
-			decimalsB = decimals(tokenB.decimals);
-			transactions = await pumpy.fet
-		};*/
+	// Create our number formatter.
+	const formatter = new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD'
+
+		// These options are needed to round to whole numbers if that's what you want.
+		//minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+		//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+	});
+
+	function relDiff(a: number, b: number) {
+		return 100 * Math.abs((a - b) / ((a + b) / 2));
+	}
+
+	const NumberFormatter = (value: string, decimal: number) => {
+		return parseFloat(parseFloat(value).toFixed(decimal)).toLocaleString('en', {
+			useGrouping: true
+		});
 	};
 
-	const decimals = (value:BigInt) => {
+	const setup = async () => {
+		//let _id = BigInt(id);
+		let ic = icblast();
+		let pumpyQuery = await ic(pumpyCanisterId, pumpy_idlFactory);
+		console.log(pumpyQuery);
+		pool = await pumpyQuery.pumpInfo(id);
+		console.log(pool);
+		swaps = await pumpyQuery.fetchPumpSwaps(id, 0, 1000);
+		console.log(pool);
+		tokenA = await pumpyQuery.tokenInfo(pool.pair[0]);
+		tokenB = await pumpyQuery.tokenInfo(pool.pair[1]);
+		holders = await pumpyQuery.fetchHolders(pool.pair[0], 0, 100);
+		if (principal) {
+			let balanceRequestA: BalanceRequest = {
+				id: pool.pair[0],
+				owner: principal.toString()
+			};
+			let balanceRequestB: BalanceRequest = {
+				id: pool.pair[1],
+				owner: principal.toString()
+			};
+			tokenABalance = (
+				Number(await pumpyQuery.balance(balanceRequestA)) / decimals(tokenA.decimals)
+			).toString();
+			tokenBBalance = (
+				Number(await pumpyQuery.balance(balanceRequestB)) / decimals(tokenB.decimals)
+			).toString();
+		} else {
+			tokenABalance = '0';
+			tokenBBalance = '0';
+		}
+		decimalsA = decimals(tokenA.decimals);
+		decimalsB = decimals(tokenB.decimals);
+		//transactions = await pumpy.f
+		let isVolumeUp: boolean;
+		let isMarketCapUp: boolean = false;
+		if (pool.analytics.volume >= pool.analytics.hourVolume) {
+			isVolumeUp = true;
+		} else {
+			isVolumeUp = false;
+		}
+		let marketCap = Number(pool.analytics.marketCap) / decimalsB;
+		let volume = Number(pool.analytics.volume) / decimalsB;
+		let liquidty = Number(pool.analytics.liquidty) / decimalsB;
+
+		analyticsData = {
+			marketCap: formatter.format(marketCap),
+			marketCapPercentage: '0',
+			isMarketCapUp: isMarketCapUp,
+			volume: formatter.format(volume),
+			volumePercentage: relDiff(
+				Number(pool.analytics.volume),
+				Number(pool.analytics.hourVolume)
+			).toString(),
+			isVolumeUp: isVolumeUp,
+			liquidy: formatter.format(liquidty)
+		};
+	};
+
+	principalStore.subscribe((value) => {
+		principal = value;
+	});
+
+	const decimals = (value: BigInt) => {
 		let _decimals = 1;
 		for (let i = 0; i < Number(value); i++) {
 			_decimals = _decimals * 10;
-		};
+		}
 
-		return _decimals
-	};
-
-	const buy = async () => {
-		console.log("buy")
-		if(isTokenA){
-			return await pumpy.swapTokenB({"PUMP":pool.id},amount,slippage);
-		}else{
-			return await pumpy.swapTokenA({"PUMP":pool.id},amount,slippage);
-		};
+		return _decimals;
 	};
 
-	const sell = async () => {
-		console.log("sell");
-		if(isTokenA){
-			return  await pumpy.swapTokenA({"PUMP":pool.id},amount,slippage);
-		}else{
-			return await pumpy.swapTokenB({"PUMP":pool.id},amount,slippage);
-		};
-	};
-	
-	const toggleToken = async () => {
-		isTokenA = !isTokenA;
-		console.log("toggle");
-	};
-
-	const setSlippage = async () => {
-		console.log("slippage");
-	};
-
-	const swap = async () => {
-		let result:TokenResult;
-		if(isBuy){
-			result = await buy();
-		}else{
-			result = await sell();
-		};
-		console.log("swap");
-	};
-	setup();
+	onMount(async () => {
+		setup();
+	});
 </script>
 
-{#if isLoading}
-<div class="w-full flex justify-center">
-	<MediumSpinner/>
-</div>
-{:else}
-<div class="flex flex-row gap-10">
-	<div class="w-full basis-3/5">
-		<div class="flex flex-col space-y-8">
-			<Chart />
-			<Trades />
+<div class="w-full">
+	{#if analyticsData == undefined}
+		<div class="flex justify-center">
+			<MediumSpinner />
 		</div>
-	</div>
-	<div class="flex flex-col space-y-4 basis-2/5">
-		<div class="flex flex-row gap-6">
-			<div class="basis-1/2">
-				<Card.Root class="space-y-1">
-					<Card.Header>
-						<div class="flex flex-row gap-2">
-							<Button class="w-full" on:click={buy}>Buy</Button>
-							<Button class="w-full" variant="secondary" on:click={sell}>Sell</Button>
-						</div>
-					</Card.Header>
-					<Card.Content>
-						<div class="flex flex-col space-y-4">
-							<div class="flex flex-row justify-between">
-								<Button class="h-6 " on:click={toggleToken}>switch to ICP</Button>
-								<Button class="h-6" on:click={setSlippage}>set max slippage</Button>
-							</div>
-						</div>
-					</Card.Content>
-					<Card.Footer class="flex flex-col space-y-3">
-						<div class="flex flex-row gap-2 w-full">
-							<Input type="number" placeholder="0.0"></Input>
-							<Avatar.Root class="hidden h-9 w-9 sm:flex">
-								<Avatar.Image
-									src="https://img.cryptorank.io/coins/internet%20computer1620718852173.png"
-									alt="Avatar"
-								/>
-								<Avatar.Fallback>JL</Avatar.Fallback>
-							</Avatar.Root>
+	{:else}
+		<div class="flex flex-row gap-4">
+			<div class="basis-1/2 space-y-4">
+				<Chart />
+				<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
+			</div>
+			<div class="basis-1/2 space-y-4">
+				<div class="flex flex-row gap-2">
+					<PumpSwap {pool} {tokenA} {tokenB} />
+					<div class="space-y-4">
+						<div class="flex flex-row gap-4">
+							<AnalyticsCard
+								title={'Market Cap'}
+								value={analyticsData.marketCap}
+								percentage={analyticsData.marketCapPercentage}
+								isUp={analyticsData.isMarketCapUp}
+							/>
+							<AnalyticsCard
+								title={'Volume'}
+								value={analyticsData.volume}
+								percentage={analyticsData.volumePercentage}
+								isUp={analyticsData.isVolumeUp}
+							/>
 						</div>
 						<div class="flex flex-row gap-4">
-							<Button variant="outline" size="sm">reset</Button>
-							<Button variant="outline" size="sm">1 ICP</Button>
-							<Button variant="outline" size="sm">5 ICP</Button>
-							<Button variant="outline" size="sm">10 ICP</Button>
+							<AnalyticsProgressCard
+								title={'Liquidity'}
+								value={NumberFormatter(
+									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									3
+								)}
+							/>
+							<AnalyticsProgressCard
+								title={'King of the kill progress'}
+								value={NumberFormatter(
+									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									3
+								)}
+							/>
 						</div>
-						<Button class="w-full" on:click={swap}>place trade</Button>
-					</Card.Footer>
-				</Card.Root>
-			</div>
-			<div class="flex flex-col space-y-4">
-				<div class="flex flex-row basis-1/2 gap-4">
-					<div class="basis-1/2">
-						<Card.Root
-							data-x-chunk-name="dashboard-05-chunk-1"
-							data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-						>
-							<Card.Header class="pb-2">
-								<Card.Description>Market Cap</Card.Description>
-							</Card.Header>
-							<Card.Content class="flex flex-col space-y-2">
-								<Card.Title class="text-4xl">$1329</Card.Title>
-							</Card.Content>
-							<Card.Footer class="gap-2">
-								<ChevronUp />
-								<p class="text-xs text-green-400">25%</p>
-								<p class="text-xs text-muted-foreground">1hr</p>
-							</Card.Footer>
-						</Card.Root>
 					</div>
-					<div class="basis-1/2">
-						<Card.Root
-							data-x-chunk-name="dashboard-05-chunk-1"
-							data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-						>
-							<Card.Header class="pb-2">
-								<Card.Description>Volume</Card.Description>
-							</Card.Header>
-							<Card.Content class="flex flex-col space-y-2">
-								<Card.Title class="text-4xl">$1329</Card.Title>
-							</Card.Content>
-							<Card.Footer class="gap-2">
-								<ChevronUp />
-								<p class="text-xs text-green-400">25%</p>
-								<p class="text-xs text-muted-foreground">1hr</p>
-							</Card.Footer>
-						</Card.Root>
-					</div>
-				</div>
-				<Card.Root
-					data-x-chunk-name="dashboard-05-chunk-1"
-					data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-				>
-					<Card.Header class="pb-0">
-						<div class="flex flex-row justify-between">
-							<div class="flex flex-row gap-2">
-								<Avatar.Root class="hidden h-9 w-9 sm:flex">
-									<Avatar.Image src="luna.png" alt="Avatar" />
-									<Avatar.Fallback>OM</Avatar.Fallback>
-								</Avatar.Root>
-								<div class="flex flex-col">
-									<Card.Description>Created By</Card.Description>
-									<div class="text-xs text-muted-foreground">Luna</div>
-								</div>
-							</div>
-							<Button size="lg">Follow</Button>
-						</div>
-					</Card.Header>
-					<Card.Content class="flex flex-col space-y-2"></Card.Content>
-					<Card.Footer>
-						<p class="text-sm text-muted-foreground truncate ...">
-							43emf-jxwxr-zvbvb-vojch-3a6um-mhe2d-if2bh-wefw3-3g52d-gjfos-vqe
-						</p>
-					</Card.Footer>
-				</Card.Root>
-			</div>
-		</div>
-		<div class="">
-			<Card.Root
-				data-x-chunk-name="dashboard-07-chunk-5"
-				data-x-chunk-description="A card with a call to action to archive the product"
-			>
-				<Card.Header>
-					<Card.Title>Luna</Card.Title>
-				</Card.Header>
-				<Card.Content class="flex flex-col justify-center space-y-6">
-					<Card.Description>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-						exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-						dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-						mollit anim id est laborum.
-					</Card.Description>
-				</Card.Content>
-				<Card.Footer class="flex justify-center">
-					<div class="flex flex-row gap-6">
-						<Button size="icon" class="bg-transparent rounded-full ">
-							<SocialIcons
-								alt=""
-								network="twitter"
-								fgColor="#eeeeee"
-								bgColor="#111111"
-								width="35"
-								height="35"
-							/>
-						</Button>
-						<Button size="icon" class="bg-transparent rounded-full">
-							<SocialIcons
-								alt=""
-								network="discord"
-								fgColor="#eeeeee"
-								bgColor="#111111"
-								width="35"
-								height="35"
-							/>
-						</Button>
-						<Button size="icon" class="bg-transparent rounded-full">
-							<SocialIcons
-								alt=""
-								network="telegram"
-								fgColor="#eeeeee"
-								bgColor="#111111"
-								width="35"
-								height="35"
-							/>
-						</Button>
-					</div>
-				</Card.Footer>
-			</Card.Root>
-		</div>
-		<div class="space-y-4">
-			<div class="flex flex-row gap-4">
-				<div class="basis-1/2">
-					<Card.Root
-						data-x-chunk-name="dashboard-05-chunk-1"
-						data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-					>
-						<Card.Header class="pb-2">
-							<Card.Description>Liquidty</Card.Description>
-							<Card.Title class="text-4xl">$1329</Card.Title>
-						</Card.Header>
-						<Card.Content class="flex flex-col space-y-2">
-							<div class="text-xs text-muted-foreground">25% bonded</div>
-						</Card.Content>
-						<Card.Footer>
-							<Progress value={25} aria-label="25% increase" />
-						</Card.Footer>
-					</Card.Root>
 				</div>
 
-				<div class="basis-1/2">
-					<Card.Root
-						data-x-chunk-name="dashboard-05-chunk-1"
-						data-x-chunk-description="A stats card showing this week's total sales in USD, the percentage difference from last week, and a progress bar."
-					>
-						<Card.Header class="pb-2">
-							<Card.Description>King of the hill progress</Card.Description>
-							<Card.Title class="text-4xl">$1329</Card.Title>
-						</Card.Header>
-						<Card.Content class="flex flex-col space-y-2">
-							<div class="text-xs text-muted-foreground">25% bonded</div>
-						</Card.Content>
-						<Card.Footer>
-							<Progress value={25} aria-label="25% increase" />
-						</Card.Footer>
-					</Card.Root>
+				<div class="flex flex-row gap-4">
+					<div class="basis-1/3">
+						<BalanceCard
+							icon={tokenA.icon}
+							title={tokenA.name}
+							value={NumberFormatter(tokenABalance, 3)}
+						/>
+					</div>
+					<div class="basis-1/3">
+						<BalanceCard
+							icon={tokenB.icon}
+							title={tokenB.name}
+							value={NumberFormatter(tokenBBalance, 3)}
+						/>
+					</div>
+					<div class="basis-1/3">
+						<CreatorCard />
+					</div>
 				</div>
-			</div>
-			<div class="w-full">
-				<Holders />
+				<DescriptionCard title={tokenA.name} description={tokenA.description} />
+				<Holders {holders} token={tokenA} poolId={pool.id.toString()} />
 			</div>
 		</div>
-	</div>
+	{/if}
 </div>
-{/if}
