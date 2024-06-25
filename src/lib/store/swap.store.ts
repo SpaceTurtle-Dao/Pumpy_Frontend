@@ -1,10 +1,10 @@
 import { writable } from 'svelte/store';
 import { type TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
 
-export let toAmount = writable(0);
-export let fromAmount = writable(0);
-export let toCurrency = writable<TokenInfo | null>(null);
-export let fromCurrency = writable<TokenInfo | null>(null);
-export let slippage = writable(0.5);
-export let deadline = writable(10); //seconds
-export let isExactIn = writable(true);
+export const toAmount = writable(0);
+export const fromAmount = writable(0);
+export const toCurrency = writable<TokenInfo | null>(null);
+export const fromCurrency = writable<TokenInfo | null>(null);
+export const slippage = writable(0.5);
+export const deadline = writable(10); //seconds
+export const isExactIn = writable(true);

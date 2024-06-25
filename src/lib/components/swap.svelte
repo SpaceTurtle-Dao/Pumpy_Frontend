@@ -128,9 +128,11 @@
 		console.log(res);
 	}
 
-	// async function confirmSwap(){
-	// 	var res = pumpy.
-	// }
+	async function swapTokeenAEstimate() {
+		var res = pumpy.getSwapTokenAEstimateGivenTokenB(BigInt(100), BigInt(100));
+		console.log(res);
+	}
+	async function swap() {}
 </script>
 
 <div class="min-h-screen w-full flex flex-col justify-center items-center">
