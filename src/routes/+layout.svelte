@@ -5,6 +5,7 @@
 	import '../app.css';
 	import { env } from '$env/dynamic/public'
 	import { Toaster } from "$lib/components/ui/sonner";
+	import Footer from '$lib/components/footer.svelte';
 	let satelliteId = env.PUBLIC_SATELLITE;
 	
 	onMount(
@@ -28,5 +29,6 @@
     <slot />
   </div>
 </div>
+<Footer />
 
 
