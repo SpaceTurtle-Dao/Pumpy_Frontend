@@ -1,6 +1,6 @@
 <script lang='ts'>
   import Logo from "../../assets/sunny.jpeg"
-  import Plug from "$lib/components/plug.svelte";
+  import Plug from "$lib/components/wallet.svelte";
 </script>
 
 <style global>
