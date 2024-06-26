@@ -1,37 +1,24 @@
-<script lang="ts">
-	export const init = async (
-		tokenA: string,
-		tokenB: string,
-		amountA: string,
-		amountB: string,
-		BondingCurve: string,
-		nameA: string,
-		tickerA: string,
-		logoA: string,
-		denominationA: string,
-		nameB: string,
-		tickerB: string,
-		logoB: string,
-		denominationB: string
+<script context="module" lang="ts">
+	import type { TokenData } from "./models/TokenData.svelte";
+
+	export const init = (
+		tokenA: TokenData,
+		tokenB: TokenData,
+		bondingCurve: string,
 	) => {
+		let data = {
+			bondingCurve:bondingCurve,
+			tokenA:tokenA,
+			tokenB:tokenB
+		};
+		let json = JSON.stringify(data);
+		console.log(json);
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'TokenAProcess', value: tokenA },
-			{ name: 'TokenBProcess', value: tokenB },
-			{ name: 'amountA', value: amountA },
-			{ name: 'amountB', value: amountB },
-			{ name: 'BondingCurve', value: BondingCurve },
-			{ name: 'NameA', value: nameA },
-			{ name: 'TickerA', value: tickerA },
-			{ name: 'LogoA', value: logoA },
-			{ name: 'DenominationA', value: denominationA },
-			{ name: 'NameB', value: nameB },
-			{ name: 'TickerB', value: tickerB },
-			{ name: 'LogoB', value: logoB },
-			{ name: 'DenominationB', value: denominationB }
+			{ name: 'data', value: json},
 		];
 	};
-	export const add = async (amountA: string, amountB: string) => {
+	export const add = (amountA: string, amountB: string) => {
 		return [
 			{ name: 'Action', value: 'LiquidityBox' },
 			{ name: 'amountA', value: amountA },
@@ -40,7 +27,7 @@
 		];
 	};
 
-	export const remove = async (share: string) => {
+	export const remove = (share: string) => {
 		return [
 			{ name: 'Action', value: 'LiquidityBox' },
 			{ name: 'share', value: share },
@@ -48,7 +35,7 @@
 		];
 	};
 
-	export const swapA = async (amount: string, slippage: string) => {
+	export const swapA = (amount: string, slippage: string) => {
 		return [
 			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
@@ -57,7 +44,7 @@
 		];
 	};
 
-	export const swapB = async (amount: string, slippage: string) => {
+	export const swapB = (amount: string, slippage: string) => {
 		return [
 			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
@@ -66,7 +53,7 @@
 		];
 	};
 
-	export const withdrawB = async (amount: string) => {
+	export const withdrawB = (amount: string) => {
 		return [
 			{ name: 'Action', value: 'WithdrawBox' },
 			{ name: 'Quantity', value: amount },
@@ -74,7 +61,7 @@
 		];
 	};
 
-	export const withdrawA = async (amount: string) => {
+	export const withdrawA = (amount: string) => {
 		return [
 			{ name: 'Action', value: 'WithdrawBox' },
 			{ name: 'Quantity', value: amount },
@@ -82,9 +69,11 @@
 		];
 	};
 
-    export const Balance = async (amount: string) => {
-		return [
-			{ name: 'Action', value: 'BalanceBox' },
-		];
+	export const balance = () => {
+		return [{ name: 'Action', value: 'BalanceBox' }];
+	};
+
+	export const info = () => {
+		return [{ name: 'Action', value: 'Info' }];
 	};
 </script>
