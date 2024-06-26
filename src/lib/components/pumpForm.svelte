@@ -15,7 +15,7 @@
 		poolsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store';
+	} from '$lib/store/store';
 	import type {
 		MintRequest,
 		Pumpy,
