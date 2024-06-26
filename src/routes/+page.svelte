@@ -2,13 +2,13 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import TokenData from '$lib/models/TokenData.svelte';
 	import Tag from '$lib/models/Tag.svelte';
-	import { init, info, balance } from '$lib/messageFactory.svelte';
+	import { init, info, balance, add } from '$lib/messageFactory.svelte';
 	import { send } from '$lib/process';
 
 	// @ts-ignore
 	import { connect, createDataItemSigner } from '@permaweb/aoconnect';
 
-	const processId = 'LwPbmMPpA0YQq0MbbURC3-idQaMVZBC1in_cVIDavjE';
+	const processId = '78ofOc1imvTVeuDxDDYCFax0KVPUJnEElfQafFlBG-A';
 	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
 
@@ -69,7 +69,21 @@
 			console.log(e);
 		}
 	};
+
+	const addLiquidity = async () => {
+		try {
+			console.log("boom")
+			// @ts-ignore
+			let message = add("100000", "100000");
+			let result = await send(processId, message);
+			console.log(result);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
 </script>
 
 <Button on:click={getBalance}>GetBalance</Button>
 <Button on:click={initSwap}>Init</Button>
+<Button on:click={addLiquidity}>Add</Button>

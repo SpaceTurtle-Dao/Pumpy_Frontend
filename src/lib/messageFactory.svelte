@@ -23,7 +23,7 @@
 			{ name: 'Action', value: 'LiquidityBox' },
 			{ name: 'amountA', value: amountA },
 			{ name: 'amountB', value: amountB },
-			{ name: 'isAdd', value: true }
+			{ name: 'isAdd', value: "true" }
 		];
 	};
 
@@ -31,7 +31,7 @@
 		return [
 			{ name: 'Action', value: 'LiquidityBox' },
 			{ name: 'share', value: share },
-			{ name: 'isAdd', value: false }
+			{ name: 'isAdd', value: "false" }
 		];
 	};
 
@@ -40,7 +40,7 @@
 			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
 			{ name: 'slippage', value: slippage },
-			{ name: 'isTokenA', value: true }
+			{ name: 'isTokenA', value: "true" }
 		];
 	};
 
@@ -49,7 +49,7 @@
 			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
 			{ name: 'slippage', value: slippage },
-			{ name: 'isTokenA', value: false }
+			{ name: 'isTokenA', value: "false" }
 		];
 	};
 
@@ -57,7 +57,7 @@
 		return [
 			{ name: 'Action', value: 'WithdrawBox' },
 			{ name: 'Quantity', value: amount },
-			{ name: 'isTokenA', value: false }
+			{ name: 'isTokenA', value: "false" }
 		];
 	};
 
@@ -65,7 +65,7 @@
 		return [
 			{ name: 'Action', value: 'WithdrawBox' },
 			{ name: 'Quantity', value: amount },
-			{ name: 'isTokenA', value: true }
+			{ name: 'isTokenA', value: "true" }
 		];
 	};
 
