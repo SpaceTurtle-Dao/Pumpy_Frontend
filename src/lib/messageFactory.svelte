@@ -2,36 +2,38 @@
 	import type { TokenData } from "./models/TokenData.svelte";
 
 	export const init = (
-		tokenA: TokenData,
-		tokenB: TokenData,
+		tokenA: string,
+		tokenB: string,
 		bondingCurve: string,
 	) => {
-		let data = {
-			bondingCurve:bondingCurve,
-			tokenA:tokenA,
-			tokenB:tokenB
-		};
-		let json = JSON.stringify(data);
-		console.log(json);
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'data', value: json},
+			{ name: 'tokenA', value: tokenA},
+			{ name: 'tokenB', value: tokenB},
+			{ name: 'bondingCurve', value: bondingCurve},
 		];
 	};
-	export const add = (amountA: string, amountB: string) => {
+
+	export const initalLiquidity = (amountA: string, amountB: string) => {
 		return [
-			{ name: 'Action', value: 'LiquidityBox' },
+			{ name: 'Action', value: 'InitalLiquidity' },
 			{ name: 'amountA', value: amountA },
 			{ name: 'amountB', value: amountB },
-			{ name: 'isAdd', value: "true" }
+		];
+	};
+
+	export const add = (amountA: string, amountB: string) => {
+		return [
+			{ name: 'Action', value: 'add' },
+			{ name: 'amountA', value: amountA },
+			{ name: 'amountB', value: amountB },
 		];
 	};
 
 	export const remove = (share: string) => {
 		return [
-			{ name: 'Action', value: 'LiquidityBox' },
+			{ name: 'Action', value: 'remove' },
 			{ name: 'share', value: share },
-			{ name: 'isAdd', value: "false" }
 		];
 	};
 
@@ -40,7 +42,6 @@
 			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
 			{ name: 'slippage', value: slippage },
-			{ name: 'isTokenA', value: "true" }
 		];
 	};
 
@@ -49,11 +50,18 @@
 			{ name: 'Action', value: 'SwapBox' },
 			{ name: 'amount', value: amount },
 			{ name: 'slippage', value: slippage },
-			{ name: 'isTokenA', value: "false" }
 		];
 	};
 
-	export const withdrawB = (amount: string) => {
+	export const balance = () => {
+		return [{ name: 'Action', value: 'Balance' }];
+	};
+
+	export const info = () => {
+		return [{ name: 'Action', value: 'Info' }];
+	};
+
+	/*export const withdrawB = (amount: string) => {
 		return [
 			{ name: 'Action', value: 'WithdrawBox' },
 			{ name: 'Quantity', value: amount },
@@ -67,13 +75,5 @@
 			{ name: 'Quantity', value: amount },
 			{ name: 'isTokenA', value: "true" }
 		];
-	};
-
-	export const balance = () => {
-		return [{ name: 'Action', value: 'BalanceBox' }];
-	};
-
-	export const info = () => {
-		return [{ name: 'Action', value: 'Info' }];
-	};
+	};*/
 </script>
