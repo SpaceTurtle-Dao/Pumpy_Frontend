@@ -10,6 +10,7 @@ const { result, results, message, spawn, monitor, unmonitor, dryrun } = connect(
 
 // @ts-ignore
 export const send = async (processId, tags) => {
+	console.log("Sending message to: "+processId)
 	// The only 2 mandatory parameters here are process and signer
 	// connect to the extension
 	// @ts-ignore
@@ -39,9 +40,9 @@ const readMessage = async (messageId:string, processId:string) => {
 		process: processId
 	});
 	if(Error == undefined) return Messages
-	//console.log(Messages);
-	//console.log(Spawns);
-	//console.log(Output);
-	//console.log(Error);
+	console.log(Messages);
+	console.log(Spawns);
+	console.log(Output);
+	console.log(Error);
 	throw(Error)
 };

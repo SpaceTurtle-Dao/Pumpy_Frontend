@@ -1,16 +1,55 @@
 <script context="module" lang="ts">
 	import type { TokenData } from "./models/TokenData.svelte";
 
-	export const init = (
+	/*export const init = (
+		tokenB: string,
+		name: string,
+		ticker: string,
+		logo: string,
+		denomination: string,
+		bondingCurve: string,
+	) => {
+		return [
+			{ name: 'Action', value: 'Init' },
+			{ name: 'TokenB', value: tokenB},
+			{ name: 'Name', value: name},
+			{ name: 'Ticker', value: ticker},
+			{ name: 'Logo', value: logo},
+			{ name: 'Denomination', value: denomination},
+			{ name: 'bondingCurve', value: bondingCurve},
+		];
+	};*/
+
+	export const initPool = (
 		tokenA: string,
 		tokenB: string,
 		bondingCurve: string,
 	) => {
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'tokenA', value: tokenA},
-			{ name: 'tokenB', value: tokenB},
-			{ name: 'bondingCurve', value: bondingCurve},
+			{ name: 'TokenA', value: tokenA},
+			{ name: 'TokenB', value: tokenB},
+			{ name: 'BondingCurve', value: bondingCurve},
+		];
+	};
+
+	export const pools = () => {
+		return [
+			{ name: 'Action', value: 'Pools' }
+		];
+	};
+
+	export const pumps = (pool:string) => {
+		return [
+			{ name: 'Action', value: 'Pumps' },
+			
+		];
+	};
+
+	export const pool = () => {
+		return [
+			{ name: 'Action', value: 'Pool' },
+			{ name: 'Pool', value: pool }
 		];
 	};
 
@@ -24,7 +63,7 @@
 
 	export const add = (amountA: string, amountB: string) => {
 		return [
-			{ name: 'Action', value: 'add' },
+			{ name: 'Action', value: 'Add' },
 			{ name: 'amountA', value: amountA },
 			{ name: 'amountB', value: amountB },
 		];
@@ -32,14 +71,14 @@
 
 	export const remove = (share: string) => {
 		return [
-			{ name: 'Action', value: 'remove' },
+			{ name: 'Action', value: 'Remove' },
 			{ name: 'share', value: share },
 		];
 	};
 
 	export const swapA = (amount: string, slippage: string) => {
 		return [
-			{ name: 'Action', value: 'SwapBox' },
+			{ name: 'Action', value: 'SwapA' },
 			{ name: 'amount', value: amount },
 			{ name: 'slippage', value: slippage },
 		];
@@ -47,7 +86,7 @@
 
 	export const swapB = (amount: string, slippage: string) => {
 		return [
-			{ name: 'Action', value: 'SwapBox' },
+			{ name: 'Action', value: 'SwapB' },
 			{ name: 'amount', value: amount },
 			{ name: 'slippage', value: slippage },
 		];
