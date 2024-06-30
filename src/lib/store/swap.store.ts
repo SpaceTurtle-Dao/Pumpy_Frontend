@@ -1,4 +1,6 @@
 import { writable } from 'svelte/store';
+// import { setContext } from 'svelte';
+
 import { type TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
 
 export const toAmount = writable(0);
