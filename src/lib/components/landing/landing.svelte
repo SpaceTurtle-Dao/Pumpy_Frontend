@@ -8,14 +8,14 @@
 	import Footer from '../footer.svelte';
 </script>
 
-<div class="flex-col gap-2.5">
-	<div class="flex-initial max-h-80 min-h-60">
+<div class="p-3 md:p-5 flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh]">
+	<div class="w-full overflow-hidden rounded-md relative">
 		<EvervaultCard text="Simple Secure Swap" />
 	</div>
-	<div class="flex-initial max-h-80 min-h-60">
+	<div class="w-full overflow-hidden rounded-md relative">
 		<Features />
 	</div>
-	<!-- <div class="flex-initial max-h-80 min-h-60">
+	<div class="w-full overflow-hidden rounded-md relative">
 		<Footer />
-	</div> -->
+	</div>
 </div>
