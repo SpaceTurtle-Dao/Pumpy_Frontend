@@ -3,21 +3,23 @@
 	import TokenData from '$lib/models/TokenData.svelte';
 	import Tag from '$lib/models/Tag.svelte';
 	import {
-		initPool,
 		swapA,
 		swapB,
 		initalLiquidity,
 		add,
 		remove,
 		info,
-		balance
+		balance,
+		init,
+		initPool
 	} from '$lib/messageFactory.svelte';
-	import { send } from '$lib/process';
+	import { send, createProcess } from '$lib/process';
 
 	// @ts-ignore
-	import { connect, createDataItemSigner } from '@permaweb/aoconnect';
+	import { connect, createDataItemSigner, spawn } from '@permaweb/aoconnect';
+	import { AirVent } from 'lucide-svelte';
 
-	//const managerId = 'HNIsIdCJzUINPhAsnTOY-7XgYW2ZKEXqzKR9lNg7rG4';
+	const managerId = '4NfUIx8y3YjiT5d1AMCLbxbZwBfcjvY41FZVm4PZoeQ';
 	const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
 	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
@@ -56,12 +58,49 @@
 		}
 	};*/
 
-	const init = async () => {
+	const spawnedCount = async () => {
 		try {
 			// @ts-ignore
-			let message = initPool(airToken, waterToken, '1000000000');
+			let result = await send(managerId, [{ name: 'Action', value: 'SpawnedCount' }]);
+			console.log(result);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	const createPool = async () => {
+		try {
+			// @ts-ignore
+			let message = initPool(airToken, waterToken, '100000000000');
 			let result = await send(poolId, message);
 			console.log(result);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	const createPump = async () => {
+		try {
+			// @ts-ignore
+			let tokenProcess = await createProcess(managerId);
+			console.log('Token Process: ' + tokenProcess);
+			let poolProcess = await createProcess(managerId);
+			console.log('Pool Process: ' + poolProcess);
+			var delayInMilliseconds = 5000; //1 second
+			setTimeout(async function () {
+				let message = init(
+					waterToken,
+					'Test',
+					'Test',
+					'Test',
+					'8',
+					'1000000',
+					tokenProcess,
+					poolProcess
+				);
+				let result = await send(managerId, message);
+				console.log(result);
+			}, delayInMilliseconds);
 		} catch (e) {
 			console.log(e);
 		}
@@ -70,7 +109,7 @@
 	const swapTokenA = async () => {
 		try {
 			// @ts-ignore
-			let message = swapA('10000', '100');
+			let message = swapA('100000', '100');
 			let result = await send(poolId, message);
 			console.log(result);
 		} catch (e) {
@@ -133,9 +172,23 @@
 			console.log(e);
 		}
 	};
+
+	const getInfo = async () => {
+		try {
+			// @ts-ignore
+			let message = info();
+			let result = await send('Dzv8laPB-8k42nIL3oZAJ4LAZ2J_5eW4YLTmZgW9a88', message);
+			console.log(result);
+		} catch (e) {
+			console.log(e);
+		}
+	};
 </script>
 
-<Button on:click={init}>Init</Button>
+<Button on:click={getInfo}>Info</Button>
+<Button on:click={createPool}>createPool</Button>
+<Button on:click={spawnedCount}>SpawnedCount</Button>
+<Button on:click={createPump}>CreatePump</Button>
 <Button on:click={swapTokenA}>SwapA</Button>
 <Button on:click={swapTokenB}>SwapB</Button>
 <Button on:click={getBalance}>GetBalance</Button>

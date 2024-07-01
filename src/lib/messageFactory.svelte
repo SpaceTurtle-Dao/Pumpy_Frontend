@@ -1,13 +1,15 @@
 <script context="module" lang="ts">
-	import type { TokenData } from "./models/TokenData.svelte";
+	import type { TokenData } from "./models/TokenData.svelte";;
 
-	/*export const init = (
+	export const init = (
 		tokenB: string,
 		name: string,
 		ticker: string,
 		logo: string,
 		denomination: string,
 		bondingCurve: string,
+		tokenProcess: string,
+		poolProcess: string
 	) => {
 		return [
 			{ name: 'Action', value: 'Init' },
@@ -16,9 +18,11 @@
 			{ name: 'Ticker', value: ticker},
 			{ name: 'Logo', value: logo},
 			{ name: 'Denomination', value: denomination},
-			{ name: 'bondingCurve', value: bondingCurve},
+			{ name: 'BondingCurve', value: bondingCurve},
+			{ name: 'TokenProcess', value: tokenProcess},
+			{ name: 'PoolProcess', value: poolProcess},
 		];
-	};*/
+	};
 
 	export const initPool = (
 		tokenA: string,
