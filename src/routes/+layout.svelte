@@ -19,11 +19,8 @@
 	);
 </script>
 
-<Navbar />
-
-<div class="min-h-screen p-10">
-	<div class="flex space-x-6">
-		<Toaster />
-		<slot />
-	</div>
+<div class="p-3 md:p-5 flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh]">
+	<Toaster />
+	<Navbar />
+	<slot />
 </div>

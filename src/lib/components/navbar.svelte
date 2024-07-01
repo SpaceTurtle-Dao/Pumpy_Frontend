@@ -13,8 +13,8 @@
 		</div>
 	</div>
 	<div class="flex items-center space-x-8">
-		<a href="#" class="hover:text-gray-400">DEBUG</a>
-		<a href="" class="hover:text-gray-400">WHITE-PAPER</a>
+		<a href="/swap" class="hover:text-gray-400">APP</a>
+		<a href="/docs" class="hover:text-gray-400">DOCS</a>
 		<Wallet />
 	</div>
 </nav>

@@ -28,7 +28,7 @@
 		pumpsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store';
+	} from '$lib/store/store';
 	import type {
 		MintRequest,
 		Pumpy,
@@ -261,7 +261,7 @@
 						<CreatorCard />
 					</div>
 				</div>
-				<DescriptionCard title={tokenA.name} description={tokenA.description} />
+				<DescriptionCard title={tokenA.name} description={tokenA.symbol} />
 				<Holders {holders} token={tokenA} poolId={pool.id.toString()} />
 			</div>
 		</div>
