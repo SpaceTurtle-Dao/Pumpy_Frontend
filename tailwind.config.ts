@@ -7,7 +7,7 @@ const config: Config = {
 	darkMode: ["class"],
 	content: ["./src/**/*.{html,js,svelte,ts}"],
 	safelist: ["dark"],
-	plugins:[addVariablesForColors],
+	plugins: [addVariablesForColors],
 	theme: {
 		container: {
 			center: true,
@@ -52,6 +52,29 @@ const config: Config = {
 					foreground: "hsl(var(--card-foreground) / <alpha-value>)"
 				}
 			},
+			flexBasis: {
+				'1/7': '14.2857143%',
+				'2/7': '28.5714286%',
+				'3/7': '42.8571429%',
+				'4/7': '57.1428571%',
+				'5/7': '71.4285714%',
+				'6/7': '85.7142857%',
+			},
+			animation: {
+				// ...other animations
+				'meteor-effect': 'meteor 5s linear infinite'
+			},
+			keyframes: {
+				// ... other keyframes
+				meteor: {
+					'0%': { transform: 'rotate(215deg) translateX(0)', opacity: "1" },
+					'70%': { opacity: "1" },
+					'100%': {
+						transform: 'rotate(215deg) translateX(-500px)',
+						opacity: "0"
+					}
+				}
+			},
 			borderRadius: {
 				lg: "var(--radius)",
 				md: "calc(var(--radius) - 2px)",
@@ -65,7 +88,7 @@ const config: Config = {
 };
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-function addVariablesForColors({ addBase, theme } ) {
+function addVariablesForColors({ addBase, theme }) {
 	const allColors = flattenColorPalette(theme('colors'));
 	const newVars = Object.fromEntries(
 		Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
