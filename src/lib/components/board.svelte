@@ -2,7 +2,7 @@
   import * as Card from "$lib/components/ui/card";
   import * as Pagination from "$lib/components/ui/pagination";
   import { pumpsStore, pumpyActor } from "$lib/store";
-  import type {PoolInfo, Pumpy } from "$lib/declarations/pumpy/pumpy.did";
+  import type { PoolInfo, Pumpy } from "$lib/declarations/pumpy/pumpy.did";
   
   interface PumpCard {
     id: string,
@@ -53,15 +53,13 @@
   }
 </script>
 
-
-<!--<style>
+<!-- <style>
   .card-3d {
     border: 1px solid white;
     background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 10px;
-    height: 200px; /* Set a fixed height */
     display: flex;
     flex-direction: column;
   }
@@ -91,12 +89,12 @@
     padding: 10px 0;
     text-align: center;
   }
-</style>-->
+</style> -->
 
-<div class="flex flex-col w-full justify-center items-center space-y-80">
-  <div class="max-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-72">
+<div class="flex flex-col w-full justify-center items-center space-y-8 md:space-y-12 lg:space-y-16">
+  <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12 lg:gap-x-8 lg:gap-y-16">
     {#each paginatedCards as card}
-      <div class="max-w-96 max-h-10 shadow-md ">
+      <div class="w-full shadow-md ">
         <a href="/{card.id}">
           <Card.Root class="card-3d text-white p-4 shadow-md">
             <Card.Header class="items-center space-x-2 mb-2">
