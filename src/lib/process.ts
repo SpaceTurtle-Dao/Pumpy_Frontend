@@ -70,10 +70,7 @@ export const createProcess = async (owner: string) => {
 	let message = [
 		{ name: "Action", value: "Eval" },
 	];
-	let data = `
-local ao = require("ao"); 
-Owner = "4NfUIx8y3YjiT5d1AMCLbxbZwBfcjvY41FZVm4PZoeQ";
-	`;
+	let data = 'local ao = require("ao"); Owner = "'+owner+'";';
 	var delayInMilliseconds = 5000; //1 second
 	setTimeout(async function () {
 		let messageId = await sendData(processId, message, data)

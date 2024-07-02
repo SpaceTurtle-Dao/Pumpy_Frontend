@@ -19,7 +19,7 @@
 	import { connect, createDataItemSigner, spawn } from '@permaweb/aoconnect';
 	import { AirVent } from 'lucide-svelte';
 
-	const managerId = '4NfUIx8y3YjiT5d1AMCLbxbZwBfcjvY41FZVm4PZoeQ';
+	const managerId = 'UnROw4v7yMYvYazJJUwZskeIOh0h0_oHAPQ5uJRoxDQ';
 	const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
 	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
@@ -88,6 +88,7 @@
 			console.log('Pool Process: ' + poolProcess);
 			var delayInMilliseconds = 5000; //1 second
 			setTimeout(async function () {
+				console.log("Initing Token")
 				let message = init(
 					waterToken,
 					'Test',
