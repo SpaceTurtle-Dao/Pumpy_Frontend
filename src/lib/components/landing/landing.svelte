@@ -6,16 +6,17 @@
 	import { EvervaultCard, Icon } from '$lib/components/ui/ever_vault/index';
 	import Features from './features.svelte';
 	import Footer from '../footer.svelte';
+	import Hellow from './hellow.svelte';
 </script>
 
 <div class="p-3 md:p-5 flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh]">
-	<div class="w-full overflow-hidden rounded-md relative">
+	<div class="w-full overflow-hidden rounded-md relative py-3">
 		<EvervaultCard text="Simple Secure Swap" />
 	</div>
-	<div class="w-full overflow-hidden rounded-md relative">
+	<div class="w-full overflow-hidden rounded-md relative py-3">
 		<Features />
 	</div>
-	<div class="w-full overflow-hidden rounded-md relative">
+	<div class="w-full overflow-hidden rounded-md relative py-3">
 		<Footer />
 	</div>
 </div>
