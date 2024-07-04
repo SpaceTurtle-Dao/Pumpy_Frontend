@@ -114,21 +114,24 @@
     {/each}
   </div>
   
-  <div class="pagination-wrapper">
+  <div class="pagination-wrapper w-full overflow-x-auto py-4">
     <Pagination.Root 
       count={cards.length} 
       {perPage} 
       let:pages 
       let:currentPage
     >
-      <Pagination.Content>
-        <Pagination.Item>
-          <Pagination.PrevButton on:click={() => goToPage(currentPage - 1)} />
+      <Pagination.Content class="flex justify-center items-center space-x-1 sm:space-x-2">
+        <Pagination.Item class="hidden sm:block">
+          <Pagination.PrevButton 
+            on:click={() => goToPage(currentPage - 1)}
+            class="px-2 py-1 sm:px-3 sm:py-2 text-sm bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+          />
         </Pagination.Item>
         {#each pages as page (page.key)}
           {#if page.type === "ellipsis"}
-            <Pagination.Item>
-              <Pagination.Ellipsis />
+            <Pagination.Item class="hidden sm:block">
+              <Pagination.Ellipsis class="px-2 py-1 sm:px-3 sm:py-2 text-sm" />
             </Pagination.Item>
           {:else}
             <Pagination.Item>
@@ -136,14 +139,19 @@
                 {page} 
                 isActive={currentPage === page.value}
                 on:click={() => goToPage(page.value)}
+                class="px-2 py-1 sm:px-3 sm:py-2 text-sm rounded transition-colors
+                       {currentPage === page.value ? 'bg-blue-500 text-white' : 'bg-gray-700 hover:bg-gray-600'}"
               >
                 {page.value}
               </Pagination.Link>
             </Pagination.Item>
           {/if}
         {/each}
-        <Pagination.Item>
-          <Pagination.NextButton on:click={() => goToPage(currentPage + 1)} />
+        <Pagination.Item class="hidden sm:block">
+          <Pagination.NextButton 
+            on:click={() => goToPage(currentPage + 1)}
+            class="px-2 py-1 sm:px-3 sm:py-2 text-sm bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+          />
         </Pagination.Item>
       </Pagination.Content>
     </Pagination.Root>
