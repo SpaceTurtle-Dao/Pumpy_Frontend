@@ -94,6 +94,7 @@
 					waterToken,
 					'Test',
 					'Test',
+					'Test',
 					'8',
 					'1000000',
 					tokenProcess,
