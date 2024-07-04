@@ -17,9 +17,10 @@
 
 	// @ts-ignore
 	import { connect, createDataItemSigner, spawn } from '@permaweb/aoconnect';
-	import { AirVent } from 'lucide-svelte';
+	// @ts-ignore
 
-	const managerId = 'UnROw4v7yMYvYazJJUwZskeIOh0h0_oHAPQ5uJRoxDQ';
+
+	const managerId = 'SvtUAMRanuDAb9VPCVDVI48LRCn7blXmaPtJcwMAaLI';
 	const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
 	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
@@ -72,7 +73,7 @@
 		try {
 			// @ts-ignore
 			let message = initPool(airToken, waterToken, '100000000000');
-			let result = await send(poolId, message);
+			let result = await send(poolId, message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -86,12 +87,11 @@
 			console.log('Token Process: ' + tokenProcess);
 			let poolProcess = await createProcess(managerId);
 			console.log('Pool Process: ' + poolProcess);
-			var delayInMilliseconds = 5000; //1 second
+			var delayInMilliseconds = 5000; //5 second
 			setTimeout(async function () {
 				console.log("Initing Token")
 				let message = init(
 					waterToken,
-					'Test',
 					'Test',
 					'Test',
 					'8',
@@ -99,7 +99,7 @@
 					tokenProcess,
 					poolProcess
 				);
-				let result = await send(managerId, message);
+				let result = await send(managerId, message,null);
 				console.log(result);
 			}, delayInMilliseconds);
 		} catch (e) {
@@ -111,7 +111,7 @@
 		try {
 			// @ts-ignore
 			let message = swapA('100000', '100');
-			let result = await send(poolId, message);
+			let result = await send(poolId, message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -122,7 +122,7 @@
 		try {
 			// @ts-ignore
 			let message = swapB('10000', '100');
-			let result = await send(poolId, message);
+			let result = await send(poolId, message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -132,7 +132,7 @@
 	const getBalance = async () => {
 		try {
 			// @ts-ignore
-			let result = await send(poolId, balance());
+			let result = await send(poolId, balance(),null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -144,7 +144,7 @@
 			console.log('boom');
 			// @ts-ignore
 			let message = initalLiquidity('100000', '100000');
-			let result = await send(poolId, message);
+			let result = await send(poolId, message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -156,7 +156,7 @@
 			console.log('boom');
 			// @ts-ignore
 			let message = add('100000', '100000');
-			let result = await send(poolId, message);
+			let result = await send(poolId, message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -167,7 +167,7 @@
 		try {
 			// @ts-ignore
 			let message = remove('100');
-			let result = await send(poolId, message);
+			let result = await send(poolId, message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);
@@ -178,7 +178,7 @@
 		try {
 			// @ts-ignore
 			let message = info();
-			let result = await send('Dzv8laPB-8k42nIL3oZAJ4LAZ2J_5eW4YLTmZgW9a88', message);
+			let result = await send('519RPbPUoo-7eIkBt3IFAI5ORP0p14q4DEuICIstN14', message,null);
 			console.log(result);
 		} catch (e) {
 			console.log(e);

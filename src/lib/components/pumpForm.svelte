@@ -16,13 +16,24 @@
 		tokensStore,
 		balancesStore
 	} from '$lib/store';
-	import type {
-		MintRequest,
-		Pumpy,
-		PoolRequest,
-		PumpRequest,
-		TokenRequest
-	} from '$lib/declarations/pumpy/pumpy.did';
+	import {
+		swapA,
+		swapB,
+		initalLiquidity,
+		add,
+		remove,
+		info,
+		balance,
+		init,
+		initPool
+	} from '$lib/messageFactory.svelte';
+	import { send, createProcess } from '$lib/process';
+	import { upload } from '$lib/uploader';
+
+	const managerId = 'SvtUAMRanuDAb9VPCVDVI48LRCn7blXmaPtJcwMAaLI';
+	const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
+	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
+	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
 
 	interface Data {
 		minter: string;
@@ -41,7 +52,6 @@
 		token: string;
 	}
 
-	let pumpy: Pumpy;
 	let isLoading = false;
 	let isVisible = false;
 	let principal: Principal;
@@ -60,13 +70,22 @@
 	let discord = '';
 	let website = '';
 	let icon: FileList;
-
+	let reader = new FileReader();
+	let base64String = "";
 	const tokens = [
 		{ value: 0, label: 'ICP' },
 		{ value: 1, label: 'ckBTC' },
 		{ value: 2, label: 'ckETH' },
 		{ value: 3, label: 'ckUSDC' }
 	];
+
+	reader.onload = function () {
+		let result = reader.result as string
+		base64String = result
+		//base64String = result.replace('data:', '').replace(/^.+,/, '');
+		// alert(imageBase64Stringsep);
+		console.log(base64String);
+	};
 
 	const toggleVissible = () => {
 		console.log('Boom');
@@ -78,7 +97,39 @@
 		}
 	};
 
-	const createToken = async () => {
+	const createPump = async () => {
+		try {
+			// @ts-ignore
+			let tokenProcess = await createProcess(managerId);
+			console.log('Token Process: ' + tokenProcess);
+			let poolProcess = await createProcess(managerId);
+			console.log('Pool Process: ' + poolProcess);
+			var delayInMilliseconds = 5000; //5 second
+			//let blob = new Uint8Array(await icon[0].arrayBuffer());
+			let url = await upload(await icon[0].arrayBuffer());
+			//reader.readAsDataURL()
+			//let data = base64String;
+			setTimeout(async function () {
+				console.log('Initing Token');
+				let message = init(
+					waterToken,
+					name,
+					ticker,
+					url,
+					'8',
+					'1000000',
+					tokenProcess,
+					poolProcess
+				);
+				let result = await send(managerId, message, null);
+				console.log(result);
+			}, delayInMilliseconds);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	/*const createToken = async () => {
 		let tokenInfo = await pumpy.tokenInfo(BigInt(token));
 		let _decimals = 1;
 		for (let i = 0; i < Number(tokenInfo[0]?.decimals); i++) {
@@ -111,11 +162,7 @@
 		console.log(result);
 		loadingStore.set(false);
 		dialogOpen = false;
-	};
-
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-	});
+	};*/
 
 	loadingStore.subscribe((value) => {
 		isLoading = value;
@@ -126,7 +173,6 @@
 			principal = value;
 		}
 	});
-
 </script>
 
 <div class="w-full flex flex-col justify-center items-center">
@@ -272,7 +318,7 @@
 						</div>
 					</div>
 					<Dialog.Footer>
-						<Button class="" on:click={createToken}>Create Token</Button>
+						<Button class="" on:click={createPump}>Create Token</Button>
 					</Dialog.Footer>
 				</Dialog.Content>
 			</Dialog.Root>

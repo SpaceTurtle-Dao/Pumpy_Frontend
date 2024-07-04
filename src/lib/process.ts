@@ -9,7 +9,7 @@ const { result, results, message, spawn, monitor, unmonitor, dryrun } = connect(
 });
 
 // @ts-ignore
-export const send = async (processId, tags) => {
+export const send = async (processId, tags, data) => {
 	console.log("Sending message to: " + processId)
 	// The only 2 mandatory parameters here are process and signer
 	// connect to the extension
@@ -23,6 +23,7 @@ export const send = async (processId, tags) => {
 
 		// Tags that the process will use as input.
 		tags: tags,
+		data:data,
 		// A signer function used to build the message "signature"
 		// @ts-ignore
 		signer: createDataItemSigner(window.arweaveWallet)
