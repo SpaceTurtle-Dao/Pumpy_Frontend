@@ -11,17 +11,17 @@
 		info,
 		balance,
 		init,
-		initPool
+		initPool,
+		pumps
 	} from '$lib/messageFactory.svelte';
 	import { send, createProcess } from '$lib/process';
 
 	// @ts-ignore
-	import { connect, createDataItemSigner, spawn } from '@permaweb/aoconnect';
+	import { connect, createDataItemSigner, spawn, monitor, unmonitor } from '@permaweb/aoconnect';
 	// @ts-ignore
 
 
-	const managerId = 'SvtUAMRanuDAb9VPCVDVI48LRCn7blXmaPtJcwMAaLI';
-	const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
+	const managerId = 'jQHPzleOmT4ZJqdC0r77qKzudFjIM6d5ufjc0FX2JQI';
 	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
 
@@ -59,7 +59,7 @@
 		}
 	};*/
 
-	const spawnedCount = async () => {
+	/*const spawnedCount = async () => {
 		try {
 			// @ts-ignore
 			let result = await send(managerId, [{ name: 'Action', value: 'SpawnedCount' }]);
@@ -78,37 +78,9 @@
 		} catch (e) {
 			console.log(e);
 		}
-	};
+	};*/
 
-	const createPump = async () => {
-		try {
-			// @ts-ignore
-			let tokenProcess = await createProcess(managerId);
-			console.log('Token Process: ' + tokenProcess);
-			let poolProcess = await createProcess(managerId);
-			console.log('Pool Process: ' + poolProcess);
-			var delayInMilliseconds = 5000; //5 second
-			setTimeout(async function () {
-				console.log("Initing Token")
-				let message = init(
-					waterToken,
-					'Test',
-					'Test',
-					'Test',
-					'8',
-					'1000000',
-					tokenProcess,
-					poolProcess
-				);
-				let result = await send(managerId, message,null);
-				console.log(result);
-			}, delayInMilliseconds);
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
-	const swapTokenA = async () => {
+	/*const swapTokenA = async () => {
 		try {
 			// @ts-ignore
 			let message = swapA('100000', '100');
@@ -128,7 +100,7 @@
 		} catch (e) {
 			console.log(e);
 		}
-	};
+	};*/
 
 	const getBalance = async () => {
 		try {
@@ -140,7 +112,7 @@
 		}
 	};
 
-	const addInitalLiquidity = async () => {
+	/*const addInitalLiquidity = async () => {
 		try {
 			console.log('boom');
 			// @ts-ignore
@@ -173,7 +145,7 @@
 		} catch (e) {
 			console.log(e);
 		}
-	};
+	};*/
 
 	const getInfo = async () => {
 		try {
@@ -185,15 +157,26 @@
 			console.log(e);
 		}
 	};
+	const fetchPumps = async () => {
+		try {
+			// @ts-ignore
+			let message = pumps();
+			let result = await send(managerId, message,null);
+			let json = JSON.parse(result[0].Data)
+			console.log(json);
+		} catch (e) {
+			console.log(e);
+		}
+	};
 </script>
 
+<Button on:click={fetchPumps}>Pumps</Button>
 <Button on:click={getInfo}>Info</Button>
-<Button on:click={createPool}>createPool</Button>
+<!--<Button on:click={createPool}>createPool</Button>
 <Button on:click={spawnedCount}>SpawnedCount</Button>
-<Button on:click={createPump}>CreatePump</Button>
 <Button on:click={swapTokenA}>SwapA</Button>
-<Button on:click={swapTokenB}>SwapB</Button>
+<Button on:click={swapTokenB}>SwapB</Button>-->
 <Button on:click={getBalance}>GetBalance</Button>
-<Button on:click={addInitalLiquidity}>InitalLiquidity</Button>
+<!--<Button on:click={addInitalLiquidity}>InitalLiquidity</Button>
 <Button on:click={addLiquidity}>Add</Button>
-<Button on:click={removeLiquidity}>Remove</Button>
+<Button on:click={removeLiquidity}>Remove</Button>--->

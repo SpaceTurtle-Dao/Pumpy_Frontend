@@ -68,13 +68,13 @@ export const createProcess = async (owner: string) => {
 		// @ts-ignore
 		signer: createDataItemSigner(window.arweaveWallet),
 	});
-	let message = [
+	let tags = [
 		{ name: "Action", value: "Eval" },
 	];
 	let data = 'local ao = require("ao"); Owner = "'+owner+'";';
 	var delayInMilliseconds = 5000; //1 second
 	setTimeout(async function () {
-		let messageId = await sendData(processId, message, data)
+		let messageId = await sendData(processId, tags, data)
 		console.log("Message: " + messageId)
 	}, delayInMilliseconds);
 	return processId;

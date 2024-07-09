@@ -1,11 +1,12 @@
 <script context="module" lang="ts">
-	import type { TokenData } from "./models/TokenData.svelte";;
+	import type { TokenData } from './models/TokenData.svelte';
 
 	export const init = (
 		tokenB: string,
 		name: string,
 		ticker: string,
 		logo: string,
+		description: string,
 		denomination: string,
 		bondingCurve: string,
 		tokenProcess: string,
@@ -13,41 +14,33 @@
 	) => {
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'TokenB', value: tokenB},
-			{ name: 'Name', value: name},
-			{ name: 'Ticker', value: ticker},
-			{ name: 'Logo', value: logo},
-			{ name: 'Denomination', value: denomination},
-			{ name: 'BondingCurve', value: bondingCurve},
-			{ name: 'TokenProcess', value: tokenProcess},
-			{ name: 'PoolProcess', value: poolProcess},
+			{ name: 'TokenB', value: tokenB },
+			{ name: 'Name', value: name },
+			{ name: 'Ticker', value: ticker },
+			{ name: 'Logo', value: logo },
+			{ name: 'Description', value: description },
+			{ name: 'Denomination', value: denomination },
+			{ name: 'BondingCurve', value: bondingCurve },
+			{ name: 'TokenProcess', value: tokenProcess },
+			{ name: 'PoolProcess', value: poolProcess }
 		];
 	};
 
-	export const initPool = (
-		tokenA: string,
-		tokenB: string,
-		bondingCurve: string,
-	) => {
+	export const initPool = (tokenA: string, tokenB: string, bondingCurve: string) => {
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'TokenA', value: tokenA},
-			{ name: 'TokenB', value: tokenB},
-			{ name: 'BondingCurve', value: bondingCurve},
+			{ name: 'TokenA', value: tokenA },
+			{ name: 'TokenB', value: tokenB },
+			{ name: 'BondingCurve', value: bondingCurve }
 		];
 	};
 
 	export const pools = () => {
-		return [
-			{ name: 'Action', value: 'Pools' }
-		];
+		return [{ name: 'Action', value: 'Pools' }];
 	};
 
-	export const pumps = (pool:string) => {
-		return [
-			{ name: 'Action', value: 'Pumps' },
-			
-		];
+	export const pumps = () => {
+		return [{ name: 'Action', value: 'Pumps' }];
 	};
 
 	export const pool = () => {
@@ -61,7 +54,7 @@
 		return [
 			{ name: 'Action', value: 'InitalLiquidity' },
 			{ name: 'amountA', value: amountA },
-			{ name: 'amountB', value: amountB },
+			{ name: 'amountB', value: amountB }
 		];
 	};
 
@@ -69,14 +62,14 @@
 		return [
 			{ name: 'Action', value: 'Add' },
 			{ name: 'amountA', value: amountA },
-			{ name: 'amountB', value: amountB },
+			{ name: 'amountB', value: amountB }
 		];
 	};
 
 	export const remove = (share: string) => {
 		return [
 			{ name: 'Action', value: 'Remove' },
-			{ name: 'share', value: share },
+			{ name: 'share', value: share }
 		];
 	};
 
@@ -84,7 +77,7 @@
 		return [
 			{ name: 'Action', value: 'SwapA' },
 			{ name: 'amount', value: amount },
-			{ name: 'slippage', value: slippage },
+			{ name: 'slippage', value: slippage }
 		];
 	};
 
@@ -92,7 +85,7 @@
 		return [
 			{ name: 'Action', value: 'SwapB' },
 			{ name: 'amount', value: amount },
-			{ name: 'slippage', value: slippage },
+			{ name: 'slippage', value: slippage }
 		];
 	};
 

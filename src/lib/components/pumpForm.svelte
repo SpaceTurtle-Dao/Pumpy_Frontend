@@ -30,9 +30,9 @@
 	import { send, createProcess } from '$lib/process';
 	import { upload } from '$lib/uploader';
 
-	const managerId = 'SvtUAMRanuDAb9VPCVDVI48LRCn7blXmaPtJcwMAaLI';
-	const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
-	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
+	const managerId = 'jQHPzleOmT4ZJqdC0r77qKzudFjIM6d5ufjc0FX2JQI';
+	//const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
+	//const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
 
 	interface Data {
@@ -116,6 +116,7 @@
 					name,
 					ticker,
 					url,
+					description,
 					'8',
 					'1000000',
 					tokenProcess,
