@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Wallet from './wallet.svelte';
 	import Logo from '../../assets/logo.svelte';
+	import ThemeSwitch from './ui/theme-switch/themeSwitch.svelte';
 </script>
 
 <!-- <nav class=" text-white p-4 flex px-12 items-center justify-between">
@@ -17,6 +18,7 @@
 		<a href="/docs" class="hover:text-gray-400">DOCS</a>
 		<Wallet />
 	 -->
+
 <nav class="">
 	<div class="hidden lg:block">
 		<div class=" md:p-5 flex justify-between items-stretch gap-2.5">
@@ -118,6 +120,7 @@
 			</svg>
 		</div>
 	</div>
+	<ThemeSwitch />
 </nav>
 
 <style global>

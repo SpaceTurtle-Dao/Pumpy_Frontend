@@ -1,51 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
+
+  body {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    @apply bg-white dark:bg-black text-black dark:text-white text-center;
+  }
+
   :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-    --destructive: 0 72.22% 50.59%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 24.6 95% 53.1%;
+    --background: #0C0C05;
+    --foreground: #0F1119;
+    --card: #141C27;
+    --card-foreground: #252730;
+    --popover: #2B3550;
+    --popover-foreground: #2E3444;
+    --primary: #3F526E;
+    --primary-foreground: #4E6283;
+    --secondary: #60718A;
+    --secondary-foreground: #667FAF;
+    --muted: #7185B4;
+    --muted-foreground: #768ABA;
+    --accent: #768ABA;
+    --accent-foreground: #768ABA;
+    --destructive: #768ABA;
+    --destructive-foreground: #768ABA;
+    --border: #768ABA;
+    --input: #768ABA;
+    --ring: #768ABA;
     --radius: 0.75rem;
   }
+
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 20.5 90.2% 48.2%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 72.2% 50.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 20.5 90.2% 48.2%;
-  }
-  .dark{
     --background: #0C0C05;
     --foreground: #0F1119;
     --card: #141C27;
@@ -66,6 +53,8 @@
     --input: #768ABA;
     --ring: #768ABA;
   }
+
+
   .light {
     --background-light: #687E88;
     --foreground-light: #9DAZAA;
@@ -80,7 +69,8 @@
     --muted-light: #FEF3DC;
     --muted-foreground-light: #FFF6E5;
   }
-  .cyberpunk{
+
+  .cyberpunk {
     --highlight-1: #00F27E;
     --highlight-2: #013BDO;
     --highlight-3: #01A456;
