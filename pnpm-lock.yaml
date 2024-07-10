@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@dfinity/agent':
+        specifier: ^1.4.0
+        version: 1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
       '@dfinity/candid':
         specifier: ^1.3.0
         version: 1.3.0(@dfinity/principal@1.3.0)
@@ -19,10 +22,10 @@ importers:
         version: 1.6.5
       '@infu/icblast':
         specifier: ^2.0.46
-        version: 2.0.46(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)(get-random-values@2.1.0)(isomorphic-fetch@3.0.0)(js-sha256@0.9.0)(p-limit@4.0.0)
+        version: 2.0.46(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)(get-random-values@2.1.0)(isomorphic-fetch@3.0.0)(js-sha256@0.9.0)(p-limit@4.0.0)
       '@junobuild/core-peer':
         specifier: ^0.0.14
-        version: 0.0.14(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)
+        version: 0.0.14(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)
       '@material-ui/core':
         specifier: ^4.12.4
         version: 4.12.4(@types/react@17.0.80)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -62,21 +65,12 @@ importers:
       mode-watcher:
         specifier: ^0.3.0
         version: 0.3.0(svelte@4.2.17)
-      radix-svelte:
-        specifier: ^0.9.0
-        version: 0.9.0(svelte@4.2.17)
       svelte-chartjs:
         specifier: ^3.1.5
         version: 3.1.5(chart.js@4.4.3)(svelte@4.2.17)
-      svelte-legos:
-        specifier: ^0.2.3
-        version: 0.2.3(svelte@4.2.17)
       svelte-motion:
         specifier: ^0.12.2
         version: 0.12.2(svelte@4.2.17)
-      svelte-radix:
-        specifier: ^1.1.0
-        version: 1.1.0(svelte@4.2.17)
       svelte-sonner:
         specifier: ^0.3.24
         version: 0.3.24(svelte@4.2.17)
@@ -114,6 +108,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.0
         version: 3.1.1(svelte@4.2.17)(vite@5.2.12(@types/node@20.14.1))
+      '@tailwindcss/forms':
+        specifier: ^0.5.7
+        version: 0.5.7(tailwindcss@3.4.3)
       '@types/eslint':
         specifier: ^8.56.7
         version: 8.56.10
@@ -153,6 +150,9 @@ importers:
       svelte-check:
         specifier: ^3.6.0
         version: 3.8.0(@babel/core@7.24.6)(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@4.2.17)
+      svelte-routing:
+        specifier: ^2.13.0
+        version: 2.13.0
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -338,11 +338,11 @@ packages:
     resolution: {integrity: sha512-WaMsgi6Q8zMgMth93GvWPXkhAIEobfsIkLTacoVZoK1J0CevIPGYY2Vo5YvJGqyHqXM6P4ppOYGsIRU8MM9pFQ==}
     engines: {node: '>=6.9.0'}
 
-  '@dfinity/agent@1.3.0':
-    resolution: {integrity: sha512-gFc2CqjWURv/Th+vxwHIb7Y39TpRZccjyRm8c51LtyAGLYSpSwJDWbzM/y66h++DSSc3A+1DjN/dRT+6ik3xLw==}
+  '@dfinity/agent@1.4.0':
+    resolution: {integrity: sha512-/zgGajZpxtbu+kLXtFx2e9V2+HbMUjrtGWx9ZEwtVwhVxKgVi/2kGQpFRPEDFJ461V7wdTwCig4OkMxVU4shTw==}
     peerDependencies:
-      '@dfinity/candid': ^1.3.0
-      '@dfinity/principal': ^1.3.0
+      '@dfinity/candid': ^1.4.0
+      '@dfinity/principal': ^1.4.0
 
   '@dfinity/auth-client@1.3.0':
     resolution: {integrity: sha512-/1Xn+acHckLh9GlImBRsIEjej0nbD+B0hsoOM8gyimrRrcoxqlSwn+rzjlR2fbVf++rTRRwsQgShG/gfCEXJig==}
@@ -882,6 +882,11 @@ packages:
   '@swc/helpers@0.5.11':
     resolution: {integrity: sha512-YNlnKRWF2sVojTpIyzwou9XoTNbzbzONwRhOoniEioF1AtaitTvVZblaQRrAzChWQ1bLYyYSWzM18y4WwgzJ+A==}
 
+  '@tailwindcss/forms@0.5.7':
+    resolution: {integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
+
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
@@ -1131,9 +1136,6 @@ packages:
 
   caniuse-lite@1.0.30001627:
     resolution: {integrity: sha512-4zgNiB8nTyV/tHhwZrFs88ryjls/lHiqFhrxCW4qSTeuRByBVnPYpDInchOIySWknznucaf31Z4KYqjfbrecVw==}
-
-  canvas-confetti@1.9.3:
-    resolution: {integrity: sha512-rFfTURMvmVEX1gyXFgn5QMn81bYk70qa0HLzcIOSVEyl57n6o9ItHeBtUSWdvKAPY0xlvBHno4/v3QPrT83q9g==}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -1775,6 +1777,10 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
+  mini-svg-data-uri@1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
+
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
 
@@ -2010,13 +2016,6 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prism-svelte@0.5.0:
-    resolution: {integrity: sha512-db91Bf3pRGKDPz1lAqLFSJXeW13mulUJxhycysFpfXV5MIK7RgWWK2E5aPAa71s8TCzQUXxF5JOV42/iOs6QkA==}
-
-  prismjs@1.29.0:
-    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
-    engines: {node: '>=6'}
-
   process@0.11.10:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
@@ -2040,12 +2039,6 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
-
-  radix-svelte@0.9.0:
-    resolution: {integrity: sha512-0PJMHiZVTjWGrjK7c2/FY+nq0fBGwPXNy6fFvkLZIs73hTIai/Exw+pi3TCvtd80gSjFb5utdHWI3qiuuN0B/Q==}
-    engines: {node: '>= 16'}
-    peerDependencies:
-      svelte: ^4.1.1
 
   react-dom@17.0.2:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
@@ -2265,11 +2258,6 @@ packages:
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
 
-  svelte-legos@0.2.3:
-    resolution: {integrity: sha512-HuFzPC7of2ZErJaIoxFRu2Z5Rk7VUhlkAfqWoXpO1S9CNSByMakzTLVsM0/VDE6jmCG5JXLqvjND+rsV6nkOHQ==}
-    peerDependencies:
-      svelte: ^4.0.0
-
   svelte-motion@0.12.2:
     resolution: {integrity: sha512-7RrdRz9iVP55B9HT/C0hYW3pyrKlF61kAby/AkDtOAP0uHFQDrfd0qQetDC81cEsK9b40jt+jfcqSAXcA7LPEw==}
     peerDependencies:
@@ -2312,10 +2300,8 @@ packages:
       typescript:
         optional: true
 
-  svelte-radix@1.1.0:
-    resolution: {integrity: sha512-kyE9wZiJV937INGb+wiBkAjmGtQUUYRPkVL2Q+/gj+9Vog1Ewd2wNvNmpNMUd+c+euxoc5u5YZMuCUgky9EUPw==}
-    peerDependencies:
-      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
+  svelte-routing@2.13.0:
+    resolution: {integrity: sha512-/NTxqTwLc7Dq306hARJrH2HLXOBtKd7hu8nxgoFDlK0AC4SOKnzisiX/9m8Uksei1QAWtlAEdF91YphNM8iDMg==}
 
   svelte-sonner@0.3.24:
     resolution: {integrity: sha512-txuL0JBUs0v6qGrr0PGCsbXmKHuthdrAkfISYi8umuveF7+gINb6EXl6VmKY9aHhyxCqvVgqd6yophQNrnor4w==}
@@ -2780,7 +2766,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.6
       to-fast-properties: 2.0.0
 
-  '@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)':
+  '@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)':
     dependencies:
       '@dfinity/candid': 1.3.0(@dfinity/principal@1.3.0)
       '@dfinity/principal': 1.3.0
@@ -2791,10 +2777,10 @@ snapshots:
       buffer: 6.0.3
       simple-cbor: 0.4.1
 
-  '@dfinity/auth-client@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)':
+  '@dfinity/auth-client@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)':
     dependencies:
-      '@dfinity/agent': 1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
-      '@dfinity/identity': 1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)
+      '@dfinity/agent': 1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
+      '@dfinity/identity': 1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)
       '@dfinity/principal': 1.3.0
       idb: 7.1.1
 
@@ -2802,9 +2788,9 @@ snapshots:
     dependencies:
       '@dfinity/principal': 1.3.0
 
-  '@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)':
+  '@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)':
     dependencies:
-      '@dfinity/agent': 1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
+      '@dfinity/agent': 1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
       '@dfinity/principal': 1.3.0
       '@noble/curves': 1.4.0
       '@noble/hashes': 1.4.0
@@ -2952,12 +2938,12 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
-  '@infu/icblast@2.0.46(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)(get-random-values@2.1.0)(isomorphic-fetch@3.0.0)(js-sha256@0.9.0)(p-limit@4.0.0)':
+  '@infu/icblast@2.0.46(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)(get-random-values@2.1.0)(isomorphic-fetch@3.0.0)(js-sha256@0.9.0)(p-limit@4.0.0)':
     dependencies:
-      '@dfinity/agent': 1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
-      '@dfinity/auth-client': 1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)
+      '@dfinity/agent': 1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
+      '@dfinity/auth-client': 1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)
       '@dfinity/candid': 1.3.0(@dfinity/principal@1.3.0)
-      '@dfinity/identity': 1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)
+      '@dfinity/identity': 1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)
       '@dfinity/principal': 1.3.0
       get-random-values: 2.1.0
       isomorphic-fetch: 3.0.0
@@ -3008,11 +2994,11 @@ snapshots:
 
   '@junobuild/config@0.0.8': {}
 
-  '@junobuild/core-peer@0.0.14(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)':
+  '@junobuild/core-peer@0.0.14(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/auth-client@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)':
     dependencies:
-      '@dfinity/agent': 1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
-      '@dfinity/auth-client': 1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)
-      '@dfinity/identity': 1.3.0(@dfinity/agent@1.3.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)
+      '@dfinity/agent': 1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)
+      '@dfinity/auth-client': 1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/identity@1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0))(@dfinity/principal@1.3.0)
+      '@dfinity/identity': 1.3.0(@dfinity/agent@1.4.0(@dfinity/candid@1.3.0(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0))(@dfinity/principal@1.3.0)(@peculiar/webcrypto@1.5.0)
       '@dfinity/principal': 1.3.0
       '@junobuild/utils': 0.0.22(@dfinity/principal@1.3.0)
 
@@ -3292,6 +3278,11 @@ snapshots:
   '@swc/helpers@0.5.11':
     dependencies:
       tslib: 2.6.3
+
+  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.3)':
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 3.4.3
 
   '@trysound/sax@0.2.0': {}
 
@@ -3574,8 +3565,6 @@ snapshots:
     optional: true
 
   caniuse-lite@1.0.30001627: {}
-
-  canvas-confetti@1.9.3: {}
 
   chalk@2.4.2:
     dependencies:
@@ -4259,6 +4248,8 @@ snapshots:
 
   min-indent@1.0.1: {}
 
+  mini-svg-data-uri@1.4.4: {}
+
   minimatch@3.1.2:
     dependencies:
       brace-expansion: 1.1.11
@@ -4446,10 +4437,6 @@ snapshots:
 
   prettier@3.3.0: {}
 
-  prism-svelte@0.5.0: {}
-
-  prismjs@1.29.0: {}
-
   process@0.11.10: {}
 
   prop-types@15.8.1:
@@ -4470,12 +4457,6 @@ snapshots:
   pvutils@1.1.3: {}
 
   queue-microtask@1.2.3: {}
-
-  radix-svelte@0.9.0(svelte@4.2.17):
-    dependencies:
-      '@floating-ui/core': 1.6.2
-      '@floating-ui/dom': 1.6.5
-      svelte: 4.2.17
 
   react-dom@17.0.2(react@17.0.2):
     dependencies:
@@ -4732,13 +4713,6 @@ snapshots:
     dependencies:
       svelte: 4.2.17
 
-  svelte-legos@0.2.3(svelte@4.2.17):
-    dependencies:
-      canvas-confetti: 1.9.3
-      prism-svelte: 0.5.0
-      prismjs: 1.29.0
-      svelte: 4.2.17
-
   svelte-motion@0.12.2(svelte@4.2.17):
     dependencies:
       '@types/react': 18.3.3
@@ -4762,9 +4736,7 @@ snapshots:
       postcss-load-config: 4.0.2(postcss@8.4.38)
       typescript: 5.4.5
 
-  svelte-radix@1.1.0(svelte@4.2.17):
-    dependencies:
-      svelte: 4.2.17
+  svelte-routing@2.13.0: {}
 
   svelte-sonner@0.3.24(svelte@4.2.17):
     dependencies:

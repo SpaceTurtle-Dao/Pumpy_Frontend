@@ -99,6 +99,5 @@ export const stackedTheme: CustomThemeConfig = {
 		"--color-surface-700": "30 29 35", // #1e1d23
 		"--color-surface-800": "24 23 28", // #18171c
 		"--color-surface-900": "20 19 23", // #141317
-
 	}
 }

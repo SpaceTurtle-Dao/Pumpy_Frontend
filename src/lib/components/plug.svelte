@@ -1,6 +1,7 @@
 <script>
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
+
 	// @ts-ignore
 	import {
 		pumpyActor,
@@ -10,7 +11,7 @@
 		pumpsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store';
+	} from '$lib/store/store';
 	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	// @ts-ignore
 	import { Principal } from '@dfinity/principal';
@@ -42,6 +43,7 @@
 	let isConnected = false;
 	let title = 'Connect Wallet';
 	let isLoading = false;
+
 	const setup = async () => {
 		let ic = icblast();
 		let pumpyQuery = await ic(pumpyCanisterId);
@@ -75,7 +77,7 @@
 			await setup();
 			isConnected = true;
 			// @ts-ignore
-			title = principal.toString().substring(0, 13) + '...';
+			title = principal.toString().substring(0, 5) + '...';
 		} catch (e) {
 			console.log(e);
 		}
