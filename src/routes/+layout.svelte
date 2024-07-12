@@ -16,6 +16,7 @@
 	import Logo from '../assets/logo.svelte';
 	import ThemeProvider from '$lib/store/theme_provider.svelte';
 	import { themeStore } from '$lib/store/theme';
+	import ThemeSwitch from '$lib/components/ui/theme-switch/themeSwitch.svelte';
 
 	let active: string | null = null;
 
@@ -33,11 +34,11 @@
 
 <div>
 	<ThemeProvider>
-		<div class="relative flex w-full items-center justify-center bg-primary">
+		<div class="relative flex w-full items-center justify-cente">
 			<div class={'fixed inset-x-0 top-12 z-50 mx-auto max-w-2xl'}>
 				<NavbarMenu>
-					<div class="flex items-left space-x-5 bg-secondary">
-						<div class="size-7">
+					<div class="flex items-left space-x-5">
+						<div class="w-8 h-8">
 							<Logo />
 						</div>
 						<div class="w-8">
@@ -68,13 +69,20 @@
 							<HoveredLink href="#">Enterprise</HoveredLink>
 						</div>
 					</MenuItem>
+					<div class="flex items-left space-x-5 bg-secondary">
+						<div class="w-8"></div>
+						<div>
+							<ThemeSwitch />
+						</div>
+					</div>
 				</NavbarMenu>
 			</div>
 		</div>
 
 		<div class="flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh]">
 			<Toaster />
-			<Navbar />
+			<!-- <Navbar /> -->
+			<div class="h-32"></div>
 			<slot />
 		</div>
 	</ThemeProvider>

@@ -14,7 +14,13 @@
 	export let item: string;
 </script>
 
-<div on:mouseenter={() => (active = item)} on:mouseleave={() => (active = null)} class="relative">
+<div
+	on:mouseenter={() => (active = item)}
+	on:mouseleave={() => (active = null)}
+	class="relative"
+	role="menuitem"
+	tabindex={0}
+>
 	<Motion let:motion transition={{ duration: 0.3 }}>
 		<p use:motion class="cursor-pointer text-black hover:opacity-[0.9] dark:text-white">
 			{item}

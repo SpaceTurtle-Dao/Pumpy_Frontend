@@ -120,7 +120,6 @@
 			</svg>
 		</div>
 	</div>
-	<ThemeSwitch />
 </nav>
 
 <style global>
