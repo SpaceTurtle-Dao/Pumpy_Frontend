@@ -5,7 +5,7 @@
 <header class=" text-white p-4 flex justify-between items-center">
 	<div class="flex items-center">
 		<!-- <img src="cursor-logo.svg" alt="SwapBox" class="w-10 h-10 mr-2" /> -->
-		<h1 class="text-xl font-bold">SwapBox</h1>
+		<h1 class="barlow-light text-3xl">Swappy</h1>
 	</div>
 
 	<!-- <button class="md:hidden" on:click={() => (showMenu = !showMenu)}>
