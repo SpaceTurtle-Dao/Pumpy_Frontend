@@ -1,53 +1,24 @@
-<<<<<<< HEAD
-import { stackedTheme } from './theme'
-const { skeleton } = require('@skeletonlabs/tw-plugin');
-/** @type {import('tailwindcss').Config} */
-import forms from '@tailwindcss/forms'
-const plugin = require('tailwindcss/plugin')
-
-export default {
-	content: ['./src/**/*.{html,js,svelte,ts}', require('path').join(require.resolve(
-		'@skeletonlabs/skeleton'),
-		'../**/*.{html,js,svelte,ts}'
-	)],
-	theme: {
-		extend: {
-			textShadow: {
-				sm: '0 0px 5px var(--tw-shadow-color)',
-				DEFAULT: '0 0px 10px var(--tw-shadow-color)',
-				lg: '0 0px 15px var(--tw-shadow-color)',
-			  },
-		}
-	},
-	plugins: [
-		plugin(function ({ matchUtilities, theme }) {
-			matchUtilities(
-			  {
-				'text-shadow': (value) => ({
-				  textShadow: value,
-				}),
-			  },
-			  { values: theme('textShadow') }
-			)
-		  }),
-		forms,
-		skeleton({
-			themes: { custom: [stackedTheme] }
-		}),
-	]
-=======
 import defaultTheme from "tailwindcss/defaultTheme";
 import colors from 'tailwindcss/colors';
 import type { Config } from "tailwindcss";
 import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette';
 import typography from '@tailwindcss/typography'
-
+const plugin = require('tailwindcss/plugin')
 
 const config: Config = {
 	darkMode: ["class"],
 	content: ["./src/**/*.{html,js,svelte,ts}"],
 	safelist: ["dark"],
-	plugins: [addVariablesForColors, typography],
+	plugins: [addVariablesForColors, typography, plugin(function ({ matchUtilities, theme }) {
+		matchUtilities(
+			{
+				'text-shadow': (value) => ({
+					textShadow: value,
+				}),
+			},
+			{ values: theme('textShadow') }
+		)
+	}),],
 	theme: {
 		container: {
 			center: true,
@@ -57,6 +28,11 @@ const config: Config = {
 			}
 		},
 		extend: {
+			textShadow: {
+				sm: '0 0px 5px var(--tw-shadow-color)',
+				DEFAULT: '0 0px 10px var(--tw-shadow-color)',
+				lg: '0 0px 15px var(--tw-shadow-color)',
+			},
 			lineHeight: {
 				11: '2.75rem',
 				12: '3rem',
@@ -277,7 +253,6 @@ const config: Config = {
 
 		}
 	},
->>>>>>> b9cf5e9c5790866440fe280c85e44f2ec846c36e
 };
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
