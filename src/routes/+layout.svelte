@@ -2,10 +2,8 @@
 	import Navbar from '$lib/components/navbar.svelte';
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import { initJuno } from '@junobuild/core-peer';
 	import { env } from '$env/dynamic/public';
 	import { Toaster } from '$lib/components/ui/sonner';
-	let satelliteId = env.PUBLIC_SATELLITE;
 
 	import {
 		NavbarMenu,
@@ -18,16 +16,7 @@
 
 	let active: string | null = null;
 
-	onMount(
-		async () =>
-			await initJuno({
-				satelliteId: satelliteId || 'g535m-yaaaa-aaaal-ajiia-cai',
-				container: import.meta.env.VITE_CONTAINER,
-				workers: {
-					auth: true
-				}
-			})
-	);
+
 </script>
 
 <div>

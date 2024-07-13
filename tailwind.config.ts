@@ -3,13 +3,22 @@ import colors from 'tailwindcss/colors';
 import type { Config } from "tailwindcss";
 import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette';
 import typography from '@tailwindcss/typography'
-
+const plugin = require('tailwindcss/plugin')
 
 const config: Config = {
 	darkMode: ["class"],
 	content: ["./src/**/*.{html,js,svelte,ts}"],
 	safelist: ["dark"],
-	plugins: [addVariablesForColors, typography],
+	plugins: [addVariablesForColors, typography, plugin(function ({ matchUtilities, theme }) {
+		matchUtilities(
+			{
+				'text-shadow': (value) => ({
+					textShadow: value,
+				}),
+			},
+			{ values: theme('textShadow') }
+		)
+	}),],
 	theme: {
 		container: {
 			center: true,
@@ -19,6 +28,11 @@ const config: Config = {
 			}
 		},
 		extend: {
+			textShadow: {
+				sm: '0 0px 5px var(--tw-shadow-color)',
+				DEFAULT: '0 0px 10px var(--tw-shadow-color)',
+				lg: '0 0px 15px var(--tw-shadow-color)',
+			},
 			lineHeight: {
 				11: '2.75rem',
 				12: '3rem',

@@ -11,8 +11,6 @@
 		RefreshCw
 	} from 'lucide-svelte/icons';
 	import SmallSpinner from './smallSpinner.svelte';
-	import { PIONEER_ID } from '../common/constants';
-	import type { TokenRequest, MintRequest } from '../declarations/pumpy/pumpy.did';
 	import {
 		fromAmount,
 		toAmount,
@@ -24,14 +22,9 @@
 	} from '../store/swap.store';
 
 	import {
-		pumpyActor,
-		principalStore,
 		loadingStore,
 		poolsStore,
-		tokensStore,
-		balancesStore
 	} from '$lib/store/store';
-	import type { Pumpy, TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
 	import type { Principal } from '@dfinity/principal';
 
 	let tokens: Array<TokenInfo> = [];

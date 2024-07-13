@@ -1,20 +1,14 @@
-export const IC_URL = 'https://icp0.io';
-export const IC_LOCAL = 'http://localhost:8000';
-
-export function PIONEER_ID(): string {
+export function PROCESS_ID(): string {
 	switch (import.meta.env.MODE) {
 		case 'development': {
-			return 'x2ble-2aaaa-aaaak-qiknq-cai';
+			return '1QfrANGVXZ7qeMnL2JyH85hJQN8TxwW7THbArRK9zZc';
 		}
 		case 'staging': {
-			return 'ucgwg-baaaa-aaaak-qibva-cai';
+			return 'FwSncCmdeiZrHh42RVy9Hywm2hT2dnST0oVMmMWkSnM';
 		}
 		case 'production': {
-			return 'yxccl-myaaa-aaaak-qihga-cai';
+			return 'vW8uSO0_wvVD787UwxrPWobXbwdZjSRg3Lsj9fvSRnY';
 		}
 	}
-	return 'x2ble-2aaaa-aaaak-qiknq-cai';
+	return '1QfrANGVXZ7qeMnL2JyH85hJQN8TxwW7THbArRK9zZc';
 }
-
-export const USDC = 'xevnm-gaaaa-aaaar-qafnq-cai';
-export const ICP = 'ryjl3-tyaaa-aaaaa-aaaba-cai';
