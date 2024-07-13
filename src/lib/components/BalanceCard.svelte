@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import Footer from './footer.svelte';
 	export let title: string;
 	export let value: string;
 	export let icon: string;
