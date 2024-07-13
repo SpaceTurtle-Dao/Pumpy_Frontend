@@ -34,6 +34,31 @@ export const send = async (processId, tags, data) => {
 };
 
 // @ts-ignore
+export const read = async (processId, tags, data) => {
+	console.log("Sending message to: " + processId)
+	// The only 2 mandatory parameters here are process and signer
+	// connect to the extension
+	// @ts-ignore
+	let result = await dryrun({
+		/*
+		The arweave TXID of the process, this will become the "target".
+		This is the process the message is ultimately sent to.
+	*/
+		process: processId,
+
+		// Tags that the process will use as input.
+		tags: tags,
+		data:data,
+	});
+	console.log(result)
+	console.log(result.Messages)
+	let message = result.Messages.pop();
+	console.log(message);
+	return message;
+	//return result
+};
+
+// @ts-ignore
 export const sendData = async (processId, tags, data) => {
 	console.log("Sending message to: " + processId)
 	// The only 2 mandatory parameters here are process and signer

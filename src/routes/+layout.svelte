@@ -5,18 +5,15 @@
 	import '../app.css';
 	import { env } from '$env/dynamic/public';
 	import { Toaster } from '$lib/components/ui/sonner';
-	let satelliteId = env.PUBLIC_SATELLITE;
 
-	onMount(
-		async () =>
-			await initJuno({
-				satelliteId: satelliteId || 'g535m-yaaaa-aaaal-ajiia-cai',
-				container: import.meta.env.VITE_CONTAINER,
-				workers: {
-					auth: true
-				}
-			})
-	);
+	let satelliteId = env.PUBLIC_SATELLITE;
+	
+	onMount(async () => {
+		
+	});
+
+	
+
 </script>
 
 <Navbar />

@@ -1,82 +1,26 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import * as Pagination from '$lib/components/ui/pagination';
-	import { pumpsStore, pumpyActor } from '$lib/store';
-	import type { PoolInfo, Pumpy } from '$lib/declarations/pumpy/pumpy.did';
-	import {
-		swapA,
-		swapB,
-		initalLiquidity,
-		add,
-		remove,
-		info,
-		balance,
-		init,
-		initPool,
-		pumps
-	} from '$lib/messageFactory.svelte';
+	import type { Pool } from '$lib/models/Pool.svelte';
 	import { send, createProcess } from '$lib/process';
-	const managerId = 'jQHPzleOmT4ZJqdC0r77qKzudFjIM6d5ufjc0FX2JQI';
-	const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
-	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
-	interface PumpCard {
-		id: string;
-		createdBy: string;
-		marketCap: number;
-		ticker: string;
-		description: string;
-		image: string;
-	}
-
-	let cards: Array<PumpCard> = [];
+  import { loadingStore, pumpsStore } from '$lib/store/store';
+  
+	let pools: Array<Pool> = [];
 	let currentPage = 1;
 	const perPage = 9;
 	let totalPages: number;
-	let pumpy: Pumpy;
+  let isLoading = false;
+  
+  pumpsStore.subscribe((value) => {
+    pools = value;
+    totalPages = Math.ceil(pools.length / perPage);
+  });
 
-	const setup = async () => {
-		let _cards: Array<PumpCard> = [];
-		let pools = await fetchPumps();
-		console.log('Pools ' + pools?.length);
-		for (let i = 0; i < pools!.length; i++) {
-			const _pump = pools![i];
-			_cards.push({
-				id: _pump.pool.pool,
-				createdBy: _pump.pool.Minter,
-				marketCap: _pump.analytics.marketCap,
-				ticker: _pump.pool.Ticker,
-				description: _pump.pool.Description,
-				image: _pump.pool.Logo
-			});
-		}
-		console.log('Cards ' + _cards.length);
-		cards = _cards;
-		totalPages = Math.ceil(cards.length / perPage);
-	};
+  loadingStore.subscribe((value) => {
+    isLoading = value
+  })
 
-	const fetchPumps = async () => {
-    let _pumps = [];
-		try {
-			// @ts-ignore
-			let message = pumps();
-			let result = await send(managerId, message, null);
-			let json = JSON.parse(result[0].Data).message;
-			console.log(json);
-			for (const key in json) {
-        _pumps.push(json[key])
-				console.log(json[key]);
-			}
-		} catch (e) {
-			console.log(e);
-		}
-    return _pumps;
-	};
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-		setup();
-	});
-
-	$: paginatedCards = cards.slice((currentPage - 1) * perPage, currentPage * perPage);
+	$: paginatedpools = pools.slice((currentPage - 1) * perPage, currentPage * perPage);
 
 	function goToPage(page: number) {
 		currentPage = page;
@@ -124,7 +68,7 @@
 
 <div class="flex flex-col w-full justify-center items-center space-y-80">
 	<div class="max-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-72">
-		{#each paginatedCards as card}
+		{#each paginatedpools as card}
 			<div class="max-w-96 max-h-10 shadow-md">
 				<a href="/{card.id}">
 					<Card.Root class="card-3d text-white p-4 shadow-md">
@@ -148,7 +92,7 @@
 	</div>
 
 	<div class="pagination-wrapper">
-		<Pagination.Root count={cards.length} {perPage} let:pages let:currentPage>
+		<Pagination.Root count={pools.length} {perPage} let:pages let:currentPage>
 			<Pagination.Content>
 				<Pagination.Item>
 					<Pagination.PrevButton on:click={() => goToPage(currentPage - 1)} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import File from 'lucide-svelte/icons/file';
+	/*import File from 'lucide-svelte/icons/file';
 	import Home from 'lucide-svelte/icons/home';
 	import LineChart from 'lucide-svelte/icons/line-chart';
 	import ListFilter from 'lucide-svelte/icons/list-filter';
@@ -80,10 +80,10 @@
 		});
 		swapCells = _swapCells;
 	};
-	setup();
+	setup();*/
 </script>
 
-<div class="flex flex-col">
+<!--<div class="flex flex-col">
 	<main class="grid flex-1 items-start">
 		<Tabs.Root value="trades">
 			<div class="flex items-center">
@@ -187,4 +187,4 @@
 			</Tabs.Content>
 		</Tabs.Root>
 	</main>
-</div>
+</div>-->

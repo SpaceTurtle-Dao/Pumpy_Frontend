@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	/*import { page } from '$app/stores';
 	import Chart from '$lib/components/chart.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -16,10 +16,7 @@
 	import { ChevronDown, ChevronUp } from 'lucide-svelte';
 	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
-	// @ts-ignore
-	import icblast from '@infu/icblast';
 	import { onMount } from 'svelte';
-	import { pumpy_idlFactory } from '$lib/declarations/pumpy/pumpy.did';
 	import {
 		pumpyActor,
 		principalStore,
@@ -28,7 +25,7 @@
 		pumpsStore,
 		tokensStore,
 		balancesStore
-	} from '$lib/store';
+	} from '$lib/store/store';
 	import type {
 		MintRequest,
 		Pumpy,
@@ -78,11 +75,6 @@
 	}
 
 	let id = $page.params.slug;
-	let pumpy: Pumpy;
-	let pool: PoolInfo;
-	let tokenA: TokenInfo;
-	let tokenB: TokenInfo;
-	let principal: Principal;
 	let isLoading = false;
 	let dialogOpen = false;
 	let decimalsA = 100000000;
@@ -117,69 +109,6 @@
 		});
 	};
 
-	const setup = async () => {
-		//let _id = BigInt(id);
-		let ic = icblast();
-		let pumpyQuery = await ic(pumpyCanisterId, pumpy_idlFactory);
-		console.log(pumpyQuery);
-		pool = await pumpyQuery.pumpInfo(id);
-		console.log(pool);
-		swaps = await pumpyQuery.fetchPumpSwaps(id, 0, 1000);
-		console.log(pool);
-		tokenA = await pumpyQuery.tokenInfo(pool.pair[0]);
-		tokenB = await pumpyQuery.tokenInfo(pool.pair[1]);
-		holders = await pumpyQuery.fetchHolders(pool.pair[0], 0, 100);
-		if (principal) {
-			let balanceRequestA: BalanceRequest = {
-				id: pool.pair[0],
-				owner: principal.toString()
-			};
-			let balanceRequestB: BalanceRequest = {
-				id: pool.pair[1],
-				owner: principal.toString()
-			};
-			tokenABalance = (
-				Number(await pumpyQuery.balance(balanceRequestA)) / decimals(tokenA.decimals)
-			).toString();
-			tokenBBalance = (
-				Number(await pumpyQuery.balance(balanceRequestB)) / decimals(tokenB.decimals)
-			).toString();
-		} else {
-			tokenABalance = '0';
-			tokenBBalance = '0';
-		}
-		decimalsA = decimals(tokenA.decimals);
-		decimalsB = decimals(tokenB.decimals);
-		//transactions = await pumpy.f
-		let isVolumeUp: boolean;
-		let isMarketCapUp: boolean = false;
-		if (pool.analytics.volume >= pool.analytics.hourVolume) {
-			isVolumeUp = true;
-		} else {
-			isVolumeUp = false;
-		}
-		let marketCap = Number(pool.analytics.marketCap) / decimalsB;
-		let volume = Number(pool.analytics.volume) / decimalsB;
-		let liquidty = Number(pool.analytics.liquidty) / decimalsB;
-
-		analyticsData = {
-			marketCap: formatter.format(marketCap),
-			marketCapPercentage: '0',
-			isMarketCapUp: isMarketCapUp,
-			volume: formatter.format(volume),
-			volumePercentage: relDiff(
-				Number(pool.analytics.volume),
-				Number(pool.analytics.hourVolume)
-			).toString(),
-			isVolumeUp: isVolumeUp,
-			liquidy: formatter.format(liquidty)
-		};
-	};
-
-	principalStore.subscribe((value) => {
-		principal = value;
-	});
-
 	const decimals = (value: BigInt) => {
 		let _decimals = 1;
 		for (let i = 0; i < Number(value); i++) {
@@ -190,11 +119,11 @@
 	};
 
 	onMount(async () => {
-		setup();
-	});
+		
+	});*/
 </script>
 
-<div class="w-full">
+<!--<div class="w-full">
 	{#if analyticsData == undefined}
 		<div class="flex justify-center">
 			<MediumSpinner />
@@ -224,6 +153,7 @@
 							/>
 						</div>
 						<div class="flex flex-row gap-4">
+							
 							<AnalyticsProgressCard
 								title={'Liquidity'}
 								value={NumberFormatter(
@@ -238,11 +168,13 @@
 									3
 								)}
 							/>
+					
 						</div>
 					</div>
 				</div>
 
 				<div class="flex flex-row gap-4">
+		
 					<div class="basis-1/3">
 						<BalanceCard
 							icon={tokenA.icon}
@@ -257,6 +189,7 @@
 							value={NumberFormatter(tokenBBalance, 3)}
 						/>
 					</div>
+			
 					<div class="basis-1/3">
 						<CreatorCard />
 					</div>
@@ -266,4 +199,4 @@
 			</div>
 		</div>
 	{/if}
-</div>
+</div>-->

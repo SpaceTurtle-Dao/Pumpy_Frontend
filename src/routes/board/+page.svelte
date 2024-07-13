@@ -1,6 +1,15 @@
 <!-- src/routes/board/+page.svelte -->
 <script lang="ts">
   import Board from '$lib/components/board.svelte';
+  import { pumpsStore } from '$lib/store/store';
+	import { pumps } from '$lib/messageFactory.svelte';
+	import { fetchPumps } from '$lib/common/swappy';
+	const fetchData = async () => {
+		let pumps = await fetchPumps();
+		pumpsStore.set(pumps);
+	}
+
+	setInterval(fetchData, 5000);
 </script>
 
 <style>
