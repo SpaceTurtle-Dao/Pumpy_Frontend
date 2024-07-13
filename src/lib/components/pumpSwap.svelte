@@ -18,14 +18,10 @@
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import {
-		pumpyActor,
-		principalStore,
 		loadingStore,
 		poolsStore,
-		pumpsStore,
-		tokensStore,
-		balancesStore
-	} from '$lib/store';
+		pumpsStore
+	} from '$lib/store/store';
 	import type {
 		MintRequest,
 		Pumpy,
