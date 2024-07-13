@@ -2,7 +2,6 @@
 <script lang="ts">
   import Board from '$lib/components/board.svelte';
   import { pumpsStore } from '$lib/store/store';
-	import { pumps } from '$lib/messageFactory.svelte';
 	import { fetchPumps } from '$lib/common/swappy';
 	const fetchData = async () => {
 		let pumps = await fetchPumps();
@@ -12,27 +11,7 @@
 	setInterval(fetchData, 5000);
 </script>
 
-<style>
-  .container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #000000; 
-    padding: 20px 10px; /* Add some padding to the top and bottom */
-  }
-
-  .board-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ff007f;
-    text-shadow: 0 0 10px rgba(255, 0, 127, 0.7); 
-    text-align: center; 
-    margin-bottom: 20px; 
-  }
-</style>
-
-<div class="container">
-  <div class="board-title">Board</div> 
+<div class="w-screen h-screen bg-black-400 pt-5 pb-2.5">
+  <p class="text-center text-4xl text-red-400 text-shadow shadow-red-500 font-bold mb-5">Board</p> 
   <Board />
 </div>

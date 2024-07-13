@@ -11,10 +11,10 @@
 	let totalPages: number;
   let isLoading = false;
   
-  pumpsStore.subscribe((value) => {
+  /*pumpsStore.subscribe((value) => {
     pools = value;
     totalPages = Math.ceil(pools.length / perPage);
-  });
+  });*/
 
   loadingStore.subscribe((value) => {
     isLoading = value
@@ -95,7 +95,10 @@
 		<Pagination.Root count={pools.length} {perPage} let:pages let:currentPage>
 			<Pagination.Content>
 				<Pagination.Item>
-					<Pagination.PrevButton on:click={() => goToPage(currentPage - 1)} />
+					<Pagination.PrevButton on:click={() => {
+            // @ts-ignore
+            goToPage(currentPage - 1)
+          }} />
 				</Pagination.Item>
 				{#each pages as page (page.key)}
 					{#if page.type === 'ellipsis'}
@@ -115,7 +118,10 @@
 					{/if}
 				{/each}
 				<Pagination.Item>
-					<Pagination.NextButton on:click={() => goToPage(currentPage + 1)} />
+					<Pagination.NextButton on:click={() => {
+            // @ts-ignore
+            goToPage(currentPage + 1)
+          }} />
 				</Pagination.Item>
 			</Pagination.Content>
 		</Pagination.Root>

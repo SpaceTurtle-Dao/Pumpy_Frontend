@@ -9,12 +9,8 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import {
-		pumpyActor,
-		principalStore,
 		loadingStore,
 		poolsStore,
-		tokensStore,
-		balancesStore
 	} from '$lib/store/store';
 	import {
 		swapA,
@@ -97,38 +93,7 @@
 		}
 	};
 
-	const createPump = async () => {
-		try {
-			// @ts-ignore
-			let tokenProcess = await createProcess(managerId);
-			console.log('Token Process: ' + tokenProcess);
-			let poolProcess = await createProcess(managerId);
-			console.log('Pool Process: ' + poolProcess);
-			var delayInMilliseconds = 5000; //5 second
-			//let blob = new Uint8Array(await icon[0].arrayBuffer());
-			let url = await upload(await icon[0].arrayBuffer());
-			//reader.readAsDataURL()
-			//let data = base64String;
-			setTimeout(async function () {
-				console.log('Initing Token');
-				let message = init(
-					waterToken,
-					name,
-					ticker,
-					url,
-					description,
-					'8',
-					'1000000',
-					tokenProcess,
-					poolProcess
-				);
-				let result = await send(managerId, message, null);
-				console.log(result);
-			}, delayInMilliseconds);
-		} catch (e) {
-			console.log(e);
-		}
-	};
+	
 
 	/*const createToken = async () => {
 		let tokenInfo = await pumpy.tokenInfo(BigInt(token));
@@ -169,11 +134,6 @@
 		isLoading = value;
 	});
 
-	principalStore.subscribe((value) => {
-		if (value) {
-			principal = value;
-		}
-	});
 </script>
 
 <div class="w-full flex flex-col justify-center items-center">

@@ -1,9 +1,8 @@
 import { stackedTheme } from './theme'
 const { skeleton } = require('@skeletonlabs/tw-plugin');
 /** @type {import('tailwindcss').Config} */
-import forms from '@tailwindcss/forms';
-
-
+import forms from '@tailwindcss/forms'
+const plugin = require('tailwindcss/plugin')
 
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}', require('path').join(require.resolve(
@@ -11,9 +10,25 @@ export default {
 		'../**/*.{html,js,svelte,ts}'
 	)],
 	theme: {
-		extend: {}
+		extend: {
+			textShadow: {
+				sm: '0 0px 5px var(--tw-shadow-color)',
+				DEFAULT: '0 0px 10px var(--tw-shadow-color)',
+				lg: '0 0px 15px var(--tw-shadow-color)',
+			  },
+		}
 	},
 	plugins: [
+		plugin(function ({ matchUtilities, theme }) {
+			matchUtilities(
+			  {
+				'text-shadow': (value) => ({
+				  textShadow: value,
+				}),
+			  },
+			  { values: theme('textShadow') }
+			)
+		  }),
 		forms,
 		skeleton({
 			themes: { custom: [stackedTheme] }
