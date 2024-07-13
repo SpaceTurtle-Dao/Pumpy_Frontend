@@ -109,11 +109,11 @@
     setup();
   });
 
-  $: paginatedCards = cards.slice((currentPage - 1) * perPage, currentPage * perPage);
+	$: paginatedCards = cards.slice((currentPage - 1) * perPage, currentPage * perPage);
 
-  function goToPage(page: number) {
-    currentPage = page;
-  }
+	function goToPage(page: number) {
+		currentPage = page;
+	}
 </script>
 
 <div class="flex flex-col w-full justify-center items-center space-y-8 md:space-y-12 lg:space-y-16">

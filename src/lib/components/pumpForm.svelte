@@ -96,8 +96,7 @@
 			telegram: [telegram],
 			twitter: [twitter],
 			discord: [discord],
-			website: [website],
-			description: description
+			website: [website]
 		};
 		let request: PumpRequest = {
 			token: BigInt(token),

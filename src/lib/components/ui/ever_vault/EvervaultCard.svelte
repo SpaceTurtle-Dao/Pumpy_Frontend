@@ -2,17 +2,22 @@
 	import { useMotionTemplate, useMotionValue, Motion } from 'svelte-motion';
 	import { cn } from '$lib/utils';
 	import { onMount } from 'svelte';
+	import { MovingBorder } from '../moving-border';
 
 	export let text: string | undefined = undefined;
 	export let className: string | undefined = undefined;
+	export let borderClassName: string | undefined = undefined;
+	export let borderRadius: string | undefined = '1.75rem';
 
 	let mouseX = useMotionValue(0);
 	let mouseY = useMotionValue(0);
 
+	export let duration = 2000;
+
 	let randomString = '';
 
 	onMount(() => {
-		let str = generateRandomString(1500);
+		let str = generateRandomString(4000);
 		randomString = str;
 	});
 
@@ -21,11 +26,11 @@
 		mouseX.set(clientX - left);
 		mouseY.set(clientY - top);
 
-		const str = generateRandomString(1500);
+		const str = generateRandomString(4000);
 		randomString = str;
 	}
 
-	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789^$!@#=+';
 	const generateRandomString = (length: number) => {
 		let result = '';
 		for (let i = 0; i < length; i++) {
@@ -40,18 +45,18 @@
 
 <div
 	class={cn(
-		'aspect-square  relative flex  h-full w-full items-center justify-center bg-transparent p-0.5',
+		'relative min-h-52 flex h-full w-full items-center justify-center bg-transparent p-0.5',
 		className
 	)}
 >
 	<div
 		on:mousemove={onMouseMove}
 		role="presentation"
-		class="group/card relative flex h-full w-full items-center justify-center overflow-hidden rounded-3xl bg-transparent"
+		class="group/card min-h-80 relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl bg-transparent"
 	>
 		<div class="pointer-events-none">
 			<div
-				class="absolute inset-0 rounded-2xl [mask-image:linear-gradient(white,transparent)] group-hover/card:opacity-50"
+				class="absolute inset-0 rounded-2xl [mask-image:linear-gradient(white,transparent)] group-hover/card:opacity-90"
 			></div>
 			<Motion let:motion {style}>
 				<div
@@ -72,15 +77,25 @@
 				</div>
 			</Motion>
 		</div>
-		<div class="relative z-10 flex items-center justify-center">
+		<div
+			class="relative z-10 flex items-center justify-center overflow-hidden bg-transparent p-[1px]"
+		>
+			<!-- <div class="absolute inset-0" style={`border-radius: calc(${borderRadius} * 0.96);`}>
+				<MovingBorder {duration} rx="30%" ry="30%">
+					<div
+						class={cn(
+							'h-20 w-20 bg-[radial-gradient(var(--sky-500)_40%,transparent_60%)] opacity-[0.8]',
+							borderClassName
+						)}
+					/>
+				</MovingBorder>
+			</div> -->
 			<div
-				class="relative flex h-44 w-44 items-center justify-center rounded-full text-4xl font-bold text-white"
+				class="relative flex min-w-96 min-h-40 items-center justify-center rounded-2xl prose-2xl"
 			>
-				<div
-					class="absolute h-full w-full rounded-full bg-white/[0.8] blur-sm dark:bg-black/[0.8]"
-				/>
+				<div class="absolute h-full w-full rounded-2xl blur-sm dark:bg-black/[0.2]" />
 				{#if text}
-					<span class="z-20 text-black dark:text-white">{text}</span>
+					<span class="z-20 text-white dark:text-white">{text}</span>
 				{/if}
 			</div>
 		</div>

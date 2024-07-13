@@ -163,7 +163,7 @@
 
 		<div class="mb-4">
 			<div class="flex justify-between items-center mb-2">
-				<label class="block mb-2 text-sm">You're paying</label>
+				<label for="paying" class="block mb-2 text-sm">You're paying</label>
 				<div class="flex space-x-2">
 					<WalletMinimal class="my-1 h-4 w-4" />
 					<span class="text-sm my-1 h-6 text-xs">{100.0} {'ICP'}</span>
@@ -208,6 +208,7 @@
 					<div class="w-16 h-9 relative bg-secondary-600 rounded-full px-2 py-1"></div>
 				{/if}
 				<Input
+					id="paying"
 					class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 					type="text"
 					placeholder="0.00"
