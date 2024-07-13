@@ -22,12 +22,8 @@
 	} from '../store/swap.store';
 
 	import {
-		pumpyActor,
-		principalStore,
 		loadingStore,
 		poolsStore,
-		tokensStore,
-		balancesStore
 	} from '$lib/store/store';
 	import type { Principal } from '@dfinity/principal';
 
