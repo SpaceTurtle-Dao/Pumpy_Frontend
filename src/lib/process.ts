@@ -69,6 +69,8 @@ export const read = async (processId, tags) => {
 		This is the process the message is ultimately sent to.
 	*/
 		process: processId,
+		data: '',
+		anchor: '1234',
 
 		// Tags that the process will use as input.
 		tags: tags

@@ -4,6 +4,7 @@ import { info, init, pools, pumps } from '$lib/messageFactory.svelte';
 import { PROCESS_ID } from './constants';
 import type { Tag } from '$lib/models/Tag.svelte';
 import { upload } from '$lib/uploader';
+import { loadingStore } from '$lib/store/store';
 
 export const fetchPumps = async () => {
     let _pools: Array<Pool> = [];
@@ -24,11 +25,11 @@ export const fetchPumps = async () => {
 };
 
 const _fetchPumps = async () => {
-    let _pools: Array<Pool> = [];
+    let _pools: Array<any> = [];
     try {
         // @ts-ignore
         let message = pumps();
-        let result = await read(PROCESS_ID(), message);
+        let result = await send(PROCESS_ID(), message);
         if (result == undefined) return _pools;
         console.log(result)
         let json = JSON.parse(result[0].Data).message;
@@ -40,7 +41,7 @@ const _fetchPumps = async () => {
     } catch (e) {
         console.log(e);
     }
-    return _pumps;
+    return _pools;
 };
 
 export const tokenInfo = async (process: string) => {
@@ -77,6 +78,7 @@ export const tokenInfo = async (process: string) => {
     }
 };
 export const createPump = async (icon:File,tokenB:string,name:string,ticker:string,description:string) => {
+    loadingStore.set(true);
     try {
         // @ts-ignore
         let tokenProcess = await createProcess(PROCESS_ID());
@@ -107,6 +109,7 @@ export const createPump = async (icon:File,tokenB:string,name:string,ticker:stri
     } catch (e) {
         console.log(e);
     }
+    loadingStore.set(false);
 };
 
 /*export const createPool = async (TokenA,TokenB) => {

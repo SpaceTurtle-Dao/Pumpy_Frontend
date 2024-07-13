@@ -3,24 +3,27 @@
 	import * as Pagination from '$lib/components/ui/pagination';
 	import type { Pool } from '$lib/models/Pool.svelte';
 	import { send, createProcess } from '$lib/process';
-  import { loadingStore, pumpsStore } from '$lib/store/store';
-  
+	import { loadingStore, pumpsStore } from '$lib/store/store';
+	import { onMount } from 'svelte';
+
 	let pools: Array<Pool> = [];
+	let paginatedpools: Array<Pool> = [];
 	let currentPage = 1;
 	const perPage = 9;
 	let totalPages: number;
-  let isLoading = false;
-  
-  /*pumpsStore.subscribe((value) => {
-    pools = value;
-    totalPages = Math.ceil(pools.length / perPage);
-  });*/
+	let isLoading = false;
 
-  loadingStore.subscribe((value) => {
-    isLoading = value
-  })
+	loadingStore.subscribe((value) => {
+		isLoading = value;
+	});
 
-	$: paginatedpools = pools.slice((currentPage - 1) * perPage, currentPage * perPage);
+	pumpsStore.subscribe((value) => {
+		pools = value;
+		totalPages = Math.ceil(pools.length / perPage);
+		paginatedpools = pools.slice((currentPage - 1) * perPage, currentPage * perPage);
+	});
+
+	$:;
 
 	function goToPage(page: number) {
 		currentPage = page;
@@ -95,10 +98,12 @@
 		<Pagination.Root count={pools.length} {perPage} let:pages let:currentPage>
 			<Pagination.Content>
 				<Pagination.Item>
-					<Pagination.PrevButton on:click={() => {
-            // @ts-ignore
-            goToPage(currentPage - 1)
-          }} />
+					<Pagination.PrevButton
+						on:click={() => {
+							// @ts-ignore
+							goToPage(currentPage - 1);
+						}}
+					/>
 				</Pagination.Item>
 				{#each pages as page (page.key)}
 					{#if page.type === 'ellipsis'}
@@ -118,10 +123,12 @@
 					{/if}
 				{/each}
 				<Pagination.Item>
-					<Pagination.NextButton on:click={() => {
-            // @ts-ignore
-            goToPage(currentPage + 1)
-          }} />
+					<Pagination.NextButton
+						on:click={() => {
+							// @ts-ignore
+							goToPage(currentPage + 1);
+						}}
+					/>
 				</Pagination.Item>
 			</Pagination.Content>
 		</Pagination.Root>

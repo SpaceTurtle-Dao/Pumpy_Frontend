@@ -25,38 +25,20 @@
 	} from '$lib/messageFactory.svelte';
 	import { send, createProcess } from '$lib/process';
 	import { upload } from '$lib/uploader';
+	import { createPump } from '$lib/common/swappy';
 
 	const managerId = 'jQHPzleOmT4ZJqdC0r77qKzudFjIM6d5ufjc0FX2JQI';
 	//const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
 	//const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
 	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
 
-	interface Data {
-		minter: string;
-		name: string;
-		ticker: string;
-		description: string;
-		icon: File;
-		twitter: string;
-		telegram: string;
-		discord: string;
-		website: string;
-		supply: string;
-		decimals: string;
-		allocation: string;
-		amount: string;
-		token: string;
-	}
-
 	let isLoading = false;
 	let isVisible = false;
-	let principal: Principal;
 	let buttonText = 'Show more options';
 	let token = 0;
 	let amountA: string;
 	let amountB: string;
 	let dialogOpen = false;
-	let decimals = 100000000;
 
 	let name = '';
 	let ticker = '';
@@ -93,42 +75,9 @@
 		}
 	};
 
-	
-
-	/*const createToken = async () => {
-		let tokenInfo = await pumpy.tokenInfo(BigInt(token));
-		let _decimals = 1;
-		for (let i = 0; i < Number(tokenInfo[0]?.decimals); i++) {
-			_decimals = _decimals * 10;
-		}
-		let blob = Array.from(new Uint8Array(await icon[0].arrayBuffer()));
-		let mimetype = icon[0].type;
-		let tokenRequest: TokenRequest = {
-			decimals: BigInt(0),
-			image: { blob: blob, mimetype: mimetype },
-			name: name,
-			minter: principal.toString(),
-			supply: BigInt(0),
-			symbol: ticker,
-			telegram: [telegram],
-			twitter: [twitter],
-			discord: [discord],
-			website: [website],
-			description: description
-		};
-		let request: PumpRequest = {
-			token: BigInt(token),
-			amount: [[BigInt(amountA) * BigInt(decimals), BigInt(amountB) * BigInt(_decimals)]],
-			tokenRequest: tokenRequest
-		};
-		console.log('pump request');
-		console.log(request);
-		loadingStore.set(true);
-		let result = await pumpy.createPools([{ PUMP: request }]);
-		console.log(result);
-		loadingStore.set(false);
-		dialogOpen = false;
-	};*/
+	const create = async () => {
+		await createPump(icon[0], waterToken, name, ticker, description)
+	}
 
 	loadingStore.subscribe((value) => {
 		isLoading = value;
@@ -279,7 +228,7 @@
 						</div>
 					</div>
 					<Dialog.Footer>
-						<Button class="" on:click={createPump}>Create Token</Button>
+						<Button class="" on:click={create}>Create Token</Button>
 					</Dialog.Footer>
 				</Dialog.Content>
 			</Dialog.Root>
