@@ -91,13 +91,11 @@
 				</MovingBorder>
 			</div> -->
 			<div
-				class="relative flex min-w-96 min-h-40 items-center justify-center rounded-2xl text-3xl font-bold text-white"
+				class="relative flex min-w-96 min-h-40 items-center justify-center rounded-2xl prose-2xl"
 			>
-				<div
-					class="absolute h-full w-full rounded-2xl bg-white/[0.5] blur-sm dark:bg-black/[0.5]"
-				/>
+				<div class="absolute h-full w-full rounded-2xl blur-sm dark:bg-black/[0.2]" />
 				{#if text}
-					<span class="z-20 text-black dark:text-white">{text}</span>
+					<span class="z-20 text-white dark:text-white">{text}</span>
 				{/if}
 			</div>
 		</div>

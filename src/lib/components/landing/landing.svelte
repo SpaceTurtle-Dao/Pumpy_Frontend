@@ -9,7 +9,7 @@
 	import Hellow from './hellow.svelte';
 </script>
 
-<div class="p-3 md:p-5 flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh] bg-secondary">
+<div class="p-3 md:p-5 flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh]">
 	<div class="w-full overflow-hidden rounded-md relative py-3">
 		<EvervaultCard text="Simple Secure Swap" />
 	</div>

@@ -1,88 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 @layer base {
 
   body {
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-    @apply bg-white dark:bg-black text-black dark:text-white text-center;
   }
 
-  :root {
-    --background: #0C0C05;
-    --foreground: #0F1119;
-    --card: #141C27;
-    --card-foreground: #252730;
-    --popover: #2B3550;
-    --popover-foreground: #2E3444;
-    --primary: #3F526E;
-    --primary-foreground: #4E6283;
-    --secondary: #60718A;
-    --secondary-foreground: #667FAF;
-    --muted: #7185B4;
-    --muted-foreground: #768ABA;
-    --accent: #768ABA;
-    --accent-foreground: #768ABA;
-    --destructive: #768ABA;
-    --destructive-foreground: #768ABA;
-    --border: #768ABA;
-    --input: #768ABA;
-    --ring: #768ABA;
-    --radius: 0.75rem;
+  .barlow-thin {
+    font-family: "Barlow", sans-serif;
+    font-weight: 100;
+    font-style: normal;
   }
-
-  .dark {
-    --background: #0C0C05;
-    --foreground: #0F1119;
-    --card: #141C27;
-    --card-foreground: #252730;
-    --popover: #2B3550;
-    --popover-foreground: #2E3444;
-    --primary: #3F526E;
-    --primary-foreground: #4E6283;
-    --secondary: #60718A;
-    --secondary-foreground: #667FAF;
-    --muted: #7185B4;
-    --muted-foreground: #768ABA;
-    --accent: #768ABA;
-    --accent-foreground: #768ABA;
-    --destructive: #768ABA;
-    --destructive-foreground: #768ABA;
-    --border: #768ABA;
-    --input: #768ABA;
-    --ring: #768ABA;
+  
+  .barlow-extralight {
+    font-family: "Barlow", sans-serif;
+    font-weight: 200;
+    font-style: normal;
   }
-
-
-  .light {
-    --background-light: #687E88;
-    --foreground-light: #9DAZAA;
-    --card-light: #BABBBA;
-    --card-foreground-light: #DADECE;
-    --popover-light: #E3D9CA;
-    --popover-foreground-light: #E8DFCB;
-    --primary-light: #EADFCC;
-    --primary-foreground-light: #F4EBD7;
-    --secondary-light: #FCF5E5;
-    --secondary-foreground-light: #FDF2DF;
-    --muted-light: #FEF3DC;
-    --muted-foreground-light: #FFF6E5;
+  
+  .barlow-light {
+    font-family: "Barlow", sans-serif;
+    font-weight: 300;
+    font-style: normal;
   }
-
-  .cyberpunk {
-    --highlight-1: #00F27E;
-    --highlight-2: #013BDO;
-    --highlight-3: #01A456;
-    --highlight-4: #5E1814;
-    --highlight-5: #611412;
-    --highlight-6: #7D352F;
-    --highlight-7: #8B48E1;
-    --highlight-8: #AAFFFF;
-    --highlight-9: #CBFF3F;
-    --highlight-10: #F4EBD7;
-    --highlight-11: #FDF2DF;
-    --highlight-12: #FFF6E5;
-
+  
+  .barlow-regular {
+    font-family: "Barlow", sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
+  
+  .barlow-medium {
+    font-family: "Barlow", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .barlow-semibold {
+    font-family: "Barlow", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  .barlow-bold {
+    font-family: "Barlow", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .barlow-extrabold {
+    font-family: "Barlow", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+  }
+  
+  .barlow-black {
+    font-family: "Barlow", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  .barlow-thin-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+  }
+  
+  .barlow-extralight-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 200;
+    font-style: italic;
+  }
+  
+  .barlow-light-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .barlow-regular-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .barlow-medium-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+  
+  .barlow-semibold-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 600;
+    font-style: italic;
+  }
+  
+  .barlow-bold-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+  .barlow-extrabold-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 800;
+    font-style: italic;
+  }
+  
+  .barlow-black-italic {
+    font-family: "Barlow", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+  }
+  
 }
