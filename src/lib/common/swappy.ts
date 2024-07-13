@@ -29,10 +29,10 @@ const _fetchPumps = async () => {
     try {
         // @ts-ignore
         let message = pumps();
-        let result = await send(PROCESS_ID(), message);
+        let result = await read(PROCESS_ID(), message);
         if (result == undefined) return _pools;
         console.log(result)
-        let json = JSON.parse(result[0].Data).message;
+        let json = JSON.parse(result.Data).message;
         console.log(json);
         for (const key in json) {
             _pools.push(json[key]);
