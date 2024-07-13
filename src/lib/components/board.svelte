@@ -109,7 +109,7 @@
     setup();
   });
 
-  $: paginatedCards = cards.slice((currentPage - 1) * perPage, currentPage * perPage);
+	$: paginatedCards = cards.slice((currentPage - 1) * perPage, currentPage * perPage);
 
 	function goToPage(page: number) {
 		currentPage = page;

@@ -1,4 +1,5 @@
 <script lang="ts">
+<<<<<<< HEAD
 	import Button from '$lib/components/ui/button/button.svelte';
 	import TokenData from '$lib/models/TokenData.svelte';
 	import Tag from '$lib/models/Tag.svelte';
@@ -35,3 +36,9 @@
 <!--<Button on:click={addInitalLiquidity}>InitalLiquidity</Button>
 <Button on:click={addLiquidity}>Add</Button>
 <Button on:click={removeLiquidity}>Remove</Button>--->
+=======
+	import Landing from '$lib/components/landing/landing.svelte';
+</script>
+
+<Landing />
+>>>>>>> b9cf5e9c5790866440fe280c85e44f2ec846c36e

@@ -83,49 +83,57 @@
 
 	const buy = async () => {
 		console.log('buy');
-		let poolId = {"PUMP":pool.id};
+		let poolId = { PUMP: pool.id };
 		if (isTokenA) {
 			let _amount = amount * decimals(tokenA.decimals);
-			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId,BigInt(_amount));
+			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId, BigInt(_amount));
 			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenA.symbol + " for " + tokenB.symbol);
-			console.log('slippage: ' + _slippage+"%" + " "+tokenB.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenB.decimals)) + " "+tokenB.symbol);
+			console.log('Swapping');
+			console.log(amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
+			console.log('slippage: ' + _slippage + '%' + ' ' + tokenB.symbol);
+			console.log(
+				'estimate: ' + Number(esitmate) / decimals(tokenB.decimals) + ' ' + tokenB.symbol
+			);
 			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		} else {
 			let _amount = amount * decimals(tokenB.decimals);
-			console.log(_amount)
-			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId,BigInt(_amount));
+			console.log(_amount);
+			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId, BigInt(_amount));
 			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenB.symbol + " for " + tokenA.symbol);
-			console.log('slippage: ' + _slippage + " "+tokenA.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenA.decimals)) + " "+tokenA.symbol);
+			console.log('Swapping');
+			console.log(amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
+			console.log('slippage: ' + _slippage + ' ' + tokenA.symbol);
+			console.log(
+				'estimate: ' + Number(esitmate) / decimals(tokenA.decimals) + ' ' + tokenA.symbol
+			);
 			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
 
 	const sell = async () => {
 		console.log('sell');
-		let poolId = {"PUMP":pool.id};
+		let poolId = { PUMP: pool.id };
 		if (isTokenA) {
 			let _amount = amount * decimals(tokenA.decimals);
-			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId,BigInt(_amount));
+			let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId, BigInt(_amount));
 			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenA.symbol + " for " + tokenB.symbol);
-			console.log('slippage: ' + _slippage+"%" + " "+tokenB.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenB.decimals)) + " "+tokenB.symbol);
+			console.log('Swapping');
+			console.log(amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
+			console.log('slippage: ' + _slippage + '%' + ' ' + tokenB.symbol);
+			console.log(
+				'estimate: ' + Number(esitmate) / decimals(tokenB.decimals) + ' ' + tokenB.symbol
+			);
 			//return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
 		} else {
 			let _amount = amount * decimals(tokenB.decimals);
-			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId,BigInt(_amount));
+			let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId, BigInt(_amount));
 			let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-			console.log("Swapping")
-			console.log(amount + " "+tokenB.symbol + " for " + tokenA.symbol);
-			console.log('slippage: ' + _slippage+"%" + " "+tokenA.symbol);
-			console.log('estimate: ' + (Number(esitmate) / decimals(tokenA.decimals)) + " "+tokenA.symbol);
+			console.log('Swapping');
+			console.log(amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
+			console.log('slippage: ' + _slippage + '%' + ' ' + tokenA.symbol);
+			console.log(
+				'estimate: ' + Number(esitmate) / decimals(tokenA.decimals) + ' ' + tokenA.symbol
+			);
 			//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
 		}
 	};
