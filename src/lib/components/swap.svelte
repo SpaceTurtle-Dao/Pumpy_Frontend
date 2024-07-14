@@ -11,7 +11,7 @@
 		RefreshCw
 	} from 'lucide-svelte/icons';
 	import SmallSpinner from './smallSpinner.svelte';
-	import {
+	/*import {
 		fromAmount,
 		toAmount,
 		deadline,
@@ -19,7 +19,7 @@
 		isExactIn,
 		slippage,
 		toCurrency
-	} from '../store/swap.store';
+	} from '../store/swap.store';*/
 
 	import {
 		loadingStore,
@@ -27,8 +27,14 @@
 	} from '$lib/store/store';
 	import type { Principal } from '@dfinity/principal';
 
+	interface TokenInfo {
+		ticker:string,
+		name:string
+		process:string
+	};
+
 	let tokens: Array<TokenInfo> = [];
-	let pumpy: Pumpy;
+	//let pumpy: Pumpy;
 	let principal: Principal;
 
 	let _fromAmount;
@@ -39,11 +45,11 @@
 	let _isExactIn;
 	let _slippage;
 
-	pumpyActor.subscribe((p) => {
+	/*pumpyActor.subscribe((p) => {
 		pumpy = p;
-	});
+	});*/
 
-	tokensStore.subscribe((t) => {
+	/*tokensStore.subscribe((t) => {
 		if (t !== undefined && t.length > 0) {
 			tokens = t;
 			console.log(tokens);
@@ -55,9 +61,9 @@
 	});
 	principalStore.subscribe((p) => {
 		principal = p;
-	});
+	});*/
 
-	fromAmount.subscribe((a) => {
+	/*fromAmount.subscribe((a) => {
 		_fromAmount = a;
 	});
 	toAmount.subscribe((a) => {
@@ -77,16 +83,16 @@
 	});
 	toCurrency.subscribe((c) => {
 		_toCurrency = c!;
-	});
+	});*/
 
 	function mint() {
-		pumpy.mint([
+		/*pumpy.mint([
 			{
 				id: BigInt(0),
 				to: principal.toString(),
 				amount: BigInt(1000)
 			}
-		]);
+		]);*/
 	}
 
 	function reverseuno() {}
@@ -99,7 +105,7 @@
 			icon: '',
 			name: 'Mango Coin',
 			minter: '',
-			symbol: 'MNGO'
+			ticker: 'MNGO'
 		};
 		let mintReq = {
 			id: BigInt(0),
@@ -117,13 +123,13 @@
 			to: 'nzg6d-jt6c6-z6vyo-s3pfx-5ocgv-6vbuw-uwemh-5maxd-sx2tg-3ft77-2qe',
 			amount: BigInt(10300000)
 		};
-		var res = await pumpy.testMint(mintReq);
-		console.log(res);
+		//var res = await pumpy.testMint(mintReq);
+		//console.log(res);
 	}
 
 	async function swapTokeenAEstimate() {
-		var res = pumpy.getSwapTokenAEstimateGivenTokenB(BigInt(100), BigInt(100));
-		console.log(res);
+		//var res = pumpy.getSwapTokenAEstimateGivenTokenB(BigInt(100), BigInt(100));
+		//console.log(res);
 	}
 	async function swap() {}
 </script>
@@ -181,19 +187,19 @@
 					<div
 						class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
 					>
-						<!-- <img src={_fromCurrency.icon} alt={_fromCurrency.symbol} class="w-6 h-6 mr-2" /> -->
+						<!-- <img src={_fromCurrency.icon} alt={_fromCurrency.ticker} class="w-6 h-6 mr-2" /> -->
 						<img
 							src={'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'}
-							alt={_fromCurrency.symbol}
+							alt={_fromCurrency.ticker}
 							class="w-6 h-6 mr-2"
 						/>
-						<span class="text-lg">{_fromCurrency.symbol}</span>
+						<span class="text-lg">{_fromCurrency.ticker}</span>
 						<select
 							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 							on:change={(e) => console.log(e)}
 						>
 							{#each tokens as token}
-								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
+								<option value={token.ticker} selected={token.ticker === ''}>{token.ticker}</option>
 							{/each}
 						</select>
 					</div>
@@ -232,13 +238,13 @@
 							class="w-6 h-6 mr-2"
 						/>
 						<!-- <img src={_toCurrency?.icon ?? ''} alt={_toCurrency?.name ?? ''} class="w-6 h-6 mr-2" /> -->
-						<span class="text-lg">{_toCurrency?.symbol ?? ''}</span>
+						<span class="text-lg">{_toCurrency?.ticker ?? ''}</span>
 						<select
 							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
 							on:change={(e) => console.log(e)}
 						>
 							{#each tokens as token}
-								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
+								<option value={token.ticker} selected={token.ticker === ''}>{token.ticker}</option>
 							{/each}
 						</select>
 					</div>

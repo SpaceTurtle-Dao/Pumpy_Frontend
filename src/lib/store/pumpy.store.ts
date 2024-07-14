@@ -328,7 +328,7 @@ const mockBalances: [TokenInfo, bigint][] = [
 ];
 
 // Mock implementation of Pumpy interface
-const mockPumpy: Pumpy = {
+/*const mockPumpy: Pumpy = {
   add: () => Promise.resolve({ Ok: BigInt(1000) }),
   allowance: () => Promise.resolve(BigInt(500)),
   approve: () => Promise.resolve({ Ok: BigInt(1) }),
@@ -371,11 +371,11 @@ const mockPumpy: Pumpy = {
   transfer: () => Promise.resolve({ Ok: BigInt(1) }),
   transferFrom: () => Promise.resolve([{ Ok: BigInt(1) }]),
   withdraw: () => Promise.resolve({ Ok: BigInt(1000) })
-};
+};*/
 
 // Stores
 export const poolsStore: Writable<PoolInfo[]> = writable(mockPools);
 export const pumpsStore: Writable<PoolInfo[]> = writable(mockPumps);
 export const tokensStore: Writable<TokenInfo[]> = writable(mockTokens);
 export const balancesStore: Writable<[TokenInfo, bigint][]> = writable(mockBalances);
-export const pumpyActor: Writable<Pumpy> = writable(mockPumpy);
+//export const pumpyActor: Writable<Pumpy> = writable(mockPumpy);
