@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1; // 3MB
-const ACCEPTED_FILE_TYPES = ['image/png'];
+const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp","image/gif"];
 
 const FileSchema = z
   .instanceof(File)
@@ -10,7 +10,7 @@ const FileSchema = z
   }, 'File size must be less than 1MB')
   .refine((file) => {
     return ACCEPTED_FILE_TYPES.includes(file.type);
-  }, 'File must be a PNG').array();
+  }, 'File must be an image').array();
 
 export const schema = z.object({
     name: z.string({ message: "Token's name must be more then 0 and less then 10 chracters.", }).min(1).max(10),

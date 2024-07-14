@@ -270,4 +270,6 @@
 		</form>
 	{/if}
 </div>
-<SuperDebug data={$form} />
+{#if import.meta.env.MODE == 'development'}
+	<SuperDebug data={$form} />
+{/if}
