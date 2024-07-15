@@ -42,6 +42,12 @@
 	let amountB: string;
 	let dialogOpen = false;
 
+	let _icon:File;
+	let name:string;
+	let ticker:string;
+	let description:string;
+
+
 	const tokens = [
 		{ value: 0, label: 'ICP' },
 		{ value: 1, label: 'ckBTC' },
@@ -61,12 +67,17 @@
 
 	const create = async () => {
 		let poolId = await createPump(
-			$icon[0],
+			_icon,
 			waterToken,
-			$form.name,
-			$form.ticker,
-			$form.description
+			name,
+			ticker,
+			description
 		);
+		console.log("creating pump");
+		console.log(_icon);
+		console.log(name);
+		console.log(ticker);
+		console.log(description);
 		await add(poolId!, amountA, amountB);
 	};
 
@@ -84,19 +95,13 @@
 		validators: zod(schema),
 		async onUpdate({ form }) {
 			console.log(form.data.icon);
-			console.log('boom');
 			if (!form.valid) return fail(400, { form });
 			try {
+				_icon = $icon[0];
+				name = $form.name;
+				ticker = $form.ticker;
+				description = $form. description;
 				dialogOpen = true;
-				/*const { results } = await fetch(`https://randomuser.me/api/?seed=${form.data.id}`).then(
-					(response) => response.json()
-				);
-
-				const user = results[0];
-				const name = `${user.name.first} ${user.name.last}`;
-
-				photoUrl = user.picture.large;
-				form.message = { status: 200, text: `${name}, brought to you by randomuser.me` };*/
 			} catch (e) {
 				form.message = { status: 500, text: `User not found.` };
 			}
