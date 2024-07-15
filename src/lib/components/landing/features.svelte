@@ -36,7 +36,7 @@
 		<BentoGridItem title={item.title} description={item.description} className={item.className}>
 			<div
 				slot="header"
-				class="flex h-full min-h-[6rem] w-full flex-1 rounded-xl border border-transparent bg-neutral-100 bg-dot-black/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-black dark:bg-dot-white/[0.2]"
+				class="flex h-full min-h-[6rem] w-full flex-1 rounded-xl border border-transparent bg-primary-500 bg-dot-black/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] dark:border-white/[0.2] dark:bg-background-500 dark:bg-dot-white/[0.2]"
 			></div>
 			<svelte:component this={item.icon} slot="icon" class="h-4 w-4 text-neutral-500" />
 		</BentoGridItem>
