@@ -19,7 +19,7 @@
 
 </script>
 
-<div>
+<div class="bg-background-700">
 	<div class="relative flex w-full items-center justify-cente">
 		<div class={'fixed inset-x-0 top-12 z-50 mx-auto max-w-2xl'}>
 			<NavbarMenu>

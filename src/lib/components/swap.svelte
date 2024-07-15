@@ -11,7 +11,7 @@
 		RefreshCw
 	} from 'lucide-svelte/icons';
 	import SmallSpinner from './smallSpinner.svelte';
-	import {
+	/*import {
 		fromAmount,
 		toAmount,
 		deadline,
@@ -19,31 +19,53 @@
 		isExactIn,
 		slippage,
 		toCurrency
-	} from '../store/swap.store';
+	} from '../store/swap.store';*/
 
-	import {
-		loadingStore,
-		poolsStore,
-	} from '$lib/store/store';
+	import { loadingStore, poolsStore } from '$lib/store/store';
 	import type { Principal } from '@dfinity/principal';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
+	import { ChevronDown, Settings, RotateCw } from 'lucide-svelte';
+	import { Separator } from '$lib/components/ui/separator';
 
-	let tokens: Array<TokenInfo> = [];
-	let pumpy: Pumpy;
+	interface TokenInfo {
+		ticker: string;
+		name: string;
+		logo: string;
+		process: string;
+	}
+
+	let luna = {
+		ticker: 'LUNA',
+		name: 'Luna',
+		process: '',
+		logo: 'https://www.arweave.net/3ieM_AKlOihVmb5LZ_mhQQNH0Sw2XaRkZuKrsiGzRUc?ext=png'
+	};
+
+	let sunny = {
+		ticker: 'SUN',
+		name: 'Sunny',
+		process: '',
+		logo: 'https://www.arweave.net/CzrOUcB73-A0stPGIQf38mCQbXTnpflec0UVb8RZsxY?ext=png'
+	};
+
+	let tokens: Array<TokenInfo> = [luna, sunny];
+	//let pumpy: Pumpy;
 	let principal: Principal;
 
 	let _fromAmount;
 	let _toAmount;
 	let _deadline;
-	let _toCurrency: TokenInfo;
-	let _fromCurrency: TokenInfo;
+	let _toCurrency: TokenInfo = sunny;
+	let _fromCurrency: TokenInfo = luna;
 	let _isExactIn;
 	let _slippage;
 
-	pumpyActor.subscribe((p) => {
+	/*pumpyActor.subscribe((p) => {
 		pumpy = p;
-	});
+	});*/
 
-	tokensStore.subscribe((t) => {
+	/*tokensStore.subscribe((t) => {
 		if (t !== undefined && t.length > 0) {
 			tokens = t;
 			console.log(tokens);
@@ -55,9 +77,9 @@
 	});
 	principalStore.subscribe((p) => {
 		principal = p;
-	});
+	});*/
 
-	fromAmount.subscribe((a) => {
+	/*fromAmount.subscribe((a) => {
 		_fromAmount = a;
 	});
 	toAmount.subscribe((a) => {
@@ -77,16 +99,16 @@
 	});
 	toCurrency.subscribe((c) => {
 		_toCurrency = c!;
-	});
+	});*/
 
 	function mint() {
-		pumpy.mint([
+		/*pumpy.mint([
 			{
 				id: BigInt(0),
 				to: principal.toString(),
 				amount: BigInt(1000)
 			}
-		]);
+		]);*/
 	}
 
 	function reverseuno() {}
@@ -99,7 +121,7 @@
 			icon: '',
 			name: 'Mango Coin',
 			minter: '',
-			symbol: 'MNGO'
+			ticker: 'MNGO'
 		};
 		let mintReq = {
 			id: BigInt(0),
@@ -117,152 +139,172 @@
 			to: 'nzg6d-jt6c6-z6vyo-s3pfx-5ocgv-6vbuw-uwemh-5maxd-sx2tg-3ft77-2qe',
 			amount: BigInt(10300000)
 		};
-		var res = await pumpy.testMint(mintReq);
-		console.log(res);
+		//var res = await pumpy.testMint(mintReq);
+		//console.log(res);
 	}
 
 	async function swapTokeenAEstimate() {
-		var res = pumpy.getSwapTokenAEstimateGivenTokenB(BigInt(100), BigInt(100));
-		console.log(res);
+		//var res = pumpy.getSwapTokenAEstimateGivenTokenB(BigInt(100), BigInt(100));
+		//console.log(res);
 	}
 	async function swap() {}
 </script>
 
-<div class="min-h-screen w-full flex flex-col justify-center items-center">
-	<div class="w-120 bg-surface-700 rounded-lg p-9 shadow-lg">
-		<div class="flex justify-end mb-4">
+<div class="py-24 w-full flex flex-col justify-center items-center">
+	<div>
+		<div class="flex flex-row justify-between pb-4">
 			<Button
 				variant="outline"
-				class="h-7 w-9 border-none hover:border-input text-primary-700 bg-transparent hover:text-primary-50 0 text-xs"
+				class="h-7 w-7 border-none rounded-full hover:border-input text-foreground-500 bg-background-400 hover:text-primary-50 0 text-xs text-border-500"
 				size="icon"
 			>
-				<RefreshCw class="h-5 w-5" />
+				<RotateCw class="h-4 w-4" />
 			</Button>
-			<Button
-				variant="outline"
-				class="h-7 w-9 border-none hover:border-input text-primary-700 bg-transparent hover:text-primary-50 0 text-xs"
-				size="icon"
-			>
-				<Percent class="h-5 w-5" />
-			</Button>
-			<Button
-				variant="outline"
-				class="h-7 w-9 border-none hover:border-input text-primary-700 bg-transparent hover:text-primary-50 0 text-xs"
-				size="icon"
-			>
-				<Settings2 class="h-5 w-5" />
-			</Button>
+			<div>
+				<Button
+					variant="outline"
+					class="h-7 border-none rounded-full hover:border-input text-foreground-500 bg-background-400 hover:text-primary-50 0 text-xs text-border-500"
+				>
+					<div class="flex flex-row space-x-1">
+						<Settings2 class="h-4 w-4" />
+						<p>Max: 3%</p>
+					</div>
+				</Button>
+				<Button
+					variant="outline"
+					class="h-7 w-7 border-none rounded-full hover:border-input text-foreground-500 bg-background-400 hover:text-primary-50 0 text-xs text-border-500"
+					size="icon"
+				>
+					<Settings class="h-4 w-4" />
+				</Button>
+			</div>
 		</div>
+		<Card.Root class="bg-background-400 border-rounded-lg px-9 py-4 shadow-lg border-border-500">
+			<div class="mb-4">
+				<div class="flex justify-between items-center mb-2">
+					<label for="paying" class="block mb-2 text-sm">You're paying</label>
+					<div class="flex space-x-2">
+						<WalletMinimal class="my-1 h-4 w-4" />
+						<span class="text-sm my-1 h-6 text-xs">{100.0} {'AO'}</span>
+						<Button
+							variant="outline"
+							class="h-6 px-6 hover:border-input bg-background-500 border-border-500 rounded-lg hover:bg-background-400 text-xs"
+							size="icon"
+						>
+							<p class="text-foreground-400">HALF</p>
+						</Button>
+						<Button
+							variant="outline"
+							class="h-6 px-6 hover:border-input bg-background-500 border-border-500 rounded-lg hover:bg-background-400 text-xs"
+							size="icon"
+						>
+							<p class="text-foreground-400 group-hover:text-foreground-500">MAX</p>
+						</Button>
+					</div>
+				</div>
+				<div
+					class="flex items-center bg-background-800 rounded-xl pl-4 py-4 space-x-2 w-full max-w-lg"
+				>
+					{#if tokens !== undefined && tokens.length > 0}
+						<div
+							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-background-300 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 text-primary-300 rounded-lg px-2.5 py-1.5"
+						>
+							<!-- <img src={_fromCurrency.icon} alt={_fromCurrency.ticker} class="w-6 h-6 mr-2" /> -->
 
-		<div class="mb-4">
-			<div class="flex justify-between items-center mb-2">
-				<label for="paying" class="block mb-2 text-sm">You're paying</label>
-				<div class="flex space-x-2">
-					<WalletMinimal class="my-1 h-4 w-4" />
-					<span class="text-sm my-1 h-6 text-xs">{100.0} {'ICP'}</span>
-					<Button
-						variant="outline"
-						class="h-6 w-10 border-none hover:border-input bg-transparent hover:bg-secondary-600 text-xs"
-						size="icon"
-					>
-						HALF
-					</Button>
-					<Button
-						variant="outline"
-						class="mx-5 my-0 h-6 w-9 border-none hover:border-input bg-transparent hover:bg-secondary-600 text-xs"
-						size="icon"
-					>
-						MAX
-					</Button>
+							<Avatar.Root class="size-7">
+								<Avatar.Image src={_fromCurrency.logo} alt={_fromCurrency.ticker} />
+								<Avatar.Fallback>CN</Avatar.Fallback>
+							</Avatar.Root>
+							<span class="text-sm font-bold text-border-500">{_fromCurrency.ticker}</span>
+							<select
+								class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
+								on:change={(e) => console.log(e)}
+							>
+								{#each tokens as token}
+									<option value={token.ticker} selected={token.ticker === ''}>{token.ticker}</option
+									>
+								{/each}
+							</select>
+							<div>
+								<ChevronDown size="20" class="group-hover:text-border-500 text-foreground-500" />
+							</div>
+						</div>
+					{:else}
+						<div class="w-16 h-9 relative bg-background-400 rounded-full px-2 py-1"></div>
+					{/if}
+					<Input
+						id="paying"
+						class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
+						type="text"
+						placeholder="0.00"
+					/>
 				</div>
 			</div>
-			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
-				{#if tokens !== undefined && tokens.length > 0}
-					<div
-						class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
-					>
-						<!-- <img src={_fromCurrency.icon} alt={_fromCurrency.symbol} class="w-6 h-6 mr-2" /> -->
-						<img
-							src={'https://cdn.sonic.ooo/icons/ryjl3-tyaaa-aaaaa-aaaba-cai'}
-							alt={_fromCurrency.symbol}
-							class="w-6 h-6 mr-2"
-						/>
-						<span class="text-lg">{_fromCurrency.symbol}</span>
-						<select
-							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
-							on:change={(e) => console.log(e)}
-						>
-							{#each tokens as token}
-								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
-							{/each}
-						</select>
-					</div>
-				{:else}
-					<div class="w-16 h-9 relative bg-secondary-600 rounded-full px-2 py-1"></div>
-				{/if}
-				<Input
-					id="paying"
-					class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
-					type="text"
-					placeholder="0.00"
-				/>
-			</div>
-		</div>
 
-		<div class="flex justify-center mb-2 text-primary-700 hover:text-primary-300">
-			<Button
-				variant="outline"
-				class="h-6 w-8 border-none hover:border bg-transparent hover:bg-secondary-600 text-primary-300"
-				size="icon"
+			<div
+				class="flex flex-row justify-center items-center mb-2 px-4 text-primary-700 hover:text-primary-300"
 			>
-				<ArrowUpDown class="h-4 w-4" />
-			</Button>
-		</div>
-
-		<div class="mb-4">
-			<label class="block mb-2 text-sm">To receive</label>
-			<div class="flex items-center bg-secondary-700 rounded-xl p-3 space-x-2 w-full max-w-lg">
-				{#if tokens !== undefined && tokens.length > 0}
-					<div
-						class="relative flex items-center bg-transparent hover:bg-secondary-600 text-primary-300 rounded-full px-2 py-1"
-					>
-						<img
-							src={'https://cdn.sonic.ooo/icons/mxzaz-hqaaa-aaaar-qaada-cai'}
-							alt={_toCurrency?.name ?? ''}
-							class="w-6 h-6 mr-2"
-						/>
-						<!-- <img src={_toCurrency?.icon ?? ''} alt={_toCurrency?.name ?? ''} class="w-6 h-6 mr-2" /> -->
-						<span class="text-lg">{_toCurrency?.symbol ?? ''}</span>
-						<select
-							class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
-							on:change={(e) => console.log(e)}
-						>
-							{#each tokens as token}
-								<option value={token.symbol} selected={token.symbol === ''}>{token.symbol}</option>
-							{/each}
-						</select>
-					</div>
-				{:else}
-					<div class="w-16 h-9 relative bg-secondary-600 rounded-full px-2 py-1"></div>
-				{/if}
-				<Input
-					class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
-					type="text"
-					placeholder="0.00"
-				/>
+				<Separator class="bg-background-500 basis-1/2" />
+				<Button
+					variant="outline"
+					class="border border-2 rounded-full text-background-500 hover:border bg-transparent hover:text-primary-500"
+					size="icon"
+				>
+					<ArrowUpDown class="hover:text-foreground-500 text-border-500 h-4 w-12" />
+				</Button>
+				<Separator class="bg-background-500 basis-1/2" />
 			</div>
-		</div>
 
-		<div class="py-2">
-			<Button
-				class="w-full py-2 bg-tertiary-500 rounded hover:bg-tertiary-600 text-surface-700"
-				on:click={async () => {
-					await getbalance();
-				}}
-			>
-				SWAP
-			</Button>
-		</div>
+			<div class="mb-4">
+				<label class="block mb-2 text-sm">To receive</label>
+				<div
+					class="flex items-center bg-background-500 rounded-xl pl-3 py-4 space-x-2 w-full max-w-lg"
+				>
+					{#if tokens !== undefined && tokens.length > 0}
+						<div
+							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-background-300 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 text-primary-300 rounded-lg px-2.5 py-1.5"
+						>
+							<Avatar.Root class="size-7">
+								<Avatar.Image src={_toCurrency.logo} alt={_toCurrency.ticker} />
+								<Avatar.Fallback>CN</Avatar.Fallback>
+							</Avatar.Root>
+							<!-- <img src={_toCurrency?.icon ?? ''} alt={_toCurrency?.name ?? ''} class="w-6 h-6 mr-2" /> -->
+							<span class="text-sm font-bold text-border-500">{_toCurrency?.ticker ?? ''}</span>
+							<select
+								class="absolute inset-0 opacity-0 w-full cursor-pointer text-md"
+								on:change={(e) => console.log(e)}
+							>
+								{#each tokens as token}
+									<option value={token.ticker} selected={token.ticker === ''}>{token.ticker}</option
+									>
+								{/each}
+							</select>
+							<div>
+								<ChevronDown size="20" class="group-hover:text-primary-500 text-border-500" />
+							</div>
+						</div>
+					{:else}
+						<div class="w-16 h-9 relative bg-background-400 rounded-full px-2 py-1"></div>
+					{/if}
+					<Input
+						class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
+						type="text"
+						placeholder="0.00"
+					/>
+				</div>
+			</div>
+
+			<div class="py-2">
+				<Button
+					class="w-full h-16 py-2 bg-background-700 rounded-lg hover:bg-tertiary-600 text-surface-700"
+					on:click={async () => {
+						await getbalance();
+					}}
+				>
+					SWAP
+				</Button>
+			</div>
+		</Card.Root>
 	</div>
 
 	<!-- <div class="mt-6 w-96 text-textSecondary">

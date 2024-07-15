@@ -20,18 +20,9 @@
 			{ name: 'Logo', value: logo },
 			{ name: 'Description', value: description },
 			{ name: 'Denomination', value: denomination },
-			{ name: 'BondingCurve', value: bondingCurve },
+			{ name: 'Denomination', value: denomination },
 			{ name: 'TokenProcess', value: tokenProcess },
 			{ name: 'PoolProcess', value: poolProcess }
-		];
-	};
-
-	export const initPool = (tokenA: string, tokenB: string, bondingCurve: string) => {
-		return [
-			{ name: 'Action', value: 'Init' },
-			{ name: 'TokenA', value: tokenA },
-			{ name: 'TokenB', value: tokenB },
-			{ name: 'BondingCurve', value: bondingCurve }
 		];
 	};
 
@@ -47,14 +38,6 @@
 		return [
 			{ name: 'Action', value: 'Pool' },
 			{ name: 'Pool', value: pool }
-		];
-	};
-
-	export const initalLiquidity = (amountA: string, amountB: string) => {
-		return [
-			{ name: 'Action', value: 'InitalLiquidity' },
-			{ name: 'amountA', value: amountA },
-			{ name: 'amountB', value: amountB }
 		];
 	};
 

@@ -77,7 +77,7 @@ export const tokenInfo = async (process: string) => {
         console.log(e);
     }
 };
-export const createPump = async (icon:File,tokenB:string,name:string,ticker:string,description:string) => {
+export const createPump = async (icon: File, tokenB: string, name: string, ticker: string, description: string) => {
     loadingStore.set(true);
     try {
         // @ts-ignore
@@ -86,93 +86,67 @@ export const createPump = async (icon:File,tokenB:string,name:string,ticker:stri
         let poolProcess = await createProcess(PROCESS_ID());
         console.log('Pool Process: ' + poolProcess);
         var delayInMilliseconds = 5000; //5 second
-        //let blob = new Uint8Array(await icon[0].arrayBuffer());
         let url = await upload(await icon.arrayBuffer());
-        //reader.readAsDataURL()
-        //let data = base64String;
-        setTimeout(async function () {
-            console.log('Initing Token');
-            let message = init(
-                tokenB,
-                name,
-                ticker,
-                url,
-                description,
-                '8',
-                '1000000',
-                tokenProcess,
-                poolProcess
-            );
-            let result = await send(PROCESS_ID(), message);
-            console.log(result);
-        }, delayInMilliseconds);
+        console.log('Initing Token');
+        let message = init(
+            tokenB,
+            name,
+            ticker,
+            url,
+            description,
+            '8',
+            '1000000',
+            tokenProcess,
+            poolProcess,
+        );
+        let result = await send(PROCESS_ID(), message);
+        console.log(result);
+        return poolProcess
     } catch (e) {
         console.log(e);
     }
     loadingStore.set(false);
 };
 
-/*export const createPool = async (TokenA,TokenB) => {
+export const add = async (poolId: string, amountA: string, amountB: string) => {
     try {
+        console.log('boom');
         // @ts-ignore
-        let message = initPool(airToken, waterToken, '100000000000');
-        let result = await send(poolId, message, null);
+        let message = add(amountA, amountB);
+        let result = await send(poolId, message);
         console.log(result);
     } catch (e) {
         console.log(e);
     }
 };
 
-export const swapTokenA = async () => {
+
+export const swapA = async (poolId: string, amount: string, slippage: string) => {
     try {
         // @ts-ignore
-        let message = swapA('100000', '100');
-        let result = await send(poolId, message, null);
+        let message = swapA(amount, slippage);
+        let result = await send(poolId, message);
         console.log(result);
     } catch (e) {
         console.log(e);
     }
 };
 
-export const swapTokenB = async () => {
+export const swapB = async (poolId: string, amount: string, slippage: string) => {
     try {
         // @ts-ignore
-        let message = swapB('10000', '100');
-        let result = await send(poolId, message, null);
+        let message = swapB(amount, slippage);
+        let result = await send(poolId, message);
         console.log(result);
     } catch (e) {
         console.log(e);
     }
 };
 
-export const getBalance = async () => {
+/*export const getBalance = async () => {
     try {
         // @ts-ignore
         let result = await send(poolId, balance(), null);
-        console.log(result);
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-export const addInitalLiquidity = async () => {
-    try {
-        console.log('boom');
-        // @ts-ignore
-        let message = initalLiquidity('100000', '100000');
-        let result = await send(poolId, message, null);
-        console.log(result);
-    } catch (e) {
-        console.log(e);
-    }
-};
-
-export const addLiquidity = async () => {
-    try {
-        console.log('boom');
-        // @ts-ignore
-        let message = add('100000', '100000');
-        let result = await send(poolId, message, null);
         console.log(result);
     } catch (e) {
         console.log(e);
