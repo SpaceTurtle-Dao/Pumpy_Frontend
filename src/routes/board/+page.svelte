@@ -1,29 +1,17 @@
 <script lang="ts">
-  import Board from '$lib/components/board.svelte';
+	import Board from '$lib/components/board.svelte';
+	import { pumpsStore } from '$lib/store/store';
+	import { fetchPumps } from '$lib/common/swappy';
+	const fetchData = async () => {
+		let pumps = await fetchPumps();
+		pumpsStore.set(pumps);
+	};
+	setInterval(fetchData, 5000);
 </script>
 
-<style>
-  .container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 10px;
-    max-width: 1400px;
-    margin: 0 auto; 
-  }
-
-  .board-title {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
-    font-weight: bold;
-    color: #ff007f;
-    text-shadow: 0 0 10px rgba(255, 0, 127, 0.7);
-    text-align: center;
-    margin-bottom: 50px;
-  }
-</style>
-
-<div class="container">
-  <div class="board-title">Board</div>
-  <Board />
+<div class="min-h-screen bg-black-400 flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
+	<h1 class="text-center text-2xl sm:text-3xl md:text-4xl text-red-400 text-shadow shadow-red-500 font-bold mb-4 sm:mb-6">Board</h1>
+	<div class="flex-grow">
+		<Board />
+	</div>
 </div>
