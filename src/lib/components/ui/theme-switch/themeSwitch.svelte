@@ -92,13 +92,4 @@
 	#theme-toggle + label {
 		@apply inline-block cursor-pointer h-8 w-8 absolute   rounded-full duration-300 content-[''];
 	}
-
-	#theme-toggle:not(:checked) + label {
-		@apply bg-amber-400;
-	}
-
-	#theme-toggle:checked + label {
-		@apply bg-transparent;
-		box-shadow: inset -18px -16px 1px 1px #ddd;
-	}
 </style>
