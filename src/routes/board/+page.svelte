@@ -6,7 +6,7 @@
 		let pumps = await fetchPumps();
 		pumpsStore.set(pumps);
 	};
-	setInterval(fetchData, 5000);
+	setInterval(fetchData, 1000);
 </script>
 
 <div class="min-h-screen bg-black-400 flex flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
