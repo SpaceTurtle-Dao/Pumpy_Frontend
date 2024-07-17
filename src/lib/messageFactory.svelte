@@ -7,22 +7,18 @@
 		ticker: string,
 		logo: string,
 		description: string,
-		denomination: string,
-		bondingCurve: string,
-		tokenProcess: string,
-		poolProcess: string
+		amountA: string,
+		amountB: string
 	) => {
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'TokenB', value: tokenB },
 			{ name: 'Name', value: name },
 			{ name: 'Ticker', value: ticker },
 			{ name: 'Logo', value: logo },
 			{ name: 'Description', value: description },
-			{ name: 'Denomination', value: denomination },
-			{ name: 'Denomination', value: denomination },
-			{ name: 'TokenProcess', value: tokenProcess },
-			{ name: 'PoolProcess', value: poolProcess }
+			{ name: 'TokenB', value: tokenB },
+			{ name: 'AmountA', value: amountA },
+			{ name: 'AmountB', value: amountB }
 		];
 	};
 

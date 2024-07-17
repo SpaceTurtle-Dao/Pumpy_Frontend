@@ -77,15 +77,15 @@ export const tokenInfo = async (process: string) => {
         console.log(e);
     }
 };
-export const createPump = async (icon: File, tokenB: string, name: string, ticker: string, description: string) => {
+export const createPump = async (icon: File, tokenB: string, name: string, ticker: string, description: string, amountA:string, amountB:string,) => {
     loadingStore.set(true);
     try {
         // @ts-ignore
-        let tokenProcess = await createProcess(PROCESS_ID());
+        /*let tokenProcess = await createProcess(PROCESS_ID());
         console.log('Token Process: ' + tokenProcess);
         let poolProcess = await createProcess(PROCESS_ID());
         console.log('Pool Process: ' + poolProcess);
-        var delayInMilliseconds = 5000; //5 second
+        var delayInMilliseconds = 5000; //5 second*/
         let url = await upload(await icon.arrayBuffer());
         console.log('Initing Token');
         let message = init(
@@ -94,14 +94,11 @@ export const createPump = async (icon: File, tokenB: string, name: string, ticke
             ticker,
             url,
             description,
-            '8',
-            '1000000',
-            tokenProcess,
-            poolProcess,
+            amountA,
+            amountB,
         );
         let result = await send(PROCESS_ID(), message);
         console.log(result);
-        return poolProcess
     } catch (e) {
         console.log(e);
     }

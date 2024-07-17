@@ -42,11 +42,10 @@
 	let amountB: string;
 	let dialogOpen = false;
 
-	let _icon:File;
-	let name:string;
-	let ticker:string;
-	let description:string;
-
+	let _icon: File;
+	let name: string;
+	let ticker: string;
+	let description: string;
 
 	const tokens = [
 		{ value: 0, label: 'ICP' },
@@ -66,19 +65,15 @@
 	};
 
 	const create = async () => {
-		let poolId = await createPump(
-			_icon,
-			waterToken,
-			name,
-			ticker,
-			description
-		);
-		console.log("creating pump");
+		await createPump(_icon, waterToken, name, ticker, description, amountA, amountB);
+		console.log('creating pump');
 		console.log(_icon);
 		console.log(name);
 		console.log(ticker);
 		console.log(description);
-		await add(poolId!, amountA, amountB);
+		console.log(amountA);
+		console.log(amountB);
+		//await add(poolId!, amountA, amountB);
 	};
 
 	loadingStore.subscribe((value) => {
@@ -94,18 +89,18 @@
 		clearOnSubmit: 'errors-and-message',
 		validators: zod(schema),
 		async onUpdate({ form }) {
-			console.log(form.data.icon);
+			console.log($icon[0]);
 			if (!form.valid) return fail(400, { form });
 			try {
 				_icon = $icon[0];
 				name = $form.name;
 				ticker = $form.ticker;
-				description = $form. description;
+				description = $form.description;
 				dialogOpen = true;
 			} catch (e) {
 				form.message = { status: 500, text: `User not found.` };
 			}
-		}
+		},
 	});
 
 	const icon = filesProxy(form, 'icon');
