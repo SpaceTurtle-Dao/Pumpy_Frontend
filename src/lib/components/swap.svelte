@@ -113,41 +113,6 @@
 
 	function reverseuno() {}
 	function setSlippage() {}
-
-	function createCoin(): void {
-		let tokenReq = {
-			decimals: BigInt(8),
-			tribute: 'sid',
-			icon: '',
-			name: 'Mango Coin',
-			minter: '',
-			ticker: 'MNGO'
-		};
-		let mintReq = {
-			id: BigInt(0),
-			to: '',
-			amount: BigInt(2100000000)
-		};
-		// var res = pumpy.createTokens(tokenReq, [mintReq]);
-		// console.log(res);
-		// return res;
-	}
-
-	async function getbalance() {
-		let mintReq = {
-			id: BigInt(4),
-			to: 'nzg6d-jt6c6-z6vyo-s3pfx-5ocgv-6vbuw-uwemh-5maxd-sx2tg-3ft77-2qe',
-			amount: BigInt(10300000)
-		};
-		//var res = await pumpy.testMint(mintReq);
-		//console.log(res);
-	}
-
-	async function swapTokeenAEstimate() {
-		//var res = pumpy.getSwapTokenAEstimateGivenTokenB(BigInt(100), BigInt(100));
-		//console.log(res);
-	}
-	async function swap() {}
 </script>
 
 <div class="py-24 w-full flex flex-col justify-center items-center">
@@ -179,39 +144,39 @@
 				</Button>
 			</div>
 		</div>
-		<Card.Root class="bg-background-400 border-rounded-lg px-9 py-4 shadow-lg border-border-500">
+		<Card.Root class="bg-background-500 px-5 py-7 shadow-lg border-none">
 			<div class="mb-4">
 				<div class="flex justify-between items-center mb-2">
-					<label for="paying" class="block mb-2 text-sm">You're paying</label>
+					<label for="sell" class="block mb-2 text-xl text-background-200">Sell</label>
 					<div class="flex space-x-2">
-						<WalletMinimal class="my-1 h-4 w-4" />
-						<span class="text-sm my-1 h-6 text-xs">{100.0} {'AO'}</span>
+						<WalletMinimal class="my-1 h-4 w-4 text-background-300" />
+						<span class="my-1 h-6 text-xs text-background-200">{100.0} {'AO'}</span>
 						<Button
 							variant="outline"
-							class="h-6 px-6 hover:border-input bg-background-500 border-border-500 rounded-lg hover:bg-background-400 text-xs"
+							class="h-6 px-6 py-1 border-background-300 hover:border-primary-400 bg-background-500 hover:bg-background-500 text-xs text-background-200 hover:text-primary-400"
 							size="icon"
 						>
-							<p class="text-foreground-400">HALF</p>
+							<p>HALF</p>
 						</Button>
 						<Button
 							variant="outline"
-							class="h-6 px-6 hover:border-input bg-background-500 border-border-500 rounded-lg hover:bg-background-400 text-xs"
+							class="h-6 px-6 py-1 border-background-300 hover:border-primary-400 bg-background-500 hover:bg-background-500 text-xs text-background-200 hover:text-primary-400"
 							size="icon"
 						>
-							<p class="text-foreground-400 group-hover:text-foreground-500">MAX</p>
+							<p>MAX</p>
 						</Button>
 					</div>
 				</div>
 				<div
-					class="flex items-center bg-background-800 rounded-xl pl-4 py-4 space-x-2 w-full max-w-lg"
+					class="flex items-center bg-background-700 rounded-xl pl-4 py-4 space-x-2 w-full max-w-lg"
 				>
 					{#if tokens !== undefined && tokens.length > 0}
 						<div
-							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-background-300 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 text-primary-300 rounded-lg px-2.5 py-1.5"
+							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-backgrond-800 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 rounded-lg px-2.5 py-1.5"
 						>
 							<!-- <img src={_fromCurrency.icon} alt={_fromCurrency.ticker} class="w-6 h-6 mr-2" /> -->
 
-							<Avatar.Root class="size-7">
+							<Avatar.Root class="size-6">
 								<Avatar.Image src={_fromCurrency.logo} alt={_fromCurrency.ticker} />
 								<Avatar.Fallback>CN</Avatar.Fallback>
 							</Avatar.Root>
@@ -226,7 +191,7 @@
 								{/each}
 							</select>
 							<div>
-								<ChevronDown size="20" class="group-hover:text-border-500 text-foreground-500" />
+								<ChevronDown size="15" class="text-background-200" />
 							</div>
 						</div>
 					{:else}
@@ -242,27 +207,27 @@
 			</div>
 
 			<div
-				class="flex flex-row justify-center items-center mb-2 px-4 text-primary-700 hover:text-primary-300"
+				class="flex flex-row justify-center items-center mb-2 px-5 text-primary-700 hover:text-primary-300"
 			>
-				<Separator class="bg-background-500 basis-1/2" />
+				<Separator class="bg-background-800 basis-1/2" />
 				<Button
 					variant="outline"
-					class="border border-2 rounded-full text-background-500 hover:border bg-transparent hover:text-primary-500"
+					class="border-background-800 rounded-full text-background-500 hover:border bg-transparent hover:border-primary-500 hover:shadow-primary-500 hover:text-primary-500 text-white"
 					size="icon"
 				>
-					<ArrowUpDown class="hover:text-foreground-500 text-border-500 h-4 w-12" />
+					<ArrowUpDown class=" h-4 w-12" />
 				</Button>
-				<Separator class="bg-background-500 basis-1/2" />
+				<Separator class="bg-background-800 basis-1/2" />
 			</div>
 
 			<div class="mb-4">
 				<label class="block mb-2 text-sm">To receive</label>
 				<div
-					class="flex items-center bg-background-500 rounded-xl pl-3 py-4 space-x-2 w-full max-w-lg"
+					class="flex items-center bg-background-700 rounded-xl pl-3 py-4 space-x-2 w-full max-w-lg"
 				>
 					{#if tokens !== undefined && tokens.length > 0}
 						<div
-							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-background-300 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 text-primary-300 rounded-lg px-2.5 py-1.5"
+							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-backgrond-800 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 rounded-lg px-2.5 py-1.5"
 						>
 							<Avatar.Root class="size-7">
 								<Avatar.Image src={_toCurrency.logo} alt={_toCurrency.ticker} />
@@ -297,9 +262,7 @@
 			<div class="py-2">
 				<Button
 					class="w-full h-16 py-2 bg-background-700 rounded-lg hover:bg-tertiary-600 text-surface-700"
-					on:click={async () => {
-						await getbalance();
-					}}
+					on:click={async () => {}}
 				>
 					SWAP
 				</Button>
@@ -338,12 +301,4 @@
 </div>
 
 <style>
-	@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-
-	.rounded-xl {
-		border-radius: 12px;
-	}
-	.rounded-full {
-		border-radius: 9999px;
-	}
 </style>

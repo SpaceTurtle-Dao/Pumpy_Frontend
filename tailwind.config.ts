@@ -1,9 +1,9 @@
 import defaultTheme from "tailwindcss/defaultTheme";
-import colors, { rose } from 'tailwindcss/colors';
+// import { colors } from 'tailwindcss/colors';
 import type { Config } from "tailwindcss";
 import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette';
 import typography from '@tailwindcss/typography'
-const plugin = require('tailwindcss/plugin')
+import plugin from 'tailwindcss/plugin';
 
 const pallet = {
 	swappy_gray: {
@@ -119,7 +119,7 @@ const config: Config = {
 				foreground: pallet.swappy_teal,
 			},
 			boxShadow: {
-				'md': '0px -2px 20px 0px rgba(0, 0, 0, 0.3), inset 0px -2px 10px 0px rgba(0, 0, 0, 0.3)',
+				'md': '0px 2px 10px 0px rgba(0, 0, 0, 0.3), inset 0px -1px 5px 0px rgba(0, 0, 0, 0.3)',
 				//0 2px 4px -2px
 			},
 			textShadow: {
