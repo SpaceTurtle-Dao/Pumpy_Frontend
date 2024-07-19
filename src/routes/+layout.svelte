@@ -28,7 +28,6 @@
 						<Logo />
 					</div>
 					<div class="w-8">
-						<!-- <span class="text-sm">SwapBox</span> -->
 					</div>
 				</div>
 				<MenuItem {active} item="Services">
