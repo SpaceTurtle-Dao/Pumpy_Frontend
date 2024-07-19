@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Board from '$lib/components/board.svelte';
 	import { pumpsStore } from '$lib/store/store';
-	import { fetchPumps } from '$lib/common/swappy';
+	import { fetchPumps, poolInfo } from '$lib/common/swappy';
 	const fetchData = async () => {
 		let pumps = await fetchPumps();
 		pumpsStore.set(pumps);
