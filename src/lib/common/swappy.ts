@@ -1,6 +1,6 @@
 import type { Pool } from '$lib/models/Pool.svelte';
 import { send, createProcess, read } from '$lib/process';
-import { info, init, pools, pumps } from '$lib/messageFactory.svelte';
+import { info, init, pools, pumps, pool, transfer } from '$lib/messageFactory.svelte';
 import { PROCESS_ID } from './constants';
 import type { Tag } from '$lib/models/Tag.svelte';
 import { upload } from '$lib/uploader';
@@ -66,17 +66,29 @@ export const tokenInfo = async (process: string) => {
             // @ts-ignore
             Logo: obj.Logo,
             // @ts-ignore
-            Denomination: obj.Denomination,
-            amount: '1000'
+            Denomination: obj.Denomination
         };
         //console.log(tags);
         //console.log(obj);
-        //console.log(data);
+        console.log(data);
         return data;
     } catch (e) {
         console.log(e);
     }
 };
+
+export const poolInfo = async (poolId:string) => {
+    try {
+        // @ts-ignore
+        let message = pool(poolId);
+        let result = await send(PROCESS_ID(), message);
+        console.log(result)
+        return result[0]
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 export const createPump = async (icon: File, tokenB: string, name: string, ticker: string, description: string, amountA:string, amountB:string,) => {
     loadingStore.set(true);
     try {
@@ -99,10 +111,12 @@ export const createPump = async (icon: File, tokenB: string, name: string, ticke
         );
         let result = await send(PROCESS_ID(), message);
         console.log(result);
+        loadingStore.set(false);
+        return result[0]
     } catch (e) {
         console.log(e);
+        loadingStore.set(false);
     }
-    loadingStore.set(false);
 };
 
 export const add = async (poolId: string, amountA: string, amountB: string) => {
@@ -134,6 +148,17 @@ export const swapB = async (poolId: string, amount: string, slippage: string) =>
         // @ts-ignore
         let message = swapB(amount, slippage);
         let result = await send(poolId, message);
+        console.log(result);
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const transferToken = async (token: string,recipient: string, quantity: string) => {
+    try {
+        // @ts-ignore
+        let message = transfer(recipient, quantity);
+        let result = await send(token, message);
         console.log(result);
     } catch (e) {
         console.log(e);

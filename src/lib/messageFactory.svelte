@@ -30,10 +30,10 @@
 		return [{ name: 'Action', value: 'Pumps' }];
 	};
 
-	export const pool = () => {
+	export const pool = (poolId:string) => {
 		return [
 			{ name: 'Action', value: 'Pool' },
-			{ name: 'Pool', value: pool }
+			{ name: 'PoolId', value: poolId }
 		];
 	};
 
@@ -74,6 +74,14 @@
 
 	export const info = () => {
 		return [{ name: 'Action', value: 'Info' }];
+	};
+
+	export const transfer = (recipient: string, quantity: string) => {
+		return [
+			{ name: 'Action', value: 'Transfer' },
+			{ name: 'Recipient', value: recipient },
+			{ name: 'Quantity', value: quantity }
+		];
 	};
 
 	/*export const withdrawB = (amount: string) => {
