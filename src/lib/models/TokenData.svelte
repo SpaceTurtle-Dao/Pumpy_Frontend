@@ -5,6 +5,5 @@
 		Ticker: string;
 		Logo: string;
 		Denomination: string;
-		amount:String;
 	}
 </script>
