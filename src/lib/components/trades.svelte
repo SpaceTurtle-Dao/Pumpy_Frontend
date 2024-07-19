@@ -1,5 +1,5 @@
 <script lang="ts">
-	/*import File from 'lucide-svelte/icons/file';
+	import File from 'lucide-svelte/icons/file';
 	import Home from 'lucide-svelte/icons/home';
 	import LineChart from 'lucide-svelte/icons/line-chart';
 	import ListFilter from 'lucide-svelte/icons/list-filter';
@@ -23,7 +23,19 @@
 	import * as Table from '$lib/components/ui/table/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
-	import type { Swap, TokenInfo } from '$lib/declarations/pumpy/pumpy.did';
+
+	interface Swap {
+		owner: string;
+		swapType: { [key: string]: null };
+		tokenA: string;
+		tokenB: string;
+		createdAt: BigInt;
+	}
+
+	interface TokenInfo {
+		symbol: string;
+		decimals: number;
+	}
 
 	interface SwapCell {
 		name: string;
@@ -33,21 +45,31 @@
 		createdAt: string;
 	}
 
-	export let swaps: Array<Swap> = [];
-	export let tokenA: TokenInfo;
-	export let tokenB: TokenInfo;
+	export let swaps: Array<Swap> = [
+		{
+			owner: 'abc123',
+			swapType: { Buy: null },
+			tokenA: '1000000000000000000',
+			tokenB: '500000000000000000',
+			createdAt: BigInt(Date.now() * 1000)
+		},
+		{
+			owner: 'def456',
+			swapType: { Sell: null },
+			tokenA: '2000000000000000000',
+			tokenB: '1000000000000000000',
+			createdAt: BigInt(Date.now() * 1000)
+		}
+	];
+	export let tokenA: TokenInfo = { symbol: 'ETH', decimals: 18 };
+	export let tokenB: TokenInfo = { symbol: 'BTC', decimals: 8 };
 	let swapCells: Array<SwapCell> = [];
 
-	const decimals = (value: BigInt) => {
-		let _decimals = 1;
-		for (let i = 0; i < Number(value); i++) {
-			_decimals = _decimals * 10;
-		}
-
-		return _decimals;
+	const decimals = (value: number) => {
+		return Math.pow(10, value);
 	};
 
-	const NumberFormatter = (value:string, decimal:number) => {
+	const NumberFormatter = (value: string, decimal: number) => {
 		return parseFloat(parseFloat(value).toFixed(decimal)).toLocaleString('en', {
 			useGrouping: true
 		});
@@ -57,33 +79,27 @@
 		let _swapCells: Array<SwapCell> = [];
 		swaps.forEach((swap) => {
 			let date = new Date(Number(swap.createdAt) / 1000);
-			var year = date.toLocaleString('default', { year: 'numeric' });
-			var month = date.toLocaleString('default', { month: '2-digit' });
-			var day = date.toLocaleString('default', { day: '2-digit' });
-			var hour = date.toLocaleString('default', { hour: '2-digit' });
-			// Generate yyyy-mm-dd date string
-			// @ts-ignore
-			var formattedDate = year + '-' + month + '-' + day + '-' + hour;
-			var lastThree = swap.owner.substring(swap.owner.length - 4, swap.owner.length);
-			var firstFive = swap.owner.substring(0, 5);
-      let _tokenA = (Number(swap.tokenA)/decimals(tokenA.decimals)).toString();
-      let _tokenB = (Number(swap.tokenB)/decimals(tokenB.decimals)).toString();
+			let formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
+			let lastThree = swap.owner.slice(-3);
+			let firstFive = swap.owner.slice(0, 5);
+			let _tokenA = (Number(swap.tokenA) / decimals(tokenA.decimals)).toString();
+			let _tokenB = (Number(swap.tokenB) / decimals(tokenB.decimals)).toString();
 
 			let cell: SwapCell = {
 				name: firstFive + lastThree,
 				type: Object.keys(swap.swapType)[0],
-				tokenA: NumberFormatter(_tokenA,3),
-				tokenB: NumberFormatter(_tokenB,3),
+				tokenA: NumberFormatter(_tokenA, 3),
+				tokenB: NumberFormatter(_tokenB, 3),
 				createdAt: formattedDate
 			};
 			_swapCells.push(cell);
 		});
 		swapCells = _swapCells;
 	};
-	setup();*/
+	setup();
 </script>
 
-<!--<div class="flex flex-col">
+<div class="flex flex-col">
 	<main class="grid flex-1 items-start">
 		<Tabs.Root value="trades">
 			<div class="flex items-center">
@@ -180,11 +196,11 @@
 					</Card.Content>
 					<Card.Footer>
 						<div class="text-xs text-muted-foreground">
-							Showing <strong>1-10</strong> of <strong>32</strong> trades
+							Showing <strong>1-2</strong> of <strong>2</strong> trades
 						</div>
 					</Card.Footer>
 				</Card.Root>
 			</Tabs.Content>
 		</Tabs.Root>
 	</main>
-</div>-->
+</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	/*import { page } from '$app/stores';
+	import { page } from '$app/stores';
 	import Chart from '$lib/components/chart.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -10,36 +10,11 @@
 	import Trades from '$lib/components/trades.svelte';
 	import Holders from '$lib/components/holders.svelte';
 	import Footer from '$lib/components/footer.svelte';
-	// @ts-ignore
-	import SocialIcons from '@rodneylab/svelte-social-icons';
+	// import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronDown, ChevronUp } from 'lucide-svelte';
-	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
 	import { onMount } from 'svelte';
-	import {
-		pumpyActor,
-		principalStore,
-		loadingStore,
-		poolsStore,
-		pumpsStore,
-		tokensStore,
-		balancesStore
-	} from '$lib/store/store';
-	import type {
-		MintRequest,
-		Pumpy,
-		PoolRequest,
-		PumpRequest,
-		TokenRequest,
-		PoolInfo,
-		TokenResult,
-		TokenInfo,
-		Transaction,
-		TransactionType,
-		Swap,
-		BalanceRequest
-	} from '$lib/declarations/pumpy/pumpy.did';
 	import PumpSwap from '$lib/components/pumpSwap.svelte';
 	import AnalyticsCard from '$lib/components/analyticsCard.svelte';
 	import CreatorCard from '$lib/components/creatorCard.svelte';
@@ -57,22 +32,7 @@
 		liquidy: string;
 	}
 
-	let pumpyCanisterId = '';
-
-	switch (import.meta.env.MODE) {
-		case 'development': {
-			pumpyCanisterId = 'x2ble-2aaaa-aaaak-qiknq-cai';
-			break;
-		}
-		case 'staging': {
-			pumpyCanisterId = 'ucgwg-baaaa-aaaak-qibva-cai';
-			break;
-		}
-		case 'production': {
-			pumpyCanisterId = 'yxccl-myaaa-aaaak-qihga-cai';
-			break;
-		}
-	}
+	let pumpyCanisterId = 'dummy-canister-id';
 
 	let id = $page.params.slug;
 	let isLoading = false;
@@ -83,20 +43,23 @@
 	let isBuy = true;
 	let slippage = BigInt(0);
 	let amount = BigInt(0);
-	let swaps: Array<Swap> = [];
-	let analyticsData: AnalyticsData;
-	let tokenABalance: string;
-	let tokenBBalance: string;
-	let holders: Array<[string, bigint]> = [];
+	let swaps: any[] = [1, 2, 3, 4];
+	let analyticsData: AnalyticsData = {
+		marketCap: '$1,000,000',
+		marketCapPercentage: '5%',
+		isMarketCapUp: true,
+		volume: '$500,000',
+		volumePercentage: '2%',
+		isVolumeUp: true,
+		liquidy: '$200,000',
+	};
+	let tokenABalance = '1000';
+	let tokenBBalance = '2000';
+	let holders: Array<[string, bigint]> = [['0x123', BigInt(100)], ['0x456', BigInt(200)]];
 
-	// Create our number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency: 'USD'
-
-		// These options are needed to round to whole numbers if that's what you want.
-		//minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-		//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 	});
 
 	function relDiff(a: number, b: number) {
@@ -119,24 +82,26 @@
 	};
 
 	onMount(async () => {
-		
-	});*/
+		// Any initialization code here
+	});
 </script>
 
-<!--<div class="w-full">
-	{#if analyticsData == undefined}
+<div class="w-full">
+	<!-- {#if analyticsData == undefined}
 		<div class="flex justify-center">
 			<MediumSpinner />
 		</div>
-	{:else}
+	{:else} -->
 		<div class="flex flex-row gap-4">
 			<div class="basis-1/2 space-y-4">
 				<Chart />
-				<Trades {swaps} tokenA={pool.tokenA} tokenB={pool.tokenB} />
+
+				<Trades />
 			</div>
+
 			<div class="basis-1/2 space-y-4">
 				<div class="flex flex-row gap-2">
-					<PumpSwap {pool} {tokenA} {tokenB} />
+					<PumpSwap  />
 					<div class="space-y-4">
 						<div class="flex flex-row gap-4">
 							<AnalyticsCard
@@ -153,50 +118,48 @@
 							/>
 						</div>
 						<div class="flex flex-row gap-4">
-							
 							<AnalyticsProgressCard
 								title={'Liquidity'}
 								value={NumberFormatter(
-									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									(Number(1000000) / decimals(BigInt(8))).toString(),
 									3
 								)}
 							/>
 							<AnalyticsProgressCard
 								title={'King of the kill progress'}
 								value={NumberFormatter(
-									(Number(pool.tokenA.supply) / decimals(pool.tokenA.decimals)).toString(),
+									(Number(1000000) / decimals(BigInt(8))).toString(),
 									3
 								)}
 							/>
-					
 						</div>
 					</div>
 				</div>
 
 				<div class="flex flex-row gap-4">
-		
 					<div class="basis-1/3">
 						<BalanceCard
-							icon={tokenA.icon}
-							title={tokenA.name}
+							icon={'icon-path'}
+							title={'Token A'}
 							value={NumberFormatter(tokenABalance, 3)}
 						/>
 					</div>
 					<div class="basis-1/3">
 						<BalanceCard
-							icon={tokenB.icon}
-							title={tokenB.name}
+							icon={'icon-path'}
+							title={'Token B'}
 							value={NumberFormatter(tokenBBalance, 3)}
 						/>
 					</div>
-			
 					<div class="basis-1/3">
 						<CreatorCard />
 					</div>
 				</div>
-				<DescriptionCard title={tokenA.name} description={tokenA.symbol} />
-				<Holders {holders} token={tokenA} poolId={pool.id.toString()} />
+				<DescriptionCard title={'Token A'} description={'TOKENA'} />
+				<Holders {holders} token={{ symbol: 'TOKENA' }} poolId={'1'} />
 			</div>
 		</div>
-	{/if}
-</div>-->
+	<!-- {/if} -->
+</div>
+<Footer />
+<!-- <SocialIcons /> -->
