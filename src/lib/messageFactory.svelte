@@ -7,22 +7,18 @@
 		ticker: string,
 		logo: string,
 		description: string,
-		denomination: string,
-		bondingCurve: string,
-		tokenProcess: string,
-		poolProcess: string
+		amountA: string,
+		amountB: string
 	) => {
 		return [
 			{ name: 'Action', value: 'Init' },
-			{ name: 'TokenB', value: tokenB },
 			{ name: 'Name', value: name },
 			{ name: 'Ticker', value: ticker },
 			{ name: 'Logo', value: logo },
 			{ name: 'Description', value: description },
-			{ name: 'Denomination', value: denomination },
-			{ name: 'Denomination', value: denomination },
-			{ name: 'TokenProcess', value: tokenProcess },
-			{ name: 'PoolProcess', value: poolProcess }
+			{ name: 'TokenB', value: tokenB },
+			{ name: 'AmountA', value: amountA },
+			{ name: 'AmountB', value: amountB }
 		];
 	};
 
@@ -34,10 +30,10 @@
 		return [{ name: 'Action', value: 'Pumps' }];
 	};
 
-	export const pool = () => {
+	export const pool = (poolId:string) => {
 		return [
 			{ name: 'Action', value: 'Pool' },
-			{ name: 'Pool', value: pool }
+			{ name: 'PoolId', value: poolId }
 		];
 	};
 
@@ -78,6 +74,14 @@
 
 	export const info = () => {
 		return [{ name: 'Action', value: 'Info' }];
+	};
+
+	export const transfer = (recipient: string, quantity: string) => {
+		return [
+			{ name: 'Action', value: 'Transfer' },
+			{ name: 'Recipient', value: recipient },
+			{ name: 'Quantity', value: quantity }
+		];
 	};
 
 	/*export const withdrawB = (amount: string) => {

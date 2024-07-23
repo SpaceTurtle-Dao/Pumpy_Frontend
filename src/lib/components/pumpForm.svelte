@@ -12,7 +12,7 @@
 
 	import { send, createProcess } from '$lib/process';
 	import { upload } from '$lib/uploader';
-	import { createPump, add } from '$lib/common/swappy';
+	import { createPump, transferToken, add, poolInfo } from '$lib/common/swappy';
 	import {
 		type Infer,
 		defaults,
@@ -32,27 +32,24 @@
 	const managerId = 'jQHPzleOmT4ZJqdC0r77qKzudFjIM6d5ufjc0FX2JQI';
 	//const poolId = 'NJVmhqsCZ9DDReywzE5c0Ds4RjO5CPIebcdw-dk6P0k';
 	//const airToken = '2nfFJb8LIA69gwuLNcFQezSuw4CXPE4--U-j-7cxKOU';
-	const waterToken = 'x7B1WmMJxh9UxRttjQ_gPZxI1BuLDmQzk3UDNgmqojM';
 
 	let isLoading = false;
 	let isVisible = false;
 	let buttonText = 'Show more options';
 	let token = 0;
+	let tokenB = '';
 	let amountA: string;
 	let amountB: string;
 	let dialogOpen = false;
 
-	let _icon:File;
-	let name:string;
-	let ticker:string;
-	let description:string;
-
+	let _icon: File;
+	let name: string;
+	let ticker: string;
+	let description: string;
 
 	const tokens = [
-		{ value: 0, label: 'ICP' },
-		{ value: 1, label: 'ckBTC' },
-		{ value: 2, label: 'ckETH' },
-		{ value: 3, label: 'ckUSDC' }
+		{ value: '', label: 'AO' },
+		{ value: '', label: 'skETH' }
 	];
 
 	const toggleVissible = () => {
@@ -66,19 +63,26 @@
 	};
 
 	const create = async () => {
-		let poolId = await createPump(
-			_icon,
-			waterToken,
-			name,
-			ticker,
-			description
-		);
-		console.log("creating pump");
+		console.log('creating pump');
 		console.log(_icon);
 		console.log(name);
 		console.log(ticker);
 		console.log(description);
-		await add(poolId!, amountA, amountB);
+		console.log(amountA);
+		console.log(amountB);
+		let result = await createPump(_icon, tokenB, name, ticker, description, amountA, amountB);
+		let data = JSON.parse(result.Data);
+		if (data.code != 200) throw 'Issue creating Pump';
+		let poolId = data.message;
+		/*setTimeout(async () => {
+			let _poolInfo = await poolInfo(poolId);
+			if (_poolInfo.code != 200) throw 'Issue getting Pool Info';
+			let info = JSON.parse(_poolInfo.message);
+			console.log(info);
+		}, 1000);*/
+		/*let resultA = await transferToken(tokenB,amountB,poolId);
+		let resultB = await transferToken(tokenA,amountA,poolId);
+		await add(poolId!, amountA, amountB);*/
 	};
 
 	loadingStore.subscribe((value) => {
@@ -94,13 +98,13 @@
 		clearOnSubmit: 'errors-and-message',
 		validators: zod(schema),
 		async onUpdate({ form }) {
-			console.log(form.data.icon);
+			console.log($icon[0]);
 			if (!form.valid) return fail(400, { form });
 			try {
 				_icon = $icon[0];
 				name = $form.name;
 				ticker = $form.ticker;
-				description = $form. description;
+				description = $form.description;
 				dialogOpen = true;
 			} catch (e) {
 				form.message = { status: 500, text: `User not found.` };
@@ -243,8 +247,8 @@
 								<Select.Root
 									onSelectedChange={(v) => {
 										if (v) {
-											if (typeof v.value === 'number') {
-												token = v.value;
+											if (typeof v.value === 'string') {
+												tokenB = v.value;
 											}
 										}
 									}}
