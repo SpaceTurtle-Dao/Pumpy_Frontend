@@ -21,6 +21,7 @@
 	import BalanceCard from '$lib/components/BalanceCard.svelte';
 	import AnalyticsProgressCard from '$lib/components/analyticsProgressCard.svelte';
 	import DescriptionCard from '$lib/components/descriptionCard.svelte';
+	import { poolInfo } from '$lib/common/swappy';
 
 	interface AnalyticsData {
 		marketCap: string;
@@ -81,8 +82,11 @@
 		return _decimals;
 	};
 
+		
 	onMount(async () => {
 		// Any initialization code here
+		const pool = await poolInfo("SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ-KY");
+		
 	});
 </script>
 

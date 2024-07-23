@@ -88,7 +88,7 @@
 			let cell: SwapCell = {
 				name: firstFive + lastThree,
 				type: Object.keys(swap.swapType)[0],
-				tokenA: NumberFormatter(_tokenA, 3),
+				tokenA: NumberFormatter(_tokenA, 3), 
 				tokenB: NumberFormatter(_tokenB, 3),
 				createdAt: formattedDate
 			};
