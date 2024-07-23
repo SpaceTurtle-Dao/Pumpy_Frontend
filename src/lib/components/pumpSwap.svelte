@@ -17,30 +17,8 @@
 	import type { Principal } from '@dfinity/principal';
 	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import {
-		loadingStore,
-		poolsStore,
-		pumpsStore
-	} from '$lib/store/store';
-	import type {
-		MintRequest,
-		Pumpy,
-		PoolRequest,
-		PumpRequest,
-		TokenRequest,
-		PoolInfo,
-		TokenResult,
-		TokenInfo,
-		Transaction,
-		TransactionType,
-		Swap
-	} from '$lib/declarations/pumpy/pumpy.did';
+	import { loadingStore, poolsStore, pumpsStore } from '$lib/store/store';
 
-	let pumpy: Pumpy;
-	export let pool: PoolInfo;
-	export let tokenA: TokenInfo;
-	export let tokenB: TokenInfo;
-	let token: TokenInfo = tokenA;
 	let isLoading = false;
 	let dialogOpen = false;
 	let isTokenA = false;
@@ -73,7 +51,6 @@
 		for (let i = 0; i < Number(value); i++) {
 			_decimals = _decimals * 10;
 		}
-
 		return _decimals;
 	};
 
@@ -176,9 +153,9 @@
 		console.log('swap');
 	};
 
-	pumpyActor.subscribe((value) => {
-		pumpy = value;
-	});
+	// pumpyActor.subscribe((value) => {
+	// 	pumpy = value;
+	// });
 </script>
 
 <Card.Root class="space-y-1 min-w-80">
