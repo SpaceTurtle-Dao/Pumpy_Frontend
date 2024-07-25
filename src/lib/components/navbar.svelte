@@ -7,21 +7,6 @@
   }
 </script>
 
-<!-- <nav class=" text-white p-4 flex px-12 items-center justify-between">
-	<div class="flex items-center space-x-2">
-		<div class="size-10">
-			<Logo />
-		</div>
-		<div>
-			<span class="font-bold text-xl">SwapBox</span>
-		</div>
-	</div>
-	<div class="flex items-center space-x-8">
-		<a href="/swap" class="hover:text-gray-400">APP</a>
-		<a href="/docs" class="hover:text-gray-400">DOCS</a>
-		<Wallet />
-	 -->
-
 <nav class="">
 	<div class="hidden lg:block">
 		<div class=" md:p-5 flex justify-between items-stretch gap-2.5">
