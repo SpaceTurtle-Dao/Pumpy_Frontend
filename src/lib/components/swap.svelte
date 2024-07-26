@@ -10,17 +10,8 @@
 		Percent,
 		RefreshCw
 	} from 'lucide-svelte/icons';
+	import { toast } from 'svelte-sonner';
 	import SmallSpinner from './smallSpinner.svelte';
-	/*import {
-		fromAmount,
-		toAmount,
-		deadline,
-		fromCurrency,
-		isExactIn,
-		slippage,
-		toCurrency
-	} from '../store/swap.store';*/
-
 	import { loadingStore, poolsStore } from '$lib/store/store';
 	import type { Principal } from '@dfinity/principal';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -60,59 +51,6 @@
 	let _fromCurrency: TokenInfo = luna;
 	let _isExactIn;
 	let _slippage;
-
-	/*pumpyActor.subscribe((p) => {
-		pumpy = p;
-	});*/
-
-	/*tokensStore.subscribe((t) => {
-		if (t !== undefined && t.length > 0) {
-			tokens = t;
-			console.log(tokens);
-			fromCurrency.set(tokens[0]);
-			toCurrency.set(tokens[1]);
-		} else {
-			console.log('no tokens swap:62');
-		}
-	});
-	principalStore.subscribe((p) => {
-		principal = p;
-	});*/
-
-	/*fromAmount.subscribe((a) => {
-		_fromAmount = a;
-	});
-	toAmount.subscribe((a) => {
-		_toAmount = a;
-	});
-	deadline.subscribe((d) => {
-		_deadline = d;
-	});
-	slippage.subscribe((s) => {
-		_slippage = s;
-	});
-	isExactIn.subscribe((e) => {
-		_isExactIn = e;
-	});
-	fromCurrency.subscribe((c) => {
-		_fromCurrency = c!;
-	});
-	toCurrency.subscribe((c) => {
-		_toCurrency = c!;
-	});*/
-
-	function mint() {
-		/*pumpy.mint([
-			{
-				id: BigInt(0),
-				to: principal.toString(),
-				amount: BigInt(1000)
-			}
-		]);*/
-	}
-
-	function reverseuno() {}
-	function setSlippage() {}
 </script>
 
 <div class="py-24 w-full flex flex-col justify-center items-center">
@@ -120,7 +58,7 @@
 		<div class="flex flex-row justify-between pb-4">
 			<Button
 				variant="outline"
-				class="h-7 w-7 border-none rounded-full hover:border-input text-foreground-500 bg-background-400 hover:text-primary-50 0 text-xs text-border-500"
+				class="h-7 w-7 border-none rounded-full hover:border-input  bg-background-400 hover:text-primary-400 0 text-xs "
 				size="icon"
 			>
 				<RotateCw class="h-4 w-4" />
@@ -128,7 +66,7 @@
 			<div>
 				<Button
 					variant="outline"
-					class="h-7 border-none rounded-full hover:border-input text-foreground-500 bg-background-400 hover:text-primary-50 0 text-xs text-border-500"
+					class="h-7 border-none rounded-full hover:border-input  hover:text-primary-400 bg-background-400 text-xs"
 				>
 					<div class="flex flex-row space-x-1">
 						<Settings2 class="h-4 w-4" />
@@ -137,7 +75,7 @@
 				</Button>
 				<Button
 					variant="outline"
-					class="h-7 w-7 border-none rounded-full hover:border-input text-foreground-500 bg-background-400 hover:text-primary-50 0 text-xs text-border-500"
+					class="h-7 w-7 border-none rounded-full hover:border-input hover:text-primary-400 bg-background-400 text-xs"
 					size="icon"
 				>
 					<Settings class="h-4 w-4" />
@@ -147,7 +85,7 @@
 		<Card.Root class="bg-background-500 px-5 py-7 shadow-lg border-none">
 			<div class="mb-4">
 				<div class="flex justify-between items-center mb-2">
-					<label for="sell" class="block mb-2 text-xl text-background-200">Sell</label>
+					<label for="sell" class="block mb-2 text-lg text-background-200">Sell</label>
 					<div class="flex space-x-2">
 						<WalletMinimal class="my-1 h-4 w-4 text-background-300" />
 						<span class="my-1 h-6 text-xs text-background-200">{100.0} {'AO'}</span>
@@ -172,7 +110,7 @@
 				>
 					{#if tokens !== undefined && tokens.length > 0}
 						<div
-							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-backgrond-800 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 rounded-lg px-2.5 py-1.5"
+							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-backgrond-800 hover:border-primary-500 hover:shadow-md hover:shadow-primary-500 rounded-lg px-2.5 py-1.5"
 						>
 							<!-- <img src={_fromCurrency.icon} alt={_fromCurrency.ticker} class="w-6 h-6 mr-2" /> -->
 
@@ -191,7 +129,7 @@
 								{/each}
 							</select>
 							<div>
-								<ChevronDown size="15" class="text-background-200" />
+								<ChevronDown size="15" class="group-hover:text-primary-500 text-border-500" />
 							</div>
 						</div>
 					{:else}
@@ -199,7 +137,7 @@
 					{/if}
 					<Input
 						id="paying"
-						class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
+						class="text-white text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 						type="text"
 						placeholder="0.00"
 					/>
@@ -212,22 +150,22 @@
 				<Separator class="bg-background-800 basis-1/2" />
 				<Button
 					variant="outline"
-					class="border-background-800 rounded-full text-background-500 hover:border bg-transparent hover:border-primary-500 hover:shadow-primary-500 hover:text-primary-500 text-white"
+					class="border-background-800 rounded-full  hover:border bg-transparent hover:border-primary-500 hover:shadow-primary-500 hover:text-primary-500 text-white"
 					size="icon"
 				>
-					<ArrowUpDown class=" h-4 w-12" />
+					<ArrowUpDown class=" h-4 w-10" />
 				</Button>
 				<Separator class="bg-background-800 basis-1/2" />
 			</div>
 
 			<div class="mb-4">
-				<label class="block mb-2 text-sm">To receive</label>
+				<label for="buy" class="block mb-2 text-base text-background-200">Buy</label>
 				<div
 					class="flex items-center bg-background-700 rounded-xl pl-3 py-4 space-x-2 w-full max-w-lg"
 				>
 					{#if tokens !== undefined && tokens.length > 0}
 						<div
-							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-backgrond-800 hover:border-primary-500 hover:shadow hover:shadow-md hover:shadow-primary-500 rounded-lg px-2.5 py-1.5"
+							class="group space-x-2.5 border border-transparent relative flex items-center bg-background-400 hover:bg-backgrond-800 hover:border-primary-500 hover:shadow hover:shadow-primary-500 rounded-lg px-2.5 py-1.5"
 						>
 							<Avatar.Root class="size-7">
 								<Avatar.Image src={_toCurrency.logo} alt={_toCurrency.ticker} />
@@ -245,14 +183,14 @@
 								{/each}
 							</select>
 							<div>
-								<ChevronDown size="20" class="group-hover:text-primary-500 text-border-500" />
+								<ChevronDown size="15" class="group-hover:text-primary-500 text-border-500" />
 							</div>
 						</div>
 					{:else}
 						<div class="w-16 h-9 relative bg-background-400 rounded-full px-2 py-1"></div>
 					{/if}
 					<Input
-						class="text-primary-100 text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
+						class="text-white text-right text-xl flex-1 focus:border-0 border-0 focus-visible:ring-offset-0"
 						type="text"
 						placeholder="0.00"
 					/>
@@ -262,7 +200,7 @@
 			<div class="py-2">
 				<Button
 					class="w-full h-16 py-2 bg-background-700 rounded-lg hover:bg-tertiary-600 text-surface-700"
-					on:click={async () => {}}
+					on:click={() => toast('Hello world')}
 				>
 					SWAP
 				</Button>
