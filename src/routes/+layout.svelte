@@ -12,6 +12,7 @@
         ProductItem
     } from '../lib/components/ui/navbar-menu/index';
     import Logo from '../assets/logo.svelte';
+    import Wave from '../assets/tech_wave_logo.svelte';
     import ThemeSwitch from '$lib/components/ui/theme-switch/themeSwitch.svelte';
 
     let active: string | null = null;
@@ -44,15 +45,27 @@
             updateDarkMode(isDark);
         }
     });
+
+    $: {
+        if (typeof window !== 'undefined') {
+        updateDarkMode($darkMode);
+        }
+    }
+    
+    let isOpen = false;
+    
+    function toggleMenu() {
+        isOpen = !isOpen;
+    }
 </script>
 
-<div class="bg-background-700 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
+<div class="bg-background-900 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
     <div class="relative flex w-full items-center justify-center">
         <div class={'fixed inset-x-0 top-12 z-50 mx-auto max-w-2xl'}>
             <NavbarMenu>
                 <div class="flex items-left space-x-5">
                     <div class="w-8 h-8">
-                        <Logo />
+                        <Wave />
                     </div>
                     <div class="w-8">
                     </div>
@@ -84,7 +97,7 @@
                 <div class="flex items-left space-x-5">
                     <div class="w-8 h-8"></div>
                     <div>
-                        <ThemeSwitch />
+                        <!-- <ThemeSwitch /> -->
                     </div>
                 </div>
             </NavbarMenu>
