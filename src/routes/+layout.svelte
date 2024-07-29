@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import { Toaster } from '$lib/components/ui/sonner';
-
 	import {
 		NavbarMenu,
 		HoveredLink,
@@ -13,10 +12,7 @@
 	} from '../lib/components/ui/navbar-menu/index';
 	import Logo from '../assets/logo.svelte';
 	import ThemeSwitch from '$lib/components/ui/theme-switch/themeSwitch.svelte';
-
 	let active: string | null = null;
-
-
 </script>
 
 <div class="bg-background-700">
