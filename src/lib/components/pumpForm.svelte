@@ -12,7 +12,7 @@
 
 	import { send, createProcess } from '$lib/process';
 	import { upload } from '$lib/uploader';
-	import { createPump, transferToken, add, poolInfo } from '$lib/common/swappy';
+	import { createPump, transferToken, add, poolInfo, tokenInfo } from '$lib/common/swappy';
 	import {
 		type Infer,
 		defaults,
@@ -26,6 +26,7 @@
 	import { valibot, zod } from 'sveltekit-superforms/adapters';
 	import { schema } from './schema.js';
 	import { boolean } from 'zod';
+	import { PROCESS_ID } from '$lib/common/constants';
 
 	const data = defaults(zod(schema));
 
@@ -36,7 +37,6 @@
 	let isLoading = false;
 	let isVisible = false;
 	let buttonText = 'Show more options';
-	let token = 0;
 	let tokenB = '';
 	let amountA: string;
 	let amountB: string;
@@ -48,8 +48,8 @@
 	let description: string;
 
 	const tokens = [
-		{ value: '', label: 'AO' },
-		{ value: '', label: 'skETH' }
+		{ value: 'alfdQEEouvIvFDvhWRqImYesC_YVZ5FvFzc442I-QMI', label: 'AO' },
+		{ value: 'alfdQEEouvIvFDvhWRqImYesC_YVZ5FvFzc442I-QMI', label: 'skETH' }
 	];
 
 	const toggleVissible = () => {
@@ -62,27 +62,33 @@
 		}
 	};
 
+	const decimals = (value: BigInt) => {
+		let _decimals = 1;
+		for (let i = 0; i < Number(value); i++) {
+			_decimals = _decimals * 10;
+		}
+
+		return _decimals;
+	};
+	
 	const create = async () => {
 		console.log('creating pump');
 		console.log(_icon);
 		console.log(name);
 		console.log(ticker);
 		console.log(description);
+		let info = await tokenInfo(tokenB)
+		amountA = decimals(BigInt(8)).toString();
+		amountB = decimals(BigInt(info.Denomination)).toString();
+		console.log("token Info");
+		console.log(info)
 		console.log(amountA);
 		console.log(amountB);
+		let transferResult = await transferToken(tokenB,PROCESS_ID(),amountB);
+		console.log(transferResult);
 		let result = await createPump(_icon, tokenB, name, ticker, description, amountA, amountB);
 		let data = JSON.parse(result.Data);
 		if (data.code != 200) throw 'Issue creating Pump';
-		let poolId = data.message;
-		/*setTimeout(async () => {
-			let _poolInfo = await poolInfo(poolId);
-			if (_poolInfo.code != 200) throw 'Issue getting Pool Info';
-			let info = JSON.parse(_poolInfo.message);
-			console.log(info);
-		}, 1000);*/
-		/*let resultA = await transferToken(tokenB,amountB,poolId);
-		let resultB = await transferToken(tokenA,amountA,poolId);
-		await add(poolId!, amountA, amountB);*/
 	};
 
 	loadingStore.subscribe((value) => {
