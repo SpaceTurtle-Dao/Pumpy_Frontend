@@ -99,13 +99,13 @@ export const createPump = async (icon: File, tokenB: string, name: string, ticke
         let poolProcess = await createProcess(PROCESS_ID());
         console.log('Pool Process: ' + poolProcess);
         var delayInMilliseconds = 5000; //5 second*/
-        let url = await upload(await icon.arrayBuffer());
+        let imageId = await upload(await icon.arrayBuffer());
         console.log('Initing Token');
         let message = init(
             tokenB,
             name,
             ticker,
-            url,
+            imageId,
             description,
             amountA,
             amountB,

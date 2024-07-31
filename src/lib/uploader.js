@@ -27,5 +27,5 @@ export const upload = async (file) => {
   let url = `https://www.arweave.net/${transaction.id}?ext=png`;
   console.log(`Completed transaction ${transaction.id} with status code ${status}!`);
   console.log(url);
-  return url;
+  return transaction.id;
 }
