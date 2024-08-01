@@ -1,5 +1,5 @@
 <script lang="ts">
-	//@ts-nocheck
+    //@ts-nocheck
     import { page } from '$app/stores';
     import Chart from '$lib/components/chart.svelte';
     import { Button } from '$lib/components/ui/button/index.js';
@@ -30,7 +30,7 @@
         volume: string;
         volumePercentage: string;
         isVolumeUp: boolean;
-        liquidy: string;
+        liquidity: string;
     }
 
     let pumpyCanisterId = 'dummy-canister-id';
@@ -44,7 +44,15 @@
     let slippage = BigInt(0);
     let amount = BigInt(0);
     let swaps: any[] = [];
-    let analyticsData: AnalyticsData;
+    let analyticsData: AnalyticsData = {
+        marketCap: '',
+        marketCapPercentage: '',
+        isMarketCapUp: false,
+        volume: '',
+        volumePercentage: '',
+        isVolumeUp: false,
+        liquidity: ''
+    };
     let tokenABalance = '';
     let tokenBBalance = '';
     let holders: Array<[string, bigint]> = [];
@@ -65,16 +73,21 @@
     };
 
     const decimals = (value: BigInt) => {
-        let _decimals = 1;
-        for (let i = 0; i < Number(value); i++) {
-            _decimals = _decimals * 10;
-        }
-        return _decimals;
+        return Math.pow(10, Number(value));
     };
 
+	const pooling = async (e)=>{
+		const cool =  poolInfo("0W4oIx8rsCbejTcQJ2c7mSYj3zdFTEFrmNsFBHpuPE0");
+		console.log("cool");
+		console.log("cool" + cool?.JSON.stringify());
+
+	}
     onMount(async () => {
         try {
             const pool = await poolInfo(id);
+			console.log("pool");
+			console.log("pool" + pool?.JSON.stringify());
+			
 
             // Assuming the response structure
             if (pool) {
@@ -85,23 +98,26 @@
                     volume: formatter.format(pool.volume),
                     volumePercentage: `${pool.volumePercentage}%`,
                     isVolumeUp: pool.isVolumeUp,
-                    liquidy: formatter.format(pool.liquidity)
+                    liquidity: formatter.format(pool.liquidity)
                 };
 
                 tokenABalance = pool.tokenABalance;
                 tokenBBalance = pool.tokenBBalance;
                 holders = pool.holders;
                 swaps = pool.swaps;
-            }
+           asdfajsdf
+        AlarmSmoke;dfjas; }
         } catch (error) {
             console.error('Error fetching pool info:', error);
         } finally {
             isLoading = false;
-        }
+			// console.log(pool);
+			
+        }	
     });
 </script>
 
-<div class="w-full bg-gray-900 text-white">
+<div class="w-full text-white" style="background-color: transparent;">
     {#if isLoading}
         <div class="flex justify-center">
             <MediumSpinner />
@@ -136,7 +152,7 @@
                             <AnalyticsProgressCard
                                 title={'Liquidity'}
                                 value={NumberFormatter(
-                                    (Number(analyticsData.liquidy) / decimals(BigInt(8))).toString(),
+                                    (Number(analyticsData.liquidity) / decimals(BigInt(8))).toString(),
                                     3
                                 )}
                                 class="text-white"
@@ -144,7 +160,7 @@
                             <AnalyticsProgressCard
                                 title={'King of the kill progress'}
                                 value={NumberFormatter(
-                                    (Number(analyticsData.liquidy) / decimals(BigInt(8))).toString(),
+                                    (Number(analyticsData.liquidity) / decimals(BigInt(8))).toString(),
                                     3
                                 )}
                                 class="text-white"
