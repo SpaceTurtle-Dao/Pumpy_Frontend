@@ -5,6 +5,7 @@
     import '../app.css';
     import { env } from '$env/dynamic/public';
     import { Toaster } from '$lib/components/ui/sonner';
+    import { Button } from '$lib/components/ui/button';
     import {
         NavbarMenu,
         HoveredLink,
@@ -52,61 +53,54 @@
         }
     }
     
-    let isOpen = false;
+    let isMenuOpen = false;
     
     function toggleMenu() {
-        isOpen = !isOpen;
+        isMenuOpen = !isMenuOpen;
     }
 </script>
 
-<div class="bg-background-900 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
-    <div class="relative flex w-full items-center justify-center">
-        <div class={'fixed inset-x-0 top-12 z-50 mx-auto max-w-2xl'}>
-            <NavbarMenu>
-                <div class="flex items-left space-x-5">
-                    <div class="w-8 h-8">
-                        <Wave />
-                    </div>
-                    <div class="w-8">
-                    </div>
+<nav class="fixed top-0 left-0 right-0 z-50 bg-gray-800/30 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <span class="ml-2 text-xl font-bold text-white nova-mono-regular">Swappy</span>
+            </div>
+            <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-2 lg:space-x-4">
+                    {#each ['Articles', 'Security', 'Infra Log', 'Docs', 'Community', 'Status', 'Pricing'] as item}
+                        <a href="#{item.toLowerCase()}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs lg:text-sm font-medium">{item}</a>
+                    {/each}
                 </div>
-                <MenuItem {active} item="Services">
-                    <div class="flex flex-col space-y-4 text-sm">
-                        <HoveredLink href="#">Web Development</HoveredLink>
-                        <HoveredLink href="#">Interface Design</HoveredLink>
-                        <HoveredLink href="#">Search Engine Optimization</HoveredLink>
-                        <HoveredLink href="#">Branding</HoveredLink>
-                    </div>
-                </MenuItem>
-                <MenuItem {active} item="Products">
-                    <div class="grid grid-cols-2 gap-10 p-4 text-sm">
-                        <HoveredLink href="#">Branding</HoveredLink>
-                        <HoveredLink href="#">Branding</HoveredLink>
-                        <HoveredLink href="#">Branding</HoveredLink>
-                        <HoveredLink href="#">Branding</HoveredLink>
-                    </div>
-                </MenuItem>
-                <MenuItem {active} item="Pricing">
-                    <div class="flex flex-col space-y-4 text-sm">
-                        <HoveredLink href="#">Hobby</HoveredLink>
-                        <HoveredLink href="#">Individual</HoveredLink>
-                        <HoveredLink href="#">Team</HoveredLink>
-                        <HoveredLink href="#">Enterprise</HoveredLink>
-                    </div>
-                </MenuItem>
-                <div class="flex items-left space-x-5">
-                    <div class="w-8 h-8"></div>
-                    <div>
-                        <!-- <ThemeSwitch /> -->
-                    </div>
-                </div>
-            </NavbarMenu>
+            </div>
+            <div class="hidden md:block">
+                <Button variant="outline" class="text-white border-purple-500 hover:bg-purple-500 text-xs lg:text-sm">Connect Wallet</Button>
+            </div>
+            <div class="md:hidden">
+                <button on:click={toggleMenu} class="text-white">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
-
-    <div class="flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh]">
-        <Toaster />
-        <div class="h-32"></div>
-        <slot />
+    
+    {#if isMenuOpen}
+    <div class="md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {#each ['Articles', 'Security', 'Infra Log', 'Docs', 'Community', 'Status', 'Pricing'] as item}
+                <a href="#{item.toLowerCase()}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{item}</a>
+            {/each}
+            <div class="mt-4">
+                <Button variant="outline" class="w-full text-white border-purple-500 hover:bg-purple-500">Connect Wallet</Button>
+            </div>
+        </div>
     </div>
+    {/if}
+</nav>
+
+<div class="flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh] pt-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+    <Toaster />
+    <slot />
 </div>
