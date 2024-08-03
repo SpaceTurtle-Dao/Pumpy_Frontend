@@ -17,10 +17,13 @@ export const fetchPumps = async () => {
             marketCap: _pump.analytics.marketCap,
             ticker: _pump.pool.Ticker,
             description: _pump.pool.Description,
-            image: _pump.pool.Logo
+            image: _pump.pool.Logo,
+            isActive: _pump.pool.isActive,
+            processId: _pump.pool.Pool
         });
     }
-    console.log('pools ' + _pools.length);
+    console.log(typeof(pools[0]));
+    console.log('pools in' + _pools[0].id);
     return _pools;
 };
 

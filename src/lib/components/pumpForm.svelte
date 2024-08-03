@@ -121,170 +121,196 @@
 	const icon = filesProxy(form, 'icon');
 </script>
 
-<div class="w-full flex flex-col justify-center items-center">
-	{#if isLoading}
-		<MediumSpinner />
-	{:else}
-		<form method="POST" use:enhance enctype="multipart/form-data">
-			<div class="space-y-6">
-				<div>
-					<Label>name</Label>
-					<Input
-						aria-invalid={$errors.name ? 'true' : undefined}
-						name="name"
-						class=" flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						bind:value={$form.name}
-					/>
-					{#if $errors.name}<span class="invalid">{$errors.name}</span>{/if}
-				</div>
-				<div>
-					<Label>ticker</Label>
-					<Input
-						aria-invalid={$errors.ticker ? 'true' : undefined}
-						name="ticker"
-						class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						bind:value={$form.ticker}
-					/>
-					{#if $errors.ticker}<span class="invalid">{$errors.ticker}</span>{/if}
-				</div>
-				<div>
-					<Label>description</Label>
-					<Textarea
-						aria-invalid={$errors.description ? 'true' : undefined}
-						class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						name="description"
-						bind:value={$form.description}
-					/>
-					{#if $errors.description}<span class="invalid">{$errors.description}</span>{/if}
-				</div>
-				<div>
-					<Label>icon</Label>
-					<input
-						aria-invalid={$errors.icon ? 'true' : undefined}
-						class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						type="file"
-						name="icon"
-						accept="image/png, image/jpeg, image/jpg, image/gif"
-						bind:files={$icon}
-					/>
-					{#if $errors.icon}<span class="invalid">{$errors.icon}</span>{/if}
-				</div>
-				<div class="flex flex-col space-y-6">
-					<Button class="w-36" variant="ghost" on:click={toggleVissible}>{buttonText}</Button>
-				</div>
-				{#if isVisible}
-					<div>
-						<Label>twitter</Label>
-						<Input
-							aria-invalid={$errors.twitter ? 'true' : undefined}
-							class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							name="twitter"
-							type="url"
-							bind:value={$form.twitter}
-						/>
-						{#if $errors.twitter}<span class="invalid">{$errors.twitter}</span>{/if}
-					</div>
-					<div>
-						<Label>telegram</Label>
-						<Input
-							aria-invalid={$errors.telegram ? 'true' : undefined}
-							class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							name="telegram"
-							type="url"
-							bind:value={$form.telegram}
-						/>
-						{#if $errors.telegram}<span class="invalid">{$errors.telegram}</span>{/if}
-					</div>
-					<div>
-						<Label>discord</Label>
-						<Input
-							aria-invalid={$errors.discord ? 'true' : undefined}
-							class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							name="discord"
-							type="url"
-							bind:value={$form.discord}
-						/>
-						{#if $errors.discord}<span class="invalid">{$errors.discord}</span>{/if}
-					</div>
-					<div>
-						<Label>website</Label>
-						<Input
-							aria-invalid={$errors.website ? 'true' : undefined}
-							class="flex h-10  rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							name="website"
-							type="url"
-							bind:value={$form.website}
-						/>
-						{#if $errors.website}<span class="invalid">{$errors.website}</span>{/if}
-					</div>
-				{/if}
-				<div class="submit">
-					<button>Create Token</button>
-				</div>
-			</div>
-			<div>
-				<Dialog.Root bind:open={dialogOpen}>
-					<Dialog.Content>
-						<Dialog.Header>
-							<Dialog.Title>Choose how many {$form.ticker} you want to buy (optional)</Dialog.Title>
-							<Dialog.Description>
-								tip: its optional but buying a small amount of tokens helps protect your tokens from
-								snipers
-							</Dialog.Description>
-						</Dialog.Header>
-						<div class="grid gap-4 py-4">
-							<div class="grid grid-cols-4 items-center gap-4">
-								<Input
-									type="number"
-									min="0"
-									bind:value={amountA}
-									id="token"
-									placeholder="{$form.ticker} 0.0 (optional)"
-									class="col-span-3"
-								/>
-								<Input
-									type="number"
-									min="0"
-									bind:value={amountB}
-									id="token"
-									placeholder="0.0 (optional)"
-									class="col-span-3"
-								/>
-								<Select.Root
-									onSelectedChange={(v) => {
-										if (v) {
-											if (typeof v.value === 'string') {
-												tokenB = v.value;
-											}
-										}
-									}}
-									portal={null}
-								>
-									<Select.Trigger>
-										<Select.Value placeholder="token" />
-									</Select.Trigger>
-									<Select.Content>
-										<Select.Group>
-											{#each tokens as token}
-												<Select.Item value={token.value} label={token.label}
-													>{token.label}</Select.Item
-												>
-											{/each}
-										</Select.Group>
-									</Select.Content>
-									<Select.Input name="token" />
-								</Select.Root>
-							</div>
-						</div>
-						<Dialog.Footer>
-							<Button class="" on:click={create}>Create Token</Button>
-						</Dialog.Footer>
-					</Dialog.Content>
-				</Dialog.Root>
-			</div>
-		</form>
-	{/if}
+<div class="w-full flex flex-col justify-center items-center p-4 bg-gray-900 min-h-screen">
+    {#if isLoading}
+        <MediumSpinner />
+    {:else}
+        <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-8 text-center">
+            Create a New Coin
+        </h1>
+        <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl space-y-6 transform hover:scale-105 transition-all duration-300">
+            <form method="POST" use:enhance enctype="multipart/form-data" class="w-full max-w-md space-y-6">
+                <div class="space-y-4">
+                    <div>
+                        <Label class="text-gray-300 text-sm font-medium mb-1 block">Name</Label>
+                        <Input
+                            aria-invalid={$errors.name ? 'true' : undefined}
+                            name="name"
+                            class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                            bind:value={$form.name}
+                        />
+                        {#if $errors.name}<span class="text-red-500 text-xs mt-1">{$errors.name}</span>{/if}
+                    </div>
+                    <div>
+                        <Label class="text-gray-300 text-sm font-medium mb-1 block">Ticker</Label>
+                        <Input
+                            aria-invalid={$errors.ticker ? 'true' : undefined}
+                            name="ticker"
+                            class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                            bind:value={$form.ticker}
+                        />
+                        {#if $errors.ticker}<span class="text-red-500 text-xs mt-1">{$errors.ticker}</span>{/if}
+                    </div>
+                    <div>
+                        <Label class="text-gray-300 text-sm font-medium mb-1 block">Description</Label>
+                        <Textarea
+                            aria-invalid={$errors.description ? 'true' : undefined}
+                            class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                            name="description"
+                            bind:value={$form.description}
+                        />
+                        {#if $errors.description}<span class="text-red-500 text-xs mt-1">{$errors.description}</span>{/if}
+                    </div>
+                    <div>
+                        <Label class="text-gray-300 text-sm font-medium mb-1 block">Icon</Label>
+                        <div class="flex items-center justify-center w-full">
+                            <label for="icon-upload" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-700 border-dashed rounded-lg cursor-pointer bg-gray-800 hover:bg-gray-700 transition-all duration-300">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                </div>
+                                <input
+                                    id="icon-upload"
+                                    aria-invalid={$errors.icon ? 'true' : undefined}
+                                    type="file"
+                                    name="icon"
+                                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                                    bind:files={$icon}
+                                    class="hidden"
+                                />
+                            </label>
+                        </div>
+                        {#if $errors.icon}<span class="text-red-500 text-xs mt-1">{$errors.icon}</span>{/if}
+                    </div>
+                    <div class="flex flex-col space-y-4">
+                        <Button 
+                            class="w-full bg-gray-800 text-white border border-gray-700 rounded-md p-2 hover:bg-gray-700 transition-all duration-300" 
+                            variant="ghost" 
+                            on:click={toggleVissible}
+                        >
+                            {buttonText}
+                        </Button>
+                    </div>
+                    {#if isVisible}
+                        <div>
+                            <Label class="text-gray-300 text-sm font-medium mb-1 block">Twitter</Label>
+                            <Input
+                                aria-invalid={$errors.twitter ? 'true' : undefined}
+                                class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                                name="twitter"
+                                type="url"
+                                bind:value={$form.twitter}
+                            />
+                            {#if $errors.twitter}<span class="text-red-500 text-xs mt-1">{$errors.twitter}</span>{/if}
+                        </div>
+                        <div>
+                            <Label class="text-gray-300 text-sm font-medium mb-1 block">Telegram</Label>
+                            <Input
+                                aria-invalid={$errors.telegram ? 'true' : undefined}
+                                class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                                name="telegram"
+                                type="url"
+                                bind:value={$form.telegram}
+                            />
+                            {#if $errors.telegram}<span class="text-red-500 text-xs mt-1">{$errors.telegram}</span>{/if}
+                        </div>
+                        <div>
+                            <Label class="text-gray-300 text-sm font-medium mb-1 block">Discord</Label>
+                            <Input
+                                aria-invalid={$errors.discord ? 'true' : undefined}
+                                class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                                name="discord"
+                                type="url"
+                                bind:value={$form.discord}
+                            />
+                            {#if $errors.discord}<span class="text-red-500 text-xs mt-1">{$errors.discord}</span>{/if}
+                        </div>
+                        <div>
+                            <Label class="text-gray-300 text-sm font-medium mb-1 block">Website</Label>
+                            <Input
+                                aria-invalid={$errors.website ? 'true' : undefined}
+                                class="w-full bg-gray-800 border border-gray-700 text-white rounded-md p-2 focus:ring-2 focus:ring-white focus:border-white focus:outline-none"
+                                name="website"
+                                type="url"
+                                bind:value={$form.website}
+                            />
+                            {#if $errors.website}<span class="text-red-500 text-xs mt-1">{$errors.website}</span>{/if}
+                        </div>
+                    {/if}
+                    <div class="submit">
+                        <button class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            Create Token
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>  
+    {/if}
 </div>
+
+<Dialog.Root bind:open={dialogOpen}>
+    <Dialog.Content class="bg-gray-800 text-white p-6 rounded-lg shadow-xl">
+        <Dialog.Header>
+            <Dialog.Title class="text-2xl font-bold mb-2">Choose how many {$form.ticker} you want to buy (optional)</Dialog.Title>
+            <Dialog.Description class="text-gray-400 mb-4">
+                tip: its optional but buying a small amount of tokens helps protect your tokens from snipers
+            </Dialog.Description>
+        </Dialog.Header>
+        <div class="grid gap-4 py-4">
+            <div class="grid grid-cols-4 items-center gap-4">
+                <Input
+                    type="number"
+                    min="0"
+                    bind:value={amountA}
+                    id="token"
+                    placeholder="{$form.ticker} 0.0 (optional)"
+                    class="col-span-3 bg-gray-700 text-white border border-gray-600 rounded-md p-2"
+                />
+                <Input
+                    type="number"
+                    min="0"
+                    bind:value={amountB}
+                    id="token"
+                    placeholder="0.0 (optional)"
+                    class="col-span-3 bg-gray-700 text-white border border-gray-600 rounded-md p-2"
+                />
+                <Select.Root
+                    onSelectedChange={(v) => {
+                        if (v) {
+                            if (typeof v.value === 'string') {
+                                tokenB = v.value;
+                            }
+                        }
+                    }}
+                    portal={null}
+                >
+                    <Select.Trigger class="bg-gray-700 text-white border border-gray-600 rounded-md p-2">
+                        <Select.Value placeholder="token" />
+                    </Select.Trigger>
+                    <Select.Content class="bg-gray-700 text-white border border-gray-600 rounded-md">
+                        <Select.Group>
+                            {#each tokens as token}
+                                <Select.Item value={token.value} label={token.label} class="p-2 hover:bg-gray-600">
+                                    {token.label}
+                                </Select.Item>
+                            {/each}
+                        </Select.Group>
+                    </Select.Content>
+                    <Select.Input name="token" />
+                </Select.Root>
+            </div>
+        </div>
+        <Dialog.Footer>
+            <Button class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:from-purple-700 hover:to-indigo-700 transition-all duration-300" on:click={create}>
+                Create Token
+            </Button>
+        </Dialog.Footer>
+    </Dialog.Content>
+</Dialog.Root>
+
 {#if import.meta.env.MODE == 'development'}
-	<SuperDebug data={$form} />
+    <SuperDebug data={$form} />
 {/if}

@@ -1,94 +1,141 @@
 import { writable, type Writable } from "svelte/store";
+import type { Pool } from '$lib/models/Pool.svelte';
 
 type Time = number;
 
-export interface TokenInfo__1 {
-    decimals: bigint;
-    twitter: [] | [string];
-    icon: string;
-    name: string;
-    createdAt: number; 
-    minter: string;
-    website: [] | [string];
-    supply: bigint;
-    discord: [] | [string];
-    holders: bigint;
-    transactions: bigint;
-    telegram: [] | [string];
-    symbol: string;
-}
-
-export interface AnalyticsData__1 {
-    liquidty: bigint;
-    weekVolume: bigint;
-    marketCap: bigint;
-    dayVolume: bigint;
-    volume: bigint;
-    price: bigint;
-    hourVolume: bigint;
-}
-
-export interface PoolInfo {
-    id: bigint;
-    createdAt: Time;
-    pair: [bigint, bigint];
-    analytics: AnalyticsData__1;
-    precision: bigint;
-    swaps: bigint;
-    tokenA: TokenInfo__1;
-    tokenB: TokenInfo__1;
-    totalShares: bigint;
-}
-
-// Mock data
-const mockPools: Array<PoolInfo> = [
-    {
-        id: BigInt(1),
-        createdAt: Date.now(),
-        pair: [BigInt(1000000), BigInt(2000000)],
-        analytics: {
-            liquidty: BigInt(5000000),
-            weekVolume: BigInt(1000000),
-            marketCap: BigInt(10000000),
-            dayVolume: BigInt(200000),
-            volume: BigInt(5000000),
-            price: BigInt(100),
-            hourVolume: BigInt(10000)
-        },
-        precision: BigInt(18),
-        swaps: BigInt(1000),
-        tokenA: {
-            decimals: BigInt(18),
-            twitter: ['@TokenA'],
-            icon: 'https://example.com/tokenA.png',
-            name: 'Token A',
-            createdAt: Date.now() - 86400000, // One day ago
-            minter: '0x1234567890123456789012345678901234567890',
-            website: ['https://tokenA.com'],
-            supply: BigInt(10000000),
-            discord: ['https://discord.gg/tokenA'],
-            holders: BigInt(5000),
-            transactions: BigInt(20000),
-            telegram: ['@TokenATG'],
-            symbol: 'TKA'
-        },
-        tokenB: {
-            decimals: BigInt(8),
-            twitter: [],
-            icon: 'https://example.com/tokenB.png',
-            name: 'Token B',
-            createdAt: Date.now() - 172800000, // Two days ago
-            minter: '0x0987654321098765432109876543210987654321',
-            website: [],
-            supply: BigInt(5000000),
-            discord: [],
-            holders: BigInt(2500),
-            transactions: BigInt(10000),
-            telegram: ['@TokenBTG'],
-            symbol: 'TKB'
-        },
-        totalShares: BigInt(1000000)
-    },
+const fakePools: Array<Pool> = [
+  {
+    name: "LunarX",
+    createdBy: "Lunar Exploration Token",
+    image: "src/assets/2.png",
+    price: 42.69,
+    time: "2h 15m",
+    holders: 8.3,
+    buyers: 2.1,
+    volume: 1250000,
+    marketCap: 15000000
+  },
+  {
+    name: "QuantumBit",
+    createdBy: "Quantum Computing Coin",
+    image: "src/assets/luna.png",
+    price: 137.58,
+    time: "45m",
+    holders: 12.7,
+    buyers: 0.9,
+    volume: 3750000,
+    marketCap: 52000000
+  },
+  {
+    name: "EcoSphere",
+    createdBy: "Sustainable Ecosystem Token",
+    image: "src/assets/3.png",
+    price: 9.99,
+    time: "3h 30m",
+    holders: 5.2,
+    buyers: 3.7,
+    volume: 890000,
+    marketCap: 7500000
+  },
+  {
+    name: "NeuralLink",
+    createdBy: "AI Neural Network Coin",
+    image: "src/assets/4.png",
+    price: 76.54,
+    time: "1h 5m",
+    holders: 9.8,
+    buyers: 1.5,
+    volume: 2100000,
+    marketCap: 31000000
+  },
+  {
+    name: "CryptoNova",
+    createdBy: "Next-Gen Crypto Platform",
+    image: "src/assets/5.png",
+    price: 23.45,
+    time: "55m",
+    holders: 7.1,
+    buyers: 2.8,
+    volume: 1750000,
+    marketCap: 18000000
+  },
+  {
+    name: "GenomeX",
+    createdBy: "Genetic Research Token",
+    image: "src/assets/6.png",
+    price: 88.88,
+    time: "4h 20m",
+    holders: 14.2,
+    buyers: 0.7,
+    volume: 4200000,
+    marketCap: 65000000
+  },
+  {
+    name: "AstroMine",
+    createdBy: "Asteroid Mining Coin",
+    image: "src/assets/7.png",
+    price: 55.55,
+    time: "2h 45m",
+    holders: 6.9,
+    buyers: 3.2,
+    volume: 1900000,
+    marketCap: 27000000
+  },
+  {
+    name: "HoloVerse",
+    createdBy: "Holographic Universe Token",
+    image: "src/assets/8.png",
+    price: 12.34,
+    time: "1h 30m",
+    holders: 4.5,
+    buyers: 4.1,
+    volume: 950000,
+    marketCap: 9000000
+  },
+  {
+    name: "FusionX",
+    createdBy: "Nuclear Fusion Energy Coin",
+    image: "src/assets/9.png",
+    price: 101.01,
+    time: "3h 15m",
+    holders: 11.3,
+    buyers: 1.2,
+    volume: 3100000,
+    marketCap: 42000000
+  },
+  {
+    name: "CyberShield",
+    createdBy: "Cybersecurity Protocol Token",
+    image: "src/assets/luna.png",
+    price: 67.89,
+    time: "50m",
+    holders: 8.7,
+    buyers: 2.3,
+    volume: 2300000,
+    marketCap: 35000000
+  },
+  {
+    name: "BioSynth",
+    createdBy: "Synthetic Biology Coin",
+    image: "src/assets/luna.png",
+    price: 33.33,
+    time: "2h 5m",
+    holders: 6.1,
+    buyers: 3.5,
+    volume: 1650000,
+    marketCap: 22000000
+  },
+  {
+    name: "TerraForm",
+    createdBy: "Planetary Terraforming Token",
+    image: "src/assets/luna.png",
+    price: 199.99,
+    time: "5h 10m",
+    holders: 15.8,
+    buyers: 0.5,
+    volume: 5500000,
+    marketCap: 88000000
+  }
 ];
 
-export const poolsStore: Writable<Array<PoolInfo>> = writable(mockPools);
+export const Pools = writable<Array<Pool>>(fakePools);
