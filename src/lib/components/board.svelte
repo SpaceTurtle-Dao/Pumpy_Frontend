@@ -8,7 +8,9 @@
 	import { pumpsStore } from '$lib/store/store';
   import { fetchPumps, poolInfo } from '$lib/common/swappy';
   import { Pools } from '$lib/store/pools.store';
-
+  import Time, { svelteTime } from 'svelte-time';
+  import { dayjs } from 'svelte-time';
+  
   function formatNumber(num: number): string {
     if (num >= 1e6) return `$${(num / 1e6).toFixed(1)}M`;
     if (num >= 1e3) return `$${(num / 1e3).toFixed(0)}K`;
@@ -102,8 +104,8 @@
             <div class="flex-grow min-w-0">
               <div class="flex justify-between items-start">
                 <div class="truncate">
-                  <h2 class="text-xl font-bold truncate saira-bold">{pool.name}</h2>
-                  <p class="text-sm text-gray-400 truncate nova-mono-regular">{pool.createdBy}</p>
+                  <h2 class="text-xl font-bold truncate saira-bold text-left">{pool.name}</h2>
+                  <p class="text-sm text-gray-400 truncate nova-mono-regular">{pool.description}</p>
                 </div>
                 <div class="flex items-center space-x-1 text-purple-400 flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
@@ -111,7 +113,7 @@
                 </div>
               </div>
               <div class="mt-2 flex items-center space-x-4 text-sm">
-                <span class="text-gray-400 truncate">{pool.time}</span>
+                <span class="text-gray-400 truncate"><Time relative live={500} timestamp={new Date(pool.time)} ></Time></span>
                 <span class="text-green-400">↑ {pool.holders}%</span>
                 <span class="text-red-400">↓ {pool.buyers}%</span>
               </div>
