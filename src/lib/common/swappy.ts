@@ -16,6 +16,10 @@ const decimals = (value: BigInt) => {
     return _decimals;
 };
 
+function relDiff(a:number, b:number) {
+    return (100) * Math.abs((a - b) / ((a + b) / 2));
+}
+
 export const fetchPumps = async () => {
     let _pools: Array<Pool> = [];
     let pools = await _fetchPumps();
@@ -100,7 +104,7 @@ export const tokenInfo = async (process: string) => {
     }
 };
 
-export const poolInfo = async (poolId:string) => {
+export const poolInfo = async (poolId: string) => {
     try {
         // @ts-ignore
         let message = pool(poolId);
@@ -112,7 +116,7 @@ export const poolInfo = async (poolId:string) => {
     }
 };
 
-export const createPump = async (icon: File, tokenB: string, name: string, ticker: string, description: string, amountA:string, amountB:string,) => {
+export const createPump = async (icon: File, tokenB: string, name: string, ticker: string, description: string, amountA: string, amountB: string,) => {
     loadingStore.set(true);
     try {
         // @ts-ignore
@@ -177,7 +181,7 @@ export const swapB = async (poolId: string, amount: string, slippage: string) =>
     }
 };
 
-export const transferToken = async (token: string,recipient: string, quantity: string) => {
+export const transferToken = async (token: string, recipient: string, quantity: string) => {
     try {
         // @ts-ignore
         let message = transfer(recipient, quantity);
