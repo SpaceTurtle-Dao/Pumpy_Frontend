@@ -13,7 +13,10 @@ const fakePools: Array<Pool> = [
     holders: 8.3,
     buyers: 2.1,
     volume: 1250000,
-    marketCap: 15000000
+    marketCap: 15000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "QuantumBit",
@@ -24,7 +27,10 @@ const fakePools: Array<Pool> = [
     holders: 12.7,
     buyers: 0.9,
     volume: 3750000,
-    marketCap: 52000000
+    marketCap: 52000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "EcoSphere",
@@ -35,7 +41,10 @@ const fakePools: Array<Pool> = [
     holders: 5.2,
     buyers: 3.7,
     volume: 890000,
-    marketCap: 7500000
+    marketCap: 7500000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "NeuralLink",
@@ -46,7 +55,10 @@ const fakePools: Array<Pool> = [
     holders: 9.8,
     buyers: 1.5,
     volume: 2100000,
-    marketCap: 31000000
+    marketCap: 31000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "CryptoNova",
@@ -57,7 +69,10 @@ const fakePools: Array<Pool> = [
     holders: 7.1,
     buyers: 2.8,
     volume: 1750000,
-    marketCap: 18000000
+    marketCap: 18000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "GenomeX",
@@ -68,7 +83,10 @@ const fakePools: Array<Pool> = [
     holders: 14.2,
     buyers: 0.7,
     volume: 4200000,
-    marketCap: 65000000
+    marketCap: 65000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "AstroMine",
@@ -79,7 +97,10 @@ const fakePools: Array<Pool> = [
     holders: 6.9,
     buyers: 3.2,
     volume: 1900000,
-    marketCap: 27000000
+    marketCap: 27000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "HoloVerse",
@@ -90,7 +111,10 @@ const fakePools: Array<Pool> = [
     holders: 4.5,
     buyers: 4.1,
     volume: 950000,
-    marketCap: 9000000
+    marketCap: 9000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "FusionX",
@@ -101,7 +125,10 @@ const fakePools: Array<Pool> = [
     holders: 11.3,
     buyers: 1.2,
     volume: 3100000,
-    marketCap: 42000000
+    marketCap: 42000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "CyberShield",
@@ -112,7 +139,10 @@ const fakePools: Array<Pool> = [
     holders: 8.7,
     buyers: 2.3,
     volume: 2300000,
-    marketCap: 35000000
+    marketCap: 35000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "BioSynth",
@@ -123,7 +153,10 @@ const fakePools: Array<Pool> = [
     holders: 6.1,
     buyers: 3.5,
     volume: 1650000,
-    marketCap: 22000000
+    marketCap: 22000000,
+    processId: "",
+    ticker: "",
+    description: ""
   },
   {
     name: "TerraForm",
@@ -134,8 +167,11 @@ const fakePools: Array<Pool> = [
     holders: 15.8,
     buyers: 0.5,
     volume: 5500000,
-    marketCap: 88000000
+    marketCap: 88000000,
+    processId: "",
+    ticker: "",
+    description: ""
   }
 ];
 
-export const Pools = writable<Array<Pool>>(fakePools);
+export const Pools = writable<Array<Pool>>([]);

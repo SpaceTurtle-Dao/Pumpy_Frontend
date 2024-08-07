@@ -100,7 +100,7 @@
     {/if}
 </nav>
 
-<div class="flex flex-col gap-2.5 max-w-[1440px] mx-auto min-h-[100vh] pt-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
+<div class="flex flex-col gap-2.5  mx-auto min-h-[100vh] pt-20 px-4 sm:px-6 lg:px-8 bg-gray-900">
     <Toaster />
     <slot />
 </div>

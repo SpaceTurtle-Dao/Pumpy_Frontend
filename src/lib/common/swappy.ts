@@ -5,25 +5,45 @@ import { PROCESS_ID } from './constants';
 import type { Tag } from '$lib/models/Tag.svelte';
 import { upload } from '$lib/uploader';
 import { loadingStore } from '$lib/store/store';
+import { Pools } from '$lib/store/pools.store';
+
+const decimals = (value: BigInt) => {
+    let _decimals = 1;
+    for (let i = 0; i < Number(value); i++) {
+        _decimals = _decimals * 10;
+    }
+
+    return _decimals;
+};
 
 export const fetchPumps = async () => {
     let _pools: Array<Pool> = [];
     let pools = await _fetchPumps();
     for (let i = 0; i < pools!.length; i++) {
         const _pump = pools![i];
+        let amountA = _pump.pool.AmountA / decimals(BigInt(8));
+        let amountB = _pump.pool.AmountB / decimals(BigInt(8));
+        let marketCap = Number(_pump.analytics.marketCap) / decimals(BigInt(8));
+        let url = `https://www.arweave.net/${_pump.pool.Logo}?ext=png`;
         _pools.push({
-            id: _pump.pool.pool,
+            processId: _pump.pool.pool,
+            image: url,
+            price: (amountB / amountA),
             createdBy: _pump.pool.Minter,
-            marketCap: _pump.analytics.marketCap,
+            marketCap: Math.round(marketCap * 100) / 100,
             ticker: _pump.pool.Ticker,
             description: _pump.pool.Description,
-            image: _pump.pool.Logo,
-            isActive: _pump.pool.isActive,
-            processId: _pump.pool.Pool
+            name: _pump.pool.Name,
+            time: _pump.pool.createdAt,
+            holders: _pump.pool.Holders,
+            buyers: _pump.analytics.buys,
+            volume: (decimals(BigInt(8)) / Number(_pump.analytics.volume))
         });
     }
-    console.log(typeof(pools[0]));
-    console.log('pools in' + _pools[0].id);
+    //console.log(typeof(_pools[0]));
+    //console.log('pools in' + _pools[0].processId);
+    console.log(_pools)
+    Pools.set(_pools)
     return _pools;
 };
 
