@@ -78,8 +78,8 @@
 		console.log(ticker);
 		console.log(description);
 		let info = await tokenInfo(tokenB)
-		amountA = decimals(BigInt(8)).toString();
-		amountB = decimals(BigInt(info.Denomination)).toString();
+		amountA = (decimals(BigInt(8)) * Number(amountA)).toString();
+		amountB = (decimals(BigInt(info.Denomination)) * Number(amountB)).toString();
 		console.log("token Info");
 		console.log(info)
 		console.log(amountA);

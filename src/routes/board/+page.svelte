@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Board from '$lib/components/board.svelte';
-	import { pumpsStore } from '$lib/store/store';
 	import { fetchPumps, poolInfo } from '$lib/common/swappy';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-
+    setInterval(fetchPumps,500)
 	function startNewCoin() {
 		goto('/createPump')
 	}
