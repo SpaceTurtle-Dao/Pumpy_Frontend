@@ -117,19 +117,21 @@
     });
 </script>
 
-<div class="w-full text-white" style="background-color: transparent;">
-    {#if isLoading}
+<div class="sm:w-[109%] w-full text-white  p-3" >
+    <!-- {#if isLoading}
         <div class="flex justify-center">
             <MediumSpinner />
         </div>
-    {:else}
-        <div class="flex flex-row gap-4">
-            <div class="basis-1/2 space-y-4">
+    {:else} -->
+        <div class="flex sm:flex-row flex-col gap-5  ">
+            <div class=" sm:space-y-4 ">
                 <Chart />
                 <Trades {swaps} />
             </div>
+
+        
             <div class="basis-1/2 space-y-4">
-                <div class="flex flex-row gap-2">
+                <div class="flex sm:flex-row  flex-col gap-4">
                     <PumpSwap />
                     <div class="space-y-4">
                         <div class="flex flex-row gap-4">
@@ -193,6 +195,6 @@
                 <Holders {holders} token={{ symbol: 'TOKENA' }} poolId={'1'} class="text-white" />
             </div>
         </div>
-    {/if}
+    <!-- {/if} -->
 </div>
 <Footer class="text-white" />

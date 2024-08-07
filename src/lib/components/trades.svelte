@@ -99,7 +99,7 @@
 	setup();
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-co ">
 	<main class="grid flex-1 items-start">
 		<Tabs.Root value="trades">
 			<div class="flex items-center">
@@ -107,7 +107,7 @@
 					<Tabs.Trigger value="trades">Trades</Tabs.Trigger>
 					<Tabs.Trigger value="thread">Thread</Tabs.Trigger>
 				</Tabs.List>
-				<div class="ml-auto flex items-center gap-2">
+				<div class="ml-auto flex items-center gap-2 bg-gray-800">
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger asChild let:builder>
 							<Button builders={[builder]} variant="outline" size="sm" class="h-8 gap-1">
@@ -127,7 +127,7 @@
 					</Button>
 				</div>
 			</div>
-			<Tabs.Content value="trades">
+			<Tabs.Content value="trades" class="bg-gray-800">
 				<Card.Root>
 					<Card.Header>
 						<Card.Title>Transactions</Card.Title>

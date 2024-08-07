@@ -1,14 +1,14 @@
-<script lang='ts'>
-  import Logo from "../../assets/cube.svg"
-  import Wallet from "./wallet.svelte";
-  
-  function viewProfile() {
-    window.location.href = '/profile';
-  }
+<script lang="ts">
+	import Logo from '../../assets/cube.svg';
+	import Wallet from './wallet.svelte';
+
+	function viewProfile() {
+		window.location.href = '/profile';
+	}
 </script>
 
 <nav class="">
-	<div class="hidden lg:block">
+	<div class="hidden">
 		<div class=" md:p-5 flex justify-between items-stretch gap-2.5">
 			<div class="rounded-md bg-background-inverse h-fit flex navbar-logo px-1.5 py-[7px] pr-3">
 				<a class="flex items-center gap-1" href="/">
@@ -109,4 +109,3 @@
 		</div>
 	</div>
 </nav>
-
