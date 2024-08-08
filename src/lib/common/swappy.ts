@@ -109,7 +109,8 @@ export const poolInfo = async (poolId: string) => {
         // @ts-ignore
         let message = pool(poolId);
         let result = await send(PROCESS_ID(), message);
-        console.log(result)
+        console.log("res")
+        console.log(result[0].Data)
         return result[0]
     } catch (e) {
         console.log(e);

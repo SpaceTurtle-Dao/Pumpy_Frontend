@@ -116,7 +116,7 @@ const readMessage = async (messageId: string, processId: string) => {
 	});
 	if (Error == undefined) return Messages
 	console.log(Messages);
-	console.log(Spawns);
+	console.log("Spwawns"+Spawns);
 	console.log(Output);
 	console.log(Error);
 	throw (Error)
