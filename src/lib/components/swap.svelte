@@ -82,7 +82,7 @@
 				</Button>
 			</div>
 		</div>
-		<Card.Root class="bg-background-500 px-5 py-7 shadow-lg border-none">
+		<Card.Root class="bg-background-900 px-5 py-7 shadow-lg border-none">
 			<div class="mb-4">
 				<div class="flex justify-between items-center mb-2">
 					<label for="sell" class="block mb-2 text-lg text-background-200">Sell</label>

@@ -22,7 +22,6 @@ https://www.tints.dev/Green/111111
 
 3BEBE8 // blue electric
 2EFCEF // bluiee
-
 CA7BE1 // pink
 
 0D2032 // background blue
