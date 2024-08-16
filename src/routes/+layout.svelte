@@ -15,6 +15,7 @@
 	import Logo from '../assets/logo.svelte';
 	import Wave from '../assets/tech_wave_logo.svelte';
 	import ThemeSwitch from '$lib/components/ui/theme-switch/themeSwitch.svelte';
+	import WalletConnectButton from '$lib/components/wallet.svelte';
 
 	let active: string | null = null;
 
@@ -79,11 +80,9 @@
 				</div>
 			</div>
 			<div class="hidden md:block">
-				<Button
-					variant="outline"
-					class="text-white border-purple-500 hover:bg-purple-500 text-xs lg:text-sm"
-					>Connect Wallet</Button
-				>
+				<WalletConnectButton
+					buttonClass="text-white border-purple-500 bg-purple-500 text-xs lg:text-sm"
+				/>
 			</div>
 			<div class="md:hidden">
 				<button on:click={toggleMenu} class="text-white">
@@ -111,9 +110,7 @@
 					>
 				{/each}
 				<div class="mt-4">
-					<Button variant="outline" class="w-full text-white border-purple-500 hover:bg-purple-500"
-						>Connect Wallet</Button
-					>
+					<WalletConnectButton buttonClass="w-full text-white border-purple-500 bg-purple-500" />
 				</div>
 			</div>
 		</div>

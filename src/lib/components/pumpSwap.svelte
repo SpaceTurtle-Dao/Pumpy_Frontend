@@ -1,24 +1,29 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Chart from '$lib/components/chart.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import * as Select from '$lib/components/ui/select/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
-	import { Progress } from '$lib/components/ui/progress/index.js';
-	import Trades from '$lib/components/trades.svelte';
-	import Holders from '$lib/components/holders.svelte';
-	import Footer from '$lib/components/footer.svelte';
-	// @ts-ignore
-	import SocialIcons from '@rodneylab/svelte-social-icons';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	import { ChevronDown, ChevronUp } from 'lucide-svelte';
-	import type { Principal } from '@dfinity/principal';
-	import MediumSpinner from '$lib/components/mediumSpinner.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { loadingStore, poolsStore, pumpsStore } from '$lib/store/store';
 
+	// Mock data for testing
+	let pool = {
+		id: '1',
+		name: 'Test Pool'
+	};
+
+	let tokenA = {
+		symbol: 'TOKA',
+		icon: 'https://example.com/tokenA.png',
+		decimals: BigInt(18)
+	};
+
+	let tokenB = {
+		symbol: 'TOKB',
+		icon: 'https://example.com/tokenB.png',
+		decimals: BigInt(18)
+	};
+
+	let token = tokenA;
 	let isLoading = false;
 	let dialogOpen = false;
 	let isTokenA = false;
@@ -26,155 +31,71 @@
 	let slippage = 0.1;
 	let amount = 0;
 
-	// Create our number formatter.
-	const formatter = new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency: 'USD'
-
-		// These options are needed to round to whole numbers if that's what you want.
-		//minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-		//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-	});
-
-	function relDiff(a: number, b: number) {
-		return 100 * Math.abs((a - b) / ((a + b) / 2));
-	}
-
-	const NumberFormatter = (value: string, decimal: number) => {
-		return parseFloat(parseFloat(value).toFixed(decimal)).toLocaleString('en', {
-			useGrouping: true
-		});
-	};
-
-	const decimals = (value: BigInt) => {
-		let _decimals = 1;
-		for (let i = 0; i < Number(value); i++) {
-			_decimals = _decimals * 10;
-		}
-		return _decimals;
-	};
-
 	function getPercentage(percentage: number, totalValue: number) {
 		return percentage * totalValue;
 	}
 
-	// const buy = async () => {
-	// 	console.log('buy');
-	// 	let poolId = { PUMP: pool.id };
-	// 	if (isTokenA) {
-	// 		let _amount = amount * decimals(tokenA.decimals);
-	// 		let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId, BigInt(_amount));
-	// 		let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-	// 		console.log('Swapping');
-	// 		console.log(amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
-	// 		console.log('slippage: ' + _slippage + '%' + ' ' + tokenB.symbol);
-	// 		console.log(
-	// 			'estimate: ' + Number(esitmate) / decimals(tokenB.decimals) + ' ' + tokenB.symbol
-	// 		);
-	// 		//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
-	// 	} else {
-	// 		let _amount = amount * decimals(tokenB.decimals);
-	// 		console.log(_amount);
-	// 		let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId, BigInt(_amount));
-	// 		let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-	// 		console.log('Swapping');
-	// 		console.log(amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
-	// 		console.log('slippage: ' + _slippage + ' ' + tokenA.symbol);
-	// 		console.log(
-	// 			'estimate: ' + Number(esitmate) / decimals(tokenA.decimals) + ' ' + tokenA.symbol
-	// 		);
-	// 		//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
-	// 	}
-	// };
-
-	// const sell = async () => {
-	// 	console.log('sell');
-	// 	let poolId = { PUMP: pool.id };
-	// 	if (isTokenA) {
-	// 		let _amount = amount * decimals(tokenA.decimals);
-	// 		let esitmate = await pumpy.getSwapTokenBEstimateGivenTokenA(poolId, BigInt(_amount));
-	// 		let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-	// 		console.log('Swapping');
-	// 		console.log(amount + ' ' + tokenA.symbol + ' for ' + tokenB.symbol);
-	// 		console.log('slippage: ' + _slippage + '%' + ' ' + tokenB.symbol);
-	// 		console.log(
-	// 			'estimate: ' + Number(esitmate) / decimals(tokenB.decimals) + ' ' + tokenB.symbol
-	// 		);
-	// 		//return await pumpy.swapTokenA({ PUMP: pool.id }, amount, _slippage);
-	// 	} else {
-	// 		let _amount = amount * decimals(tokenB.decimals);
-	// 		let esitmate = await pumpy.getSwapTokenAEstimateGivenTokenB(poolId, BigInt(_amount));
-	// 		let _slippage = BigInt(getPercentage(slippage, Number(esitmate)));
-	// 		console.log('Swapping');
-	// 		console.log(amount + ' ' + tokenB.symbol + ' for ' + tokenA.symbol);
-	// 		console.log('slippage: ' + _slippage + '%' + ' ' + tokenA.symbol);
-	// 		console.log(
-	// 			'estimate: ' + Number(esitmate) / decimals(tokenA.decimals) + ' ' + tokenA.symbol
-	// 		);
-	// 		//return await pumpy.swapTokenB({ PUMP: pool.id }, amount, _slippage);
-	// 	}
-	// };
-
-	const toggleToken = async () => {
-		isTokenA = !isTokenA;
-		console.log('toggleToken');
+	const buy = async () => {
+		console.log('Buying', amount, isTokenA ? tokenA.symbol : tokenB.symbol);
+		// Implement buy logic here
 	};
 
-	const toggleBuy = async () => {
+	const sell = async () => {
+		console.log('Selling', amount, isTokenA ? tokenA.symbol : tokenB.symbol);
+		// Implement sell logic here
+	};
+
+	const toggleToken = () => {
+		isTokenA = !isTokenA;
+		console.log('Toggled token');
+	};
+
+	const toggleBuy = () => {
 		isTokenA = false;
 		isBuy = true;
-		console.log('toggleBuy');
+		console.log('Switched to Buy');
 	};
 
-	const toggleSell = async () => {
+	const toggleSell = () => {
 		isTokenA = true;
 		isBuy = false;
-		console.log('toggleSell');
+		console.log('Switched to Sell');
 	};
 
-	const toggleSlippage = async () => {
+	const toggleSlippage = () => {
 		dialogOpen = !dialogOpen;
-		console.log('toggleSlippage');
+		console.log('Toggled slippage dialog');
 	};
 
-	const setSlippage = async () => {
-		console.log('slippage');
+	const setSlippage = () => {
+		console.log('Set slippage to', slippage);
+		dialogOpen = false;
 	};
 
 	const swap = async () => {
-		//let result: TokenResult;
 		if (isBuy) {
-			//result = await buy();
 			await buy();
 		} else {
-			//result = await sell();
 			await sell();
 		}
-		console.log('swap');
+		console.log('Swap executed');
 	};
-
-	// pumpyActor.subscribe((value) => {
-	// 	pumpy = value;
-	// });
 </script>
 
 <Card.Root class="space-y-1 min-w-80">
 	<Card.Header>
 		<div class="flex flex-row gap-2">
-			<Button class="w-full" on:click={toggleBuy}>Buy</Button>
-			<Button class="w-full" variant="secondary" on:click={toggleSell}>Sell</Button>
+			<Button class="w-full border-white border-1  " on:click={toggleBuy}>Buy</Button>
+			<Button class="w-full border-white border-1 hover:border-red-600  " variant="secondary" on:click={toggleSell}>Sell</Button>
 		</div>
 	</Card.Header>
 	<Card.Content>
 		<div class="flex flex-col space-y-4">
 			{#if isBuy}
 				<div class="flex flex-row gap-6">
-					{#if isTokenA}
-						<Button class="h-6 w-full" on:click={toggleToken}>switch to {tokenB.symbol}</Button>
-					{:else}
-						<Button class="h-6 w-full" on:click={toggleToken}>switch to {tokenA.symbol}</Button>
-					{/if}
-
+					<Button class="h-6 w-full" on:click={toggleToken}>
+						switch to {isTokenA ? tokenB.symbol : tokenA.symbol}
+					</Button>
 					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
 				</div>
 			{:else}
@@ -186,14 +107,10 @@
 	</Card.Content>
 	<Card.Footer class="flex flex-col space-y-3">
 		<div class="flex flex-row gap-2 w-full">
-			<Input type="number" placeholder="0.0" bind:value={amount}></Input>
+			<Input type="number" placeholder="0.0" bind:value={amount} />
 			<Avatar.Root class="hidden h-9 w-9 sm:flex">
-				{#if isTokenA}
-					<Avatar.Image src={tokenA.icon} alt="Avatar" />
-				{:else}
-					<Avatar.Image src={tokenB.icon} alt="Avatar" />
-				{/if}
-				<Avatar.Fallback>JL</Avatar.Fallback>
+				<Avatar.Image src={isTokenA ? tokenA.icon : tokenB.icon} alt="Token Icon" />
+				<Avatar.Fallback>T</Avatar.Fallback>
 			</Avatar.Root>
 		</div>
 		{#if isBuy}
@@ -216,38 +133,25 @@
 		<Button class="w-full" on:click={swap}>place trade</Button>
 	</Card.Footer>
 </Card.Root>
-<div>
-	<Dialog.Root bind:open={dialogOpen}>
-		<Dialog.Content>
-			<Dialog.Header class="space-y-6">
-				<Dialog.Title>Set Slippage</Dialog.Title>
-				{#if isTokenA}
-					<Input
-						type="number"
-						min="0"
-						bind:value={slippage}
-						id="token"
-						placeholder="{tokenA.symbol} 0.0"
-						class="col-span-3"
-					/>
-				{:else}
-					<Input
-						type="number"
-						min="0"
-						bind:value={slippage}
-						id="token"
-						placeholder="{tokenB.symbol} 0.0"
-						class="col-span-3"
-					/>
-				{/if}
-				<Dialog.Description>
-					tip: its optional but buying a small amount of tokens helps protect your tokens from
-					snipers
-				</Dialog.Description>
-			</Dialog.Header>
-			<Dialog.Footer>
-				<Button class="w-full" on:click={setSlippage}>Close</Button>
-			</Dialog.Footer>
-		</Dialog.Content>
-	</Dialog.Root>
-</div>
+
+<Dialog.Root bind:open={dialogOpen}>
+	<Dialog.Content>
+		<Dialog.Header class="space-y-6">
+			<Dialog.Title>Set Slippage</Dialog.Title>
+			<Input
+				type="number"
+				min="0"
+				bind:value={slippage}
+				id="slippage"
+				placeholder="Slippage %"
+				class="col-span-3"
+			/>
+			<Dialog.Description>
+				Tip: Setting a small slippage helps protect your tokens from price fluctuations.
+			</Dialog.Description>
+		</Dialog.Header>
+		<Dialog.Footer>
+			<Button class="w-full" on:click={setSlippage}>Set Slippage</Button>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>

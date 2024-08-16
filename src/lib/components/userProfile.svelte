@@ -13,13 +13,13 @@
 <div class="bg-gray-900 text-white p-3 sm:p-4 rounded-lg">
 	<div class="flex flex-col sm:flex-row items-center sm:items-start mb-4">
 		<img
-			src={user.avatar}
+			src={user?.avatar}
 			alt="User avatar"
 			class="w-16 h-16 sm:w-12 sm:h-12 rounded-full mb-2 sm:mb-0 sm:mr-4"
 		/>
 		<div class="text-center sm:text-left">
-			<h2 class="text-xl font-bold">{user.username}</h2>
-			<p class="text-xs sm:text-sm text-gray-400">{user.followers} followers</p>
+			<h2 class="text-xl font-bold">{user?.username}</h2>
+			<p class="text-xs sm:text-sm text-gray-400">{user?.followers} followers</p>
 		</div>
 	</div>
 
@@ -28,12 +28,12 @@
 	>
 
 	<div class="mt-4 grid grid-cols-2 gap-2 text-center sm:text-left">
-		<p class="text-xs sm:text-sm">Likes received: {user.likes}</p>
-		<p class="text-xs sm:text-sm">Mentions received: {user.mentions}</p>
+		<p class="text-xs sm:text-sm">Likes received: {user?.likes}</p>
+		<p class="text-xs sm:text-sm">Mentions received: {user?.mentions}</p>
 	</div>
 
 	<div class="mt-4 bg-gray-800 p-2 rounded text-xs break-all">
-		{user.publicKey}
+		{user?.publicKey}
 	</div>
 
 	<nav class="mt-4 overflow-x-auto">
