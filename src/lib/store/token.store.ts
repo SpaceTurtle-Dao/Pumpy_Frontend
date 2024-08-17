@@ -1,5 +1,94 @@
 import { get, writable, type Writable } from "svelte/store";
 
+
+interface SocialCard {
+    description: string;
+    title: string;
+}
+
+interface SocialIcon {
+    alt: string;
+    network: 'twitter' | 'discord' | 'telegram';
+    fgColor: string;
+    bgColor: string;
+    width: string;
+    height: string;
+}
+
+interface Progress {
+    value: string;
+    title: string;
+    bondedPercentage: number;
+}
+
+//BalanceCard Interface
+interface BalanceCard {
+    title: string;
+    value: string;
+    icon: string;
+}
+
+interface AvatarInfo {
+    imageSrc: string;
+    altText: string;
+    fallback: string;
+}
+
+interface CreatorCard {
+    createdBy: string;
+    avatar: AvatarInfo;
+}
+
+//Analytics Card
+interface StatCard {
+    title: string;
+    value: string;
+    percentage: string;
+    isUp: boolean;
+}
+
+interface Pool {
+    id: string;
+    name: string;
+}
+
+interface Token {
+    symbol: string;
+    icon: string;
+    decimals: bigint;
+}
+
+interface SwapState {
+    isLoading: boolean;
+    dialogOpen: boolean;
+    isTokenA: boolean;
+    isBuy: boolean;
+    slippage: number;
+    amount: number;
+}
+
+interface SwapComponentState {
+    pool: Pool;
+    tokenA: Token;
+    tokenB: Token;
+    swapState: SwapState;
+}
+
+
+
+interface HolderDistributionData {
+  holders: Array<[string, bigint]>;
+  token: TokenInfo;
+  poolId: string;
+}
+
+interface HolderInfo {
+  address: string;
+  amount: bigint;
+  percentage: number;
+  type?: 'Bonding' | 'Dev' | undefined;
+}
+
 export type TokenInfo = {
   decimals: bigint;
   twitter: [] | [string];
