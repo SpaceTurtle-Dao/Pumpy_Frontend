@@ -86,9 +86,7 @@
 		console.log(amountB);
 		let transferResult = await transferToken(tokenB,PROCESS_ID(),amountB);
 		console.log(transferResult);
-		let result = await createPump(_icon, tokenB, name, ticker, description, amountA, amountB);
-		let data = JSON.parse(result.Data);
-		if (data.code != 200) throw 'Issue creating Pump';
+		await createPump(_icon, tokenB, name, ticker, description, amountA, amountB);
 	};
 
 	loadingStore.subscribe((value) => {

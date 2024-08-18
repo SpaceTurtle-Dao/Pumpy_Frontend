@@ -6,6 +6,7 @@ import type { Tag } from '$lib/models/Tag.svelte';
 import { upload } from '$lib/uploader';
 import { loadingStore } from '$lib/store/store';
 import { Pools } from '$lib/store/pools.store';
+import { createToast, StatusCode } from '$lib/utils/toastHandler.svelte';
 
 const decimals = (value: BigInt) => {
     let _decimals = 1;
@@ -16,7 +17,7 @@ const decimals = (value: BigInt) => {
     return _decimals;
 };
 
-function relDiff(a:number, b:number) {
+function relDiff(a: number, b: number) {
     return (100) * Math.abs((a - b) / ((a + b) / 2));
 }
 
@@ -59,7 +60,7 @@ const _fetchPumps = async () => {
         let result = await read(PROCESS_ID(), message);
         if (result == undefined) return _pools;
         console.log(result)
-        let json = JSON.parse(result.Data).message;
+        let json = JSON.parse(result.Data);
         console.log(json);
         for (const key in json) {
             _pools.push(json[key]);
@@ -74,11 +75,12 @@ const _fetchPumps = async () => {
 export const tokenInfo = async (process: string) => {
     try {
         let obj = {};
-        let result = await send(process, info());
+        let result = await read(process, info());
         console.log(result);
-        console.log(result[0].Tags);
-        let tags = result[0].Tags;
-
+        console.log(result.Tags);
+        let tags = result.Tags;
+        console.log("Boom");
+        console.log(tags);
         tags.forEach((tag: Tag) => {
             // @ts-ignore
             obj[tag.name] = tag.value;
@@ -108,7 +110,7 @@ export const poolInfo = async (poolId: string) => {
     try {
         // @ts-ignore
         let message = pool(poolId);
-        let result = await send(PROCESS_ID(), message);
+        let result = await read(PROCESS_ID(), message);
         console.log("res")
         console.log(result[0].Data)
         return result[0]
@@ -121,13 +123,11 @@ export const createPump = async (icon: File, tokenB: string, name: string, ticke
     loadingStore.set(true);
     try {
         // @ts-ignore
-        /*let tokenProcess = await createProcess(PROCESS_ID());
-        console.log('Token Process: ' + tokenProcess);
-        let poolProcess = await createProcess(PROCESS_ID());
-        console.log('Pool Process: ' + poolProcess);
-        var delayInMilliseconds = 5000; //5 second*/
+        createToast(StatusCode.Loading, "Uploading", "Uploading Image","","");
         let imageId = await upload(await icon.arrayBuffer());
-        console.log('Initing Token');
+        let url = `https://www.arweave.net/${imageId}?ext=png`;
+        createToast(StatusCode.Success, "Success", "Upload complete","Transaction",url);
+        createToast(StatusCode.Loading, "Processing", "Creating Token",ticker,"");
         let message = init(
             tokenB,
             name,

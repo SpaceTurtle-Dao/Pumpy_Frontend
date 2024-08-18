@@ -1,15 +1,16 @@
 <script context="module" lang="ts">
 	import { toast } from 'svelte-sonner';
 
-	enum StatusCode {
+	export enum StatusCode {
 		NotFound = 404,
 		Success = 200,
 		Accepted = 202,
 		BadRequest = 400,
-		None
+		Info,
+        Loading
 	}
 
-	export const createToast = (statusCode: StatusCode,title:string,description:string,label:string,messageId:string) => {
+	export const createToast = (statusCode: StatusCode,title:string,description:string,label:string,link:string) => {
 		switch (statusCode) {
 			case StatusCode.NotFound: {
 				toast.error(title, {
@@ -22,7 +23,7 @@
 					description: description,
 					action: {
 						label: label,
-						onClick: () => window.open('https://www.ao.link/#/message/'+messageId, '_blank')
+						onClick: () => window.open(link, '_blank')
 					}
 				});
 				break;
@@ -32,7 +33,7 @@
 					description: description,
 					action: {
 						label: label,
-						onClick: () => window.open('https://www.ao.link/#/message/'+messageId, '_blank')
+						onClick: () => window.open(link, '_blank')
 					}
 				});
 				break;
@@ -43,8 +44,14 @@
 				});
 				break;
 			}
-			case StatusCode.None: {
+			case StatusCode.Info: {
 				toast.info(title, {
+					description: description
+				});
+				break;
+			}
+            case StatusCode.Loading: {
+				toast.loading(title, {
 					description: description
 				});
 				break;

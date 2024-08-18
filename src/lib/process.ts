@@ -1,5 +1,6 @@
 // @ts-ignore
 import { connect, createDataItemSigner } from '@permaweb/aoconnect';
+import { createToast } from './utils/toastHandler.svelte';
 
 // @ts-ignore
 const { result, results, message, spawn, monitor, unmonitor, dryrun } = connect({
@@ -69,13 +70,10 @@ export const read = async (processId, tags) => {
 		This is the process the message is ultimately sent to.
 	*/
 		process: processId,
-		data: '',
-		anchor: '1234',
 
 		// Tags that the process will use as input.
 		tags: tags
 	});
-	console.log(result)
 	console.log(result.Messages)
 	let message = result.Messages.pop();
 	console.log(message);
@@ -114,7 +112,13 @@ const readMessage = async (messageId: string, processId: string) => {
 		// the arweave TXID of the process
 		process: processId
 	});
-	if (Error == undefined) return Messages
+	if (Error == undefined) {
+		let message = Messages.pop();
+		let data = JSON.parse(message.Data);
+		createToast(data.code, data.title, data.description,data.label,'https://www.ao.link/#/message/'+messageId);
+	}else{
+
+	}
 	console.log(Messages);
 	console.log("Spwawns"+Spawns);
 	console.log(Output);
