@@ -10,7 +10,7 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { loadingStore, poolsStore } from '$lib/store/store';
 
-	import { send, createProcess } from '$lib/process';
+	import { send} from '$lib/process';
 	import { upload } from '$lib/uploader';
 	import { createPump, transferToken, add, poolInfo, tokenInfo } from '$lib/common/swappy';
 	import {
@@ -86,9 +86,7 @@
 		console.log(amountB);
 		let transferResult = await transferToken(tokenB,PROCESS_ID(),amountB);
 		console.log(transferResult);
-		let result = await createPump(_icon, tokenB, name, ticker, description, amountA, amountB);
-		let data = JSON.parse(result.Data);
-		if (data.code != 200) throw 'Issue creating Pump';
+		await createPump(_icon, tokenB, name, ticker, description, amountA, amountB);
 	};
 
 	loadingStore.subscribe((value) => {
