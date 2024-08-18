@@ -68,11 +68,10 @@
             <div class="flex items-center">
                 <span class="ml-2 text-xl font-bold text-white nova-mono-regular">Swappy</span>
             </div>
+            
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-2 lg:space-x-4">
-                    {#each ['Articles', 'Security', 'Infra Log', 'Docs', 'Community', 'Status', 'Pricing'] as item}
-                        <a href="#{item.toLowerCase()}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-xs lg:text-sm font-medium">{item}</a>
-                    {/each}
+                    <p class="text-gray-300 px-2 py-2 rounded-md text-xs lg:text-sm font-medium">Launch a Token Swap a Token</p>
                 </div>
             </div>
             <div class="hidden md:block">

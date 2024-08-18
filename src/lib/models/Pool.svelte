@@ -10,8 +10,18 @@
         time: string;
         holders: number;
         buyers: number;
-        volume: number;
         marketCap: number;
+        liquidty: number;
+        volume: number;
+        hourVolume: Volume;
+        dayVolume: Volume;
+        weekVolume: Volume;
+        montlyVolume: Volume;
+    };
+
+    export type Volume = {
+        past: number;
+        now: number;
     };
 
 </script>
