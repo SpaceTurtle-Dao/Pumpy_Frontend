@@ -1,5 +1,5 @@
 import type { Pool } from '$lib/models/Pool.svelte';
-import { send, createProcess, read } from '$lib/process';
+import { send, read } from '$lib/process';
 import { info, init, pools, pumps, pool, transfer } from '$lib/messageFactory.svelte';
 import { PROCESS_ID } from './constants';
 import type { Tag } from '$lib/models/Tag.svelte';
@@ -7,6 +7,9 @@ import { upload } from '$lib/uploader';
 import { loadingStore } from '$lib/store/store';
 import { Pools } from '$lib/store/pools.store';
 import { createToast, StatusCode } from '$lib/utils/toastHandler.svelte';
+import { toast } from 'svelte-sonner';
+
+const toastId = toast('Sonner');
 
 const decimals = (value: BigInt) => {
     let _decimals = 1;
@@ -123,11 +126,11 @@ export const createPump = async (icon: File, tokenB: string, name: string, ticke
     loadingStore.set(true);
     try {
         // @ts-ignore
-        createToast(StatusCode.Loading, "Uploading", "Uploading Image","","");
+        createToast(StatusCode.Loading, "Uploading Image for "+ticker,"","",toastId);
         let imageId = await upload(await icon.arrayBuffer());
         let url = `https://www.arweave.net/${imageId}?ext=png`;
-        createToast(StatusCode.Success, "Success", "Upload complete","Transaction",url);
-        createToast(StatusCode.Loading, "Processing", "Creating Token",ticker,"");
+        createToast(StatusCode.Success, "Upload complete","Transaction",url,toastId);
+        createToast(StatusCode.Loading, "Creating Token",ticker,"",toastId);
         let message = init(
             tokenB,
             name,
@@ -137,7 +140,7 @@ export const createPump = async (icon: File, tokenB: string, name: string, ticke
             amountA,
             amountB,
         );
-        let result = await send(PROCESS_ID(), message);
+        let result = await send(PROCESS_ID(), message,toastId);
         console.log(result);
         loadingStore.set(false);
         return result[0]
@@ -152,7 +155,7 @@ export const add = async (poolId: string, amountA: string, amountB: string) => {
         console.log('boom');
         // @ts-ignore
         let message = add(amountA, amountB);
-        let result = await send(poolId, message);
+        let result = await send(poolId, message,toastId);
         console.log(result);
     } catch (e) {
         console.log(e);
@@ -164,7 +167,7 @@ export const swapA = async (poolId: string, amount: string, slippage: string) =>
     try {
         // @ts-ignore
         let message = swapA(amount, slippage);
-        let result = await send(poolId, message);
+        let result = await send(poolId, message,toastId);
         console.log(result);
     } catch (e) {
         console.log(e);
@@ -175,7 +178,7 @@ export const swapB = async (poolId: string, amount: string, slippage: string) =>
     try {
         // @ts-ignore
         let message = swapB(amount, slippage);
-        let result = await send(poolId, message);
+        let result = await send(poolId, message,toastId);
         console.log(result);
     } catch (e) {
         console.log(e);
@@ -186,7 +189,7 @@ export const transferToken = async (token: string, recipient: string, quantity: 
     try {
         // @ts-ignore
         let message = transfer(recipient, quantity);
-        let result = await send(token, message);
+        let result = await send(token, message,toastId);
         console.log(result);
     } catch (e) {
         console.log(e);

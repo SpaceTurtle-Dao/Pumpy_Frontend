@@ -10,17 +10,17 @@
         Loading
 	}
 
-	export const createToast = (statusCode: StatusCode,title:string,description:string,label:string,link:string) => {
+	export const createToast = (statusCode: StatusCode,description:string,label:string,link:string, id:string | number) => {
 		switch (statusCode) {
 			case StatusCode.NotFound: {
-				toast.error(title, {
-					description: description
+				toast.error(description, {
+                    id:id
 				});
 				break;
 			}
 			case StatusCode.Success: {
-				toast.success(title, {
-					description: description,
+				toast.success(description, {
+                    id:id,
 					action: {
 						label: label,
 						onClick: () => window.open(link, '_blank')
@@ -29,8 +29,8 @@
 				break;
 			}
 			case StatusCode.Accepted: {
-				toast.success(title, {
-					description: description,
+				toast.success(description, {
+                    id:id,
 					action: {
 						label: label,
 						onClick: () => window.open(link, '_blank')
@@ -39,20 +39,20 @@
 				break;
 			}
 			case StatusCode.BadRequest: {
-				toast.error(title, {
-					description: description
+				toast.error(description, {
+                    id:id
 				});
 				break;
 			}
 			case StatusCode.Info: {
-				toast.info(title, {
-					description: description
+				toast.info(description, {
+                    id:id
 				});
 				break;
 			}
             case StatusCode.Loading: {
-				toast.loading(title, {
-					description: description
+				toast.loading(description, {
+                    id:id
 				});
 				break;
 			}

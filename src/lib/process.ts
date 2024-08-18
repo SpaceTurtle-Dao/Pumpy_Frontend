@@ -10,7 +10,7 @@ const { result, results, message, spawn, monitor, unmonitor, dryrun } = connect(
 });
 
 // @ts-ignore
-export const send = async (processId, tags) => {
+export const send = async (processId, tags, toastId) => {
 	console.log("Sending message to: " + processId)
 	// The only 2 mandatory parameters here are process and signer
 	// connect to the extension
@@ -29,21 +29,18 @@ export const send = async (processId, tags) => {
 		signer: createDataItemSigner(window.arweaveWallet)
 	});
 	console.log(messageId);
-	return await readMessage(messageId, processId);
+	return await readMessage(messageId, processId,toastId);
 	//return result
 };
 
 // @ts-ignore
-export const sendData = async (processId, tags, data) => {
+/*export const sendData = async (processId, tags, data) => {
 	console.log("Sending message to: " + processId)
 	// The only 2 mandatory parameters here are process and signer
 	// connect to the extension
 	// @ts-ignore
 	let messageId = await message({
-		/*
-		The arweave TXID of the process, this will become the "target".
-		This is the process the message is ultimately sent to.
-	*/
+
 		process: processId,
 
 		// Tags that the process will use as input.
@@ -56,7 +53,7 @@ export const sendData = async (processId, tags, data) => {
 	console.log(messageId);
 	return await readMessage(messageId, processId);
 	//return result
-};
+};*/
 
 // @ts-ignore
 export const read = async (processId, tags) => {
@@ -82,7 +79,7 @@ export const read = async (processId, tags) => {
 };
 
 
-export const createProcess = async (owner: string) => {
+/*export const createProcess = async (owner: string) => {
 	const processId = await spawn({
 		// The Arweave TXID of the ao Module
 		module: 'Pq2Zftrqut0hdisH_MC2pDOT6S4eQFoxGsFUzR6r350',
@@ -102,10 +99,10 @@ export const createProcess = async (owner: string) => {
 		console.log("Message: " + messageId)
 	}, delayInMilliseconds);
 	return processId;
-};
+};*/
 
 // @ts-ignore
-const readMessage = async (messageId: string, processId: string) => {
+const readMessage = async (messageId: string, processId: string, toastId: string | number) => {
 	let { Messages, Spawns, Output, Error } = await result({
 		// the arweave TXID of the message
 		message: messageId,
@@ -115,7 +112,7 @@ const readMessage = async (messageId: string, processId: string) => {
 	if (Error == undefined) {
 		let message = Messages.pop();
 		let data = JSON.parse(message.Data);
-		createToast(data.code, data.title, data.description,data.label,'https://www.ao.link/#/message/'+messageId);
+		createToast(data.code, data.description,data.label,'https://www.ao.link/#/message/'+messageId,toastId);
 	}else{
 
 	}
