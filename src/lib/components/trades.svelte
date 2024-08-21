@@ -88,7 +88,7 @@
 			let cell: SwapCell = {
 				name: firstFive + lastThree,
 				type: Object.keys(swap.swapType)[0],
-				tokenA: NumberFormatter(_tokenA, 3), 
+				tokenA: NumberFormatter(_tokenA, 3),
 				tokenB: NumberFormatter(_tokenB, 3),
 				createdAt: formattedDate
 			};
@@ -99,15 +99,15 @@
 	setup();
 </script>
 
-<div class="flex flex-co ">
-	<main class="grid flex-1 items-start">
+<div class="flex flex-col p-4 space-y-4">
+	<main class="grid flex-1 items-start space-y-4">
 		<Tabs.Root value="trades">
 			<div class="flex items-center">
-				<Tabs.List>
-					<Tabs.Trigger value="trades">Trades</Tabs.Trigger>
-					<Tabs.Trigger value="thread">Thread</Tabs.Trigger>
+				<Tabs.List class="flex space-x-2">
+					<Tabs.Trigger value="trades" class="px-4 py-2 bg-gray-700 text-white rounded-md">Trades</Tabs.Trigger>
+					<Tabs.Trigger value="thread" class="px-4 py-2 bg-gray-700 text-white rounded-md">Thread</Tabs.Trigger>
 				</Tabs.List>
-				<div class="ml-auto flex items-center gap-2 bg-gray-800">
+				<div class="ml-auto flex items-center gap-2 bg-gray-800 p-2 rounded-md">
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger asChild let:builder>
 							<Button builders={[builder]} variant="outline" size="sm" class="h-8 gap-1">
@@ -127,14 +127,14 @@
 					</Button>
 				</div>
 			</div>
-			<Tabs.Content value="trades" class="bg-gray-800">
-				<Card.Root>
+			<Tabs.Content value="trades" class="bg-gray-800 rounded-md overflow-hidden">
+				<Card.Root class="overflow-x-auto">
 					<Card.Header>
 						<Card.Title>Transactions</Card.Title>
 						<Card.Description>(0 trades from people you follow)</Card.Description>
 					</Card.Header>
 					<Card.Content>
-						<Table.Root>
+						<Table.Root class="w-full min-w-[640px]">
 							<Table.Header>
 								<Table.Row>
 									<Table.Head class="hidden w-[100px] sm:table-cell">
@@ -195,10 +195,10 @@
 						</Table.Root>
 					</Card.Content>
 					<Card.Footer>
-						<div class="text-xs text-muted-foreground">
-							Showing <strong>1-2</strong> of <strong>2</strong> trades
-						</div>
-					</Card.Footer>
+							<div class="text-xs text-muted-foreground">
+								Showing <strong>1-2</strong> of <strong>2</strong> trades
+							</div>
+						</Card.Footer>
 				</Card.Root>
 			</Tabs.Content>
 		</Tabs.Root>

@@ -74,8 +74,6 @@ interface SwapComponentState {
     swapState: SwapState;
 }
 
-
-
 interface HolderDistributionData {
   holders: Array<[string, bigint]>;
   token: TokenInfo;
