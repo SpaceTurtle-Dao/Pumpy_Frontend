@@ -131,7 +131,7 @@
 
         
             <div class="basis-1/2 space-y-4">
-                <div class="flex sm:flex-row  flex-col gap-4">
+                <div class="flex sm:flex-row flex-col gap-4">
                     <PumpSwap />
                     <div class="space-y-4">
                         <div class="flex flex-row gap-4">
@@ -197,4 +197,4 @@
         </div>
     <!-- {/if} -->
 </div>
-<Footer class="text-white" />
+<Footer class="w-screen h-screen" />
