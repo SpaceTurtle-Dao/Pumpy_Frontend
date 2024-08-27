@@ -33,7 +33,7 @@ jobs:
 
       - name: Deploy to development
         if: github.base_ref == 'development'
-        uses: outlierventures/arweave-bundler-action@v0.3.1
+        uses: OutlierVentures/arweave-bundler@v0.3.2
         with:
           command: upload
           directory: build/
@@ -42,7 +42,7 @@ jobs:
       
       - name: Deploy to staging
         if: github.base_ref == 'staging'
-        uses: outlierventures/arweave-bundler-action@v0.3.1
+        uses: OutlierVentures/arweave-bundler@v0.3.2
         with:
           command: upload
           directory: build/
@@ -52,7 +52,7 @@ jobs:
         
       - name: Deploy to production
         if: github.base_ref == 'main'
-        uses: outlierventures/arweave-bundler-action@v0.3.1
+        uses: OutlierVentures/arweave-bundler@v0.3.2
         with:
           command: upload
           directory: build/
