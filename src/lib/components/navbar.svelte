@@ -11,8 +11,8 @@
 	<div class="hidden">
 		<div class=" md:p-5 flex justify-between items-stretch gap-2.5">
 			<div class="rounded-md bg-background-inverse h-fit flex navbar-logo px-1.5 py-[7px] pr-3">
-				<a class="flex items-center gap-1" href="/">
-					<div class="w-9 h-9 inline-block relative"></div>
+				<!-- <a class="flex items-center gap-1" href="/">
+					<div class="w-20 h-9 inline-block relative"></div>
 					<div class="relative" style="width:100.42px;height:16.65px">
 						<img
 							alt="logo-words"
@@ -21,13 +21,17 @@
 							data-nimg="fill"
 							class="will-change-transform transition duration-200 flex-shrink-0 min-w-[100.42px]"
 							style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-							src="/assets/images/logo-words.svg"
+							src="/assets/Swappiee.png"
 						/>
 					</div>
-				</a>
+				</a> -->
 			</div>
 			<div class="rounded-md bg-background-inverse py-2 px-2 flex-1 h-[50px]">
 				<div class="flex items-center gap-1.5">
+					<a
+						class="flex items-center justify-center text-text-on-fill text-base leading-[110%] gt-standard-mono px-3 py-2 rounded-md hover:bg-[#F5F5F5] hover:text-black"
+						href="/pricing">Pricing</a
+					>
 					<a
 						class="flex items-center justify-center text-text-on-fill text-base leading-[110%] gt-standard-mono px-3 py-2 rounded-md hover:bg-[#F5F5F5] hover:text-black"
 						href="/pricing">Pricing</a

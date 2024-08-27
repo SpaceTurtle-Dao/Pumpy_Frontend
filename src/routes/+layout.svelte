@@ -14,6 +14,7 @@
 	} from '../lib/components/ui/navbar-menu/index';
 	import Logo from '../assets/logo.svelte';
 	import Wave from '../assets/tech_wave_logo.svelte';
+	import swappy from '../assets/s.png';
 	import ThemeSwitch from '$lib/components/ui/theme-switch/themeSwitch.svelte';
 	import WalletConnectButton from '$lib/components/wallet.svelte';
 
@@ -62,11 +63,29 @@
 	}
 </script>
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-gray-800/30 backdrop-blur-md">
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="flex items-center justify-between h-16">
-			<div class="flex items-center">
-				<span class="ml-2 text-xl font-bold text-white nova-mono-regular">Swappy</span>
+			<!-- <div class="flex items-center"> -->
+			<!-- <span class="ml-2 text-xl font-bold text-white nova-mono-regular">Swappy</span> -->
+			<!-- </div> -->
+			
+			<div class="rounded-md bg-background-inverse h-fit flex navbar-logo px-1.5 py-[7px] pr-3">
+				<a class="flex items-center gap-1" href="/">
+					<!-- <div class="w-30 h-30 inline-block relative"></div> -->
+				</a>
+			</div>
+
+			<div class="relative" style="width:45px;height:45px">
+				<img
+					alt="swappy"
+					loading="eager"
+					decoding="async"
+					data-nimg="fill"
+					class="logo"
+					style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
+					src={swappy}
+				/>
 			</div>
 			<div class="hidden md:block">
 				<div class="ml-10 flex items-baseline space-x-2 lg:space-x-4">
@@ -80,9 +99,7 @@
 				</div>
 			</div>
 			<div class="hidden md:block">
-				<WalletConnectButton
-					buttonClass="text-white border-purple-500 bg-purple-500 text-xs lg:text-sm"
-				/>
+				<WalletConnectButton buttonClass="border-primary-500 bg-primary-500 text-xs lg:text-sm" />
 			</div>
 			<div class="md:hidden">
 				<button on:click={toggleMenu} class="text-white">
@@ -121,3 +138,18 @@
 	<Toaster />
 	<slot />
 </div>
+
+<style>
+	.logo {
+		height: 0.6rem;
+		padding: 0.6rem;
+		will-change: filter;
+		transition: filter 300ms;
+	}
+	.logo:hover {
+		filter: drop-shadow(0 0 2em #646cffaa);
+	}
+	.logo.svelte:hover {
+		filter: drop-shadow(0 0 2em #ff3e00aa);
+	}
+</style>
