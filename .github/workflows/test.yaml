@@ -1,17 +1,12 @@
 name: CD
 
 on:
-  pull_request:
-      types: [closed]
-      branches:
-          - main
-          - staging
-          - development
-
+  push:
+    branches:
+      - feature/ao
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
