@@ -5,8 +5,8 @@
 	import { PROCESS_ID } from './constants';
 	import type { Tag } from '$lib/models/Tag.svelte';
 	import { upload } from '$lib/uploader';
-	import { loadingStore } from '$lib/store/store';
-	import { Pools } from '$lib/store/pools.store';
+	import { loadingStore } from '$lib/store/store.svelte';
+	import { Pools } from '$lib/store/pools.store.svelte';
 	import { createToast, StatusCode } from '$lib/utils/toastHandler.svelte';
 	import { toast } from 'svelte-sonner';
 

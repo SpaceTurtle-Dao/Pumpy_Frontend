@@ -5,9 +5,9 @@
 	import { Badge } from '$lib/components/ui/badge';
   import { Button } from '$lib/components/ui/button';
 	import type { Pool } from '$lib/models/Pool.svelte';
-	import { pumpsStore } from '$lib/store/store';
+	import { pumpsStore } from '$lib/store/store.svelte';
   //import { fetchPumps, poolInfo } from '$lib/common/swappy.svelte';
-  import { Pools } from '$lib/store/pools.store';
+  import { Pools } from '$lib/store/pools.store.svelte';
   import Time, { svelteTime } from 'svelte-time';
   import { Input } from "$lib/components/ui/input/index.js";
   import { dayjs } from 'svelte-time';

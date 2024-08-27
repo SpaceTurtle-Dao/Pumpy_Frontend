@@ -5,7 +5,7 @@
   import { Button } from '$lib/components/ui/button/index.js';
   import { ArrowUpDown, WalletMinimal, Settings2, RotateCw } from 'lucide-svelte/icons';
   import SmallSpinner from './smallSpinner.svelte';
-  import { loadingStore, poolsStore } from '$lib/store/store';
+  import { loadingStore, poolsStore } from '$lib/store/store.svelte';
   import type { Principal } from '@dfinity/principal';
   import * as Card from '$lib/components/ui/card/index.js';
   import * as Avatar from '$lib/components/ui/avatar/index.js';

@@ -8,7 +8,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import { loadingStore, poolsStore } from '$lib/store/store';
+	import { loadingStore, poolsStore } from '$lib/store/store.svelte';
 
 	import { send} from '$lib/process.svelte';
 	import { upload } from '$lib/uploader';

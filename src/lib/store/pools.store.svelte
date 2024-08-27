@@ -1,9 +1,10 @@
-import { writable, type Writable } from "svelte/store";
+<script context="module" lang="ts">
+  import { writable, type Writable } from "svelte/store";
 import type { Pool } from '$lib/models/Pool.svelte';
 
 type Time = number;
 
-const fakePools: Array<Pool> = [
+/*const fakePools: Array<Pool> = [
   {
     name: "LunarX",
     createdBy: "Lunar Exploration Token",
@@ -172,6 +173,8 @@ const fakePools: Array<Pool> = [
     ticker: "",
     description: ""
   }
-];
+];*/
 
 export const Pools = writable<Array<Pool>>([]);
+
+</script>
