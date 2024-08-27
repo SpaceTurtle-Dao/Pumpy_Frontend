@@ -10,7 +10,7 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { loadingStore, poolsStore } from '$lib/store/store';
 
-	import { send} from '$lib/process';
+	import { send} from '$lib/process.svelte';
 	import { upload } from '$lib/uploader';
 	import { createPump, transferToken, add, poolInfo, tokenInfo } from '$lib/common/swappy.svelte';
 	import {
