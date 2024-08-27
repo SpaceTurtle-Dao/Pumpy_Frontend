@@ -115,86 +115,96 @@
 			
         }	
     });
+
+    // Added this for a cohesive color scheme
+    const colors = {
+        primary: '#6C5CE7',
+        secondary: '#81ECEC',
+        background: '#2D3436',
+        cardBg: '#353B48',
+        text: '#FFFFFF',
+        accent: '#FFA502'
+    };
+
 </script>
 
-<div class="sm:w-[109%] w-full text-white  p-3" >
-    <!-- {#if isLoading}
-        <div class="flex justify-center">
+
+<div class="container mx-auto p-4 bg-gray-900 min-h-screen text-white">
+    {#if isLoading}
+        <div class="flex justify-center items-center h-screen">
             <MediumSpinner />
         </div>
-    {:else} -->
-        <div class="flex sm:flex-row flex-col gap-5  ">
-            <div class=" sm:space-y-4 ">
-                <Chart />
-                <Trades {swaps} />
+    {:else}
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-2/4 space-y-8">
+                <div class="bg-gray-800 rounded-lg shadow-lg p-4">
+                    <Chart />
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-lg p-4">
+                    <Trades {swaps} />
+                </div>
+                <div class="bg-gray-800 rounded-lg shadow-lg p-4">
+                    <Holders {holders} token={{ symbol: 'TOKENA' }} poolId="1" />
+                </div>
             </div>
 
-        
-            <div class="basis-1/2 space-y-4">
-                <div class="flex sm:flex-row flex-col gap-4">
+            <div class="lg:w-2/4 space-y-8">
+                <div class="bg-gray-800 rounded-lg shadow-lg p-4">
                     <PumpSwap />
-                    <div class="space-y-4">
-                        <div class="flex flex-row gap-4">
-                            <AnalyticsCard
-                                title={'Market Cap'}
-                                value={analyticsData.marketCap}
-                                percentage={analyticsData.marketCapPercentage}
-                                isUp={analyticsData.isMarketCapUp}
-                                class="text-white"
-                            />
-                            <AnalyticsCard
-                                title={'Volume'}
-                                value={analyticsData.volume}
-                                percentage={analyticsData.volumePercentage}
-                                isUp={analyticsData.isVolumeUp}
-                                class="text-white"
-                            />
-                        </div>
-                        <div class="flex flex-row gap-4">
-                            <AnalyticsProgressCard
-                                title={'Liquidity'}
-                                value={NumberFormatter(
-                                    (Number(analyticsData.liquidity) / decimals(BigInt(8))).toString(),
-                                    3
-                                )}
-                                class="text-white"
-                            />
-                            <AnalyticsProgressCard
-                                title={'King of the kill progress'}
-                                value={NumberFormatter(
-                                    (Number(analyticsData.liquidity) / decimals(BigInt(8))).toString(),
-                                    3
-                                )}
-                                class="text-white"
-                            />
-                        </div>
-                    </div>
                 </div>
-                <div class="flex flex-row gap-4">
-                    <div class="basis-1/3">
-                        <BalanceCard
-                            icon={'icon-path'}
-                            title={'Token A'}
-                            value={NumberFormatter(tokenABalance, 3)}
-                            class="text-white"
-                        />
-                    </div>
-                    <div class="basis-1/3">
-                        <BalanceCard
-                            icon={'icon-path'}
-                            title={'Token B'}
-                            value={NumberFormatter(tokenBBalance, 3)}
-                            class="text-white"
-                        />
-                    </div>
-                    <div class="basis-1/3">
-                        <CreatorCard class="text-white" />
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <AnalyticsCard
+                        title="Market Cap"
+                        value={analyticsData.marketCap}
+                        percentage={analyticsData.marketCapPercentage}
+                        isUp={analyticsData.isMarketCapUp}
+                        class="bg-gray-800 rounded-lg shadow-lg p-4"
+                    />
+                    <AnalyticsCard
+                        title="Volume"
+                        value={analyticsData.volume}
+                        percentage={analyticsData.volumePercentage}
+                        isUp={analyticsData.isVolumeUp}
+                        class="bg-gray-800 rounded-lg shadow-lg p-4"
+                    />
+                    <AnalyticsProgressCard
+                        title="Liquidity"
+                        value={NumberFormatter(
+                            (Number(analyticsData.liquidity) / decimals(BigInt(8))).toString(),
+                            3
+                        )}
+                        class="bg-gray-800 rounded-lg shadow-lg p-4"
+                    />
+                    <AnalyticsProgressCard
+                        title="King of the Hill Progress"
+                        value={NumberFormatter(
+                            (Number(analyticsData.liquidity) / decimals(BigInt(8))).toString(),
+                            3
+                        )}
+                        class="bg-gray-800 rounded-lg shadow-lg p-4"
+                    />
                 </div>
-                <DescriptionCard title={'Token A'} description={'TOKENA'} class="text-white" />
-                <Holders {holders} token={{ symbol: 'TOKENA' }} poolId={'1'} class="text-white" />
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <BalanceCard
+                        icon="icon-path"
+                        title="Token A"
+                        value={NumberFormatter(tokenABalance, 3)}
+                        class="bg-gray-800 rounded-lg shadow-lg p-4"
+                    />
+                    <BalanceCard
+                        icon="icon-path"
+                        title="Token B"
+                        value={NumberFormatter(tokenBBalance, 3)}
+                        class="bg-gray-800 rounded-lg shadow-lg p-4"
+                    />
+                    <CreatorCard class="bg-gray-800 rounded-lg shadow-lg p-4" />
+                </div>
+                <DescriptionCard 
+                    title="Token A" 
+                    description="TOKENA" 
+                    class="bg-gray-800 rounded-lg shadow-lg p-4" 
+                />
             </div>
         </div>
-    <!-- {/if} -->
+    {/if}
 </div>
-<Footer class="w-screen h-screen" />
