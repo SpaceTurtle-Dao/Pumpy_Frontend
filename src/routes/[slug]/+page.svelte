@@ -21,7 +21,7 @@
     import BalanceCard from '$lib/components/BalanceCard.svelte';
     import AnalyticsProgressCard from '$lib/components/analyticsProgressCard.svelte';
     import DescriptionCard from '$lib/components/descriptionCard.svelte';
-    import { poolInfo } from '$lib/common/swappy';
+    import { poolInfo } from '$lib/common/swappy.svelte';
 
     interface AnalyticsData {
         marketCap: string;

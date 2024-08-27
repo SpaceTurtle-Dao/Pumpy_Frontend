@@ -12,7 +12,7 @@
 
 	import { send} from '$lib/process';
 	import { upload } from '$lib/uploader';
-	import { createPump, transferToken, add, poolInfo, tokenInfo } from '$lib/common/swappy';
+	import { createPump, transferToken, add, poolInfo, tokenInfo } from '$lib/common/swappy.svelte';
 	import {
 		type Infer,
 		defaults,

@@ -6,7 +6,7 @@
   import { Button } from '$lib/components/ui/button';
 	import type { Pool } from '$lib/models/Pool.svelte';
 	import { pumpsStore } from '$lib/store/store';
-  import { fetchPumps, poolInfo } from '$lib/common/swappy';
+  //import { fetchPumps, poolInfo } from '$lib/common/swappy.svelte';
   import { Pools } from '$lib/store/pools.store';
   import Time, { svelteTime } from 'svelte-time';
   import { Input } from "$lib/components/ui/input/index.js";
