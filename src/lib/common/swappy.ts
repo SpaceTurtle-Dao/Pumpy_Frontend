@@ -1,12 +1,12 @@
-import type { Pool } from '$lib/models/Pool.svelte';
-import { send, read } from '$lib/process';
-import { info, init, pools, pumps, pool, transfer } from '$lib/messageFactory.svelte';
+import type { Pool } from '../models/Pool.svelte';
+import { send, read } from '../process';
+import { info, init, pools, pumps, pool, transfer } from '../messageFactory.svelte';
 import { PROCESS_ID } from './constants';
-import type { Tag } from '$lib/models/Tag.svelte';
-import { upload } from '$lib/uploader';
-import { loadingStore } from '$lib/store/store';
-import { Pools } from '$lib/store/pools.store';
-import { createToast, StatusCode } from '$lib/utils/toastHandler.svelte';
+import type { Tag } from '../models/Tag.svelte';
+import { upload } from '../uploader';
+import { loadingStore } from '../store/store';
+import { Pools } from '../store/pools.store';
+import { createToast, StatusCode } from '../utils/toastHandler.svelte';
 import { toast } from 'svelte-sonner';
 
 const toastId = toast('Sonner');
