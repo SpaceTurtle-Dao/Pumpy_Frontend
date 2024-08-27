@@ -38,27 +38,30 @@ jobs:
 
       - name: Deploy to development
         if: github.base_ref == 'development'
-        uses: junobuild/juno-action@main
+        uses: outlierventures/arweave-bundler-action@v0.3.1
         with:
-          args: deploy --mode development
-        env:
-          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_DEVELOPMENT }}
+          command: upload
+          directory: build/
+          private-key: ${{secrets.DEPLOY_KEY}}
+          network: arweave.net
       
       - name: Deploy to staging
         if: github.base_ref == 'staging'
-        uses: junobuild/juno-action@main
+        uses: outlierventures/arweave-bundler-action@v0.3.1
         with:
-          args: deploy --mode staging
-        env:
-          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_STAGING }}
+          command: upload
+          directory: build/
+          private-key: ${{secrets.DEPLOY_KEY}}
+          network: arweave.net
 
         
       - name: Deploy to production
         if: github.base_ref == 'main'
-        uses: junobuild/juno-action@main
+        uses: outlierventures/arweave-bundler-action@v0.3.1
         with:
-          args: deploy --mode production
-        env:
-          JUNO_TOKEN: ${{ secrets.JUNO_TOKEN_PRODUCTION }}
+          command: upload
+          directory: build/
+          private-key: ${{secrets.DEPLOY_KEY}}
+          network: arweave.net
 
       

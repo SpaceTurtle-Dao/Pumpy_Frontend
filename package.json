@@ -11,7 +11,8 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"postinstall:copy-auth": "node -e \"require('fs').cpSync('node_modules/@junobuild/core-peer/dist/workers/', './static/workers', {recursive: true});\"",
-		"postinstall": "npm run postinstall:copy-auth"
+		"postinstall": "npm run postinstall:copy-auth",
+		"deploy-main": "npm run build && permaweb-deploy --ant-process <ANT_PROCESS>"
 	},
 	"devDependencies": {
 		"@junobuild/config": "^0.0.6",
