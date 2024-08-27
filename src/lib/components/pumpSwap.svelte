@@ -82,76 +82,88 @@
 	};
 </script>
 
-<Card.Root class="space-y-1 min-w-80">
-	<Card.Header>
+<Card.Root class="space-y-4 min-w-80 bg-[#1a1b2e] border border-[#2e3258] rounded-lg shadow-lg">
+	<Card.Header class="pb-2">
 		<div class="flex flex-row gap-2">
-			<Button class="w-full border-white border-1  " on:click={toggleBuy}>Buy</Button>
-			<Button class="w-full border-white border-1 hover:border-red-600  " variant="secondary" on:click={toggleSell}>Sell</Button>
+			<Button 
+				class="w-full text-white bg-[#3d4279] hover:bg-[#4d5299] transition-colors duration-200" 
+				variant={isBuy ? "default" : "outline"}
+				on:click={toggleBuy}
+			>
+				Buy
+			</Button>
+			<Button 
+				class="w-full text-white bg-[#3d4279] hover:bg-[#4d5299] transition-colors duration-200" 
+				variant={!isBuy ? "default" : "outline"}
+				on:click={toggleSell}
+			>
+				Sell
+			</Button>
 		</div>
 	</Card.Header>
-	<Card.Content>
+	<Card.Content class="space-y-4">
 		<div class="flex flex-col space-y-4">
 			{#if isBuy}
-				<div class="flex flex-row gap-6">
-					<Button class="h-6 w-full" on:click={toggleToken}>
-						switch to {isTokenA ? tokenB.symbol : tokenA.symbol}
+				<div class="flex flex-row gap-2 justify-between">
+					<Button class="h-8 text-sm bg-[#252849] hover:bg-[#3d4279] text-[#8e92b2] hover:text-white transition-colors duration-200" on:click={toggleToken}>
+						Switch to {isTokenA ? tokenB.symbol : tokenA.symbol}
 					</Button>
-					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
+					<Button class="h-8 text-sm bg-[#252849] hover:bg-[#3d4279] text-[#8e92b2] hover:text-white transition-colors duration-200" on:click={toggleSlippage}>Set max slippage</Button>
 				</div>
 			{:else}
-				<div class="flex flex-row justify-end gap-6">
-					<Button class="h-6" on:click={toggleSlippage}>set max slippage</Button>
+				<div class="flex flex-row justify-end">
+					<Button class="h-8 text-sm bg-[#252849] hover:bg-[#3d4279] text-[#8e92b2] hover:text-white transition-colors duration-200" on:click={toggleSlippage}>Set max slippage</Button>
 				</div>
 			{/if}
 		</div>
-	</Card.Content>
-	<Card.Footer class="flex flex-col space-y-3">
 		<div class="flex flex-row gap-2 w-full">
-			<Input type="number" placeholder="0.0" bind:value={amount} />
-			<Avatar.Root class="hidden h-9 w-9 sm:flex">
+			<Input type="number" placeholder="0.0" bind:value={amount} class="bg-[#252849] text-white border-[#3d4279] focus:border-[#4d5299] rounded-md" />
+			<Avatar.Root class="h-10 w-10 flex">
 				<Avatar.Image src={isTokenA ? tokenA.icon : tokenB.icon} alt="Token Icon" />
-				<Avatar.Fallback>T</Avatar.Fallback>
+				<Avatar.Fallback class="bg-[#3d4279] text-white">{isTokenA ? tokenA.symbol[0] : tokenB.symbol[0]}</Avatar.Fallback>
 			</Avatar.Root>
 		</div>
+	</Card.Content>
+	<Card.Footer class="flex flex-col space-y-4 pt-2">
 		{#if isBuy}
 			{#if !isTokenA}
-				<div class="flex flex-row gap-4">
-					<Button variant="outline" size="sm">reset</Button>
-					<Button variant="outline" size="sm">1 {tokenB.symbol}</Button>
-					<Button variant="outline" size="sm">5 {tokenB.symbol}</Button>
-					<Button variant="outline" size="sm">10 {tokenB.symbol}</Button>
+				<div class="flex flex-row gap-2 justify-between">
+					<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">Reset</Button>
+					<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">1 {tokenB.symbol}</Button>
+					<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">5 {tokenB.symbol}</Button>
+					<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">10 {tokenB.symbol}</Button>
 				</div>
 			{/if}
 		{:else}
-			<div class="flex flex-row gap-4">
-				<Button variant="outline" size="sm">reset</Button>
-				<Button variant="outline" size="sm">1 {tokenA.symbol}</Button>
-				<Button variant="outline" size="sm">5 {tokenA.symbol}</Button>
-				<Button variant="outline" size="sm">10 {tokenA.symbol}</Button>
+			<div class="flex flex-row gap-2 justify-between">
+				<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">Reset</Button>
+				<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">1 {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">5 {tokenA.symbol}</Button>
+				<Button variant="outline" size="sm" class="flex-1 bg-[#252849] text-[#8e92b2] hover:bg-[#3d4279] hover:text-white border-[#3d4279] transition-colors duration-200">10 {tokenA.symbol}</Button>
 			</div>
 		{/if}
-		<Button class="w-full" on:click={swap}>place trade</Button>
+		<Button class="w-full bg-[#3d4279] hover:bg-[#4d5299] text-white transition-colors duration-200" on:click={swap}>Place Trade</Button>
 	</Card.Footer>
 </Card.Root>
 
 <Dialog.Root bind:open={dialogOpen}>
-	<Dialog.Content>
+	<Dialog.Content class="bg-[#1a1b2e] border border-[#2e3258] rounded-lg">
 		<Dialog.Header class="space-y-6">
-			<Dialog.Title>Set Slippage</Dialog.Title>
+			<Dialog.Title class="text-white text-xl font-semibold">Set Slippage</Dialog.Title>
 			<Input
 				type="number"
 				min="0"
 				bind:value={slippage}
 				id="slippage"
 				placeholder="Slippage %"
-				class="col-span-3"
+				class="col-span-3 bg-[#252849] text-white border-[#3d4279] focus:border-[#4d5299] rounded-md"
 			/>
-			<Dialog.Description>
+			<Dialog.Description class="text-[#8e92b2]">
 				Tip: Setting a small slippage helps protect your tokens from price fluctuations.
 			</Dialog.Description>
 		</Dialog.Header>
 		<Dialog.Footer>
-			<Button class="w-full" on:click={setSlippage}>Set Slippage</Button>
+			<Button class="w-full bg-[#3d4279] hover:bg-[#4d5299] text-white transition-colors duration-200" on:click={setSlippage}>Set Slippage</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

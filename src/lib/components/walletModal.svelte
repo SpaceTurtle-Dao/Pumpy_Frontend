@@ -50,19 +50,6 @@
         Deposit/Withdraw
       </button>
       
-      <div class="flex space-x-2 sm:space-x-4 mb-4 sm:mb-6">
-        <button class="flex-1 py-2 px-2 sm:px-4 bg-gray-700 bg-opacity-50 text-white rounded-lg hover:bg-opacity-75 transition-colors text-xs sm:text-sm">Subaccounts</button>
-        <button class="flex-1 py-2 px-2 sm:px-4 bg-gray-700 bg-opacity-50 text-white rounded-lg hover:bg-opacity-75 transition-colors text-xs sm:text-sm">Bridge</button>
-      </div>
-      
-      <p class="text-xs sm:text-sm text-gray-300 mb-3 sm:mb-4 font-nova-mono">Deposit collateral to start trading on Swappy.</p>
-      
-      <button 
-        on:click={depositCollateral}
-        class="w-full py-2 sm:py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-500 transition-colors transform hover:scale-105 duration-200 text-sm sm:text-base"
-      >
-        Deposit Collateral
-      </button>
     </div>
   </div>
 </div>
