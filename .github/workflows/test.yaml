@@ -20,43 +20,14 @@ jobs:
         run: npm ci
 
       - name: Build development
-        if: github.base_ref == 'development'
         run: npm run build -- --mode development
-      
-      - name: Build staging
-        if: github.base_ref == 'staging'
-        run: npm run build -- --mode staging
 
-      - name: Build production
-        if: github.base_ref == 'main'
-        run: npm run build -- --mode production
-
-      - name: Deploy to development
-        if: github.base_ref == 'development'
+      - name: Deploying
         uses: OutlierVentures/arweave-bundler@v0.3.2
         with:
           command: upload
           directory: build/
           private-key: ${{secrets.DEPLOY_KEY}}
-          network: arweave.net
-      
-      - name: Deploy to staging
-        if: github.base_ref == 'staging'
-        uses: OutlierVentures/arweave-bundler@v0.3.2
-        with:
-          command: upload
-          directory: build/
-          private-key: ${{secrets.DEPLOY_KEY}}
-          network: arweave.net
-
-        
-      - name: Deploy to production
-        if: github.base_ref == 'main'
-        uses: OutlierVentures/arweave-bundler@v0.3.2
-        with:
-          command: upload
-          directory: build/
-          private-key: ${{secrets.DEPLOY_KEY}}
-          network: arweave.net
+          network: arweave.net     
 
       
