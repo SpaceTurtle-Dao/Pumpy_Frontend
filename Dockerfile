@@ -2,8 +2,7 @@ FROM node:18-alpine AS build
 
 WORKDIR /app
 COPY . .
-RUN yarn
-RUN yarn build
+RUN npm run build -- --mode development
 
 FROM nginx:1.23.3-alpine-slim AS deploy-static
 
