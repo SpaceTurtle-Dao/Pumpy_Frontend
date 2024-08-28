@@ -1,14 +1,24 @@
-FROM node:lts-alpine as build
+FROM node:18.18.0-alpine AS builder
+
 WORKDIR /app
-COPY ./package*.json ./
+
+COPY package*.json .
+
 RUN npm install
+
 COPY . .
+
 RUN npm run build
 
-FROM node:lts-alpine AS production
-COPY --from=build /app/build .
-COPY --from=build /app/package.json .
-COPY --from=build /app/package-lock.json .
-RUN npm ci --omit dev
+FROM node:18.8.0-alpine AS deployer
+
+WORKDIR /app
+
+COPY --from=builder /app/build build/
+COPY --from=builder /app/package.json .
+
 EXPOSE 3000
-CMD ["node", "."]
+
+ENV NODE_ENV=production
+
+CMD [ "node", "build" ]
