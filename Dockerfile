@@ -1,20 +1,24 @@
-FROM node:18-alpine AS build
+FROM node:18.18.0-alpine AS builder
 
 WORKDIR /app
+
+COPY package*.json .
+
+RUN npm install
+
 COPY . .
+
 RUN npm run build
 
-FROM nginx:1.23.3-alpine-slim AS deploy-static
-
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=build /app/build-static .
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-FROM node:18-alpine AS deploy-node
+FROM node:18.8.0-alpine AS deployer
 
 WORKDIR /app
-RUN rm -rf ./*
-COPY --from=build /app/package.json .
-COPY --from=build /app/build-node .
-CMD ["node", "index.js"]
+
+COPY --from=builder /app/build build/
+COPY --from=builder /app/package.json .
+
+EXPOSE 3000
+
+ENV NODE_ENV=production
+
+CMD [ "node", "build" ]
