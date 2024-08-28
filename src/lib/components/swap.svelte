@@ -5,8 +5,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { ArrowUpDown, WalletMinimal, Settings2, RotateCw } from 'lucide-svelte/icons';
 	import SmallSpinner from './smallSpinner.svelte';
-	import { loadingStore, poolsStore } from '$lib/store/store';
-	import type { Principal } from '@dfinity/principal';
+	import { loadingStore, poolsStore, pumpsStore } from '$lib/store/store';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { ChevronDown, Settings, RefreshCw } from 'lucide-svelte';
@@ -36,7 +35,6 @@
 	};
 
 	let tokens: Array<TokenInfo> = [luna, sunny];
-	let principal: Principal;
 
 	let fromAmount: number | null = null;
 	let toAmount: number | null = null;

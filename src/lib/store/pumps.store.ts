@@ -1,4 +1,4 @@
-import { get, writable, type Writable } from "svelte/store";
+import { writable, type Writable } from "svelte/store";
 
 type Time = number;
 
@@ -7,7 +7,7 @@ export interface TokenInfo__1 {
     twitter: [] | [string];
     icon: string;
     name: string;
-    createdAt: number; 
+    createdAt: number;
     minter: string;
     website: [] | [string];
     supply: bigint;
