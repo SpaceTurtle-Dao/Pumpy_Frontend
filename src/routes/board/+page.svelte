@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Board from '$lib/components/board.svelte';
-	import { fetchPumps, poolInfo } from '$lib/common/swappy';
+	import { fetchPumps, poolInfo } from '$lib/common/swappy.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
     setInterval(fetchPumps,500)

@@ -1,6 +1,7 @@
-// @ts-ignore
+<script context="module" lang="ts">
+    // @ts-ignore
 import { connect, createDataItemSigner } from '@permaweb/aoconnect';
-import { createToast } from './utils/toastHandler.svelte';
+import { createToast } from '$lib/utils/toastHandler.svelte';
 
 // @ts-ignore
 const { result, results, message, spawn, monitor, unmonitor, dryrun } = connect({
@@ -10,7 +11,7 @@ const { result, results, message, spawn, monitor, unmonitor, dryrun } = connect(
 });
 
 // @ts-ignore
-export const send = async (processId, tags, toastId) => {
+export async function send (processId, tags, toastId) {
 	console.log("Sending message to: " + processId)
 	// The only 2 mandatory parameters here are process and signer
 	// connect to the extension
@@ -122,3 +123,4 @@ const readMessage = async (messageId: string, processId: string, toastId: string
 	console.log(Error);
 	throw (Error)
 };
+</script>

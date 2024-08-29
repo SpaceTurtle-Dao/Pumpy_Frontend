@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - feature/ao
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build development
+        run: npm run build -- --mode development
+
+      - name: Deploying
+        uses: OutlierVentures/arweave-bundler@v0.3.2
+        with:
+          command: upload
+          directory: build/
+          private-key: ${{secrets.DEPLOY_KEY}}
+          network: arweave.net     
+
+      
